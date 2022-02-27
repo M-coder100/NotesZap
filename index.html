@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NotesZap</title>
+	<link rel="stylesheet" href="Styles/app.css">
+	<link rel="stylesheet" href="Styles/navBar.css">
+	<link rel="stylesheet" href="Styles/mediaQuery.css">
+	<link rel="stylesheet" href="Styles/notes.css">
+	<link rel="stylesheet" href="Styles/noteEditor.css">
+	<script defer type="module" src="TS/Scripts/app.js"></script>
+	<script defer type="module" src="TS/Scripts/db.js"></script>
+	<script defer type="module" src="TS/Scripts/notes.js"></script>
+	<link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
+	<script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+	<nav class="topBar">
+		<div class="logoContainer" type="button" onclick="location.href = '/'"><img class="logo" src="src/Logo.svg"
+				alt="Logo" title="NotesZap">
+			<div class="title">NotesZap</div>
+		</div>
+		<div class="searchBox">
+			<ion-icon name="search-outline" class="searchIcon"></ion-icon>
+			<input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
+		</div>
+		<div class="inputContainer">
+			<ion-icon name="funnel-outline" class="icon"></ion-icon>
+			<select id="SORT_BY">
+				<optgroup label="Sort By">
+					<option value="nw">Newest</option>
+					<option value="ol">Oldest</option>
+					<option value="az">A - Z</option>
+					<option value="ck">Checked</option>
+					<option value="pn">Pinned</option>
+				</optgroup>
+			</select>
+		</div>
+		<ion-icon name="settings-outline" id="SETTINGS_BUTTON" tabindex="0"></ion-icon>
+	</nav>
+	<div id="NOTES_CONTAINER">
+		<div id="PINNED"></div>
+	</div>
+	<nav class="bottomNav">
+		<div id="ADD_NEW_NOTE_BUTTON" tabindex="0">
+			<ion-icon name="add-outline"></ion-icon>
+		</div>
+		<span style="color: var(--color-font3); padding-right: 10px;">Note type</span>
+		<div class="inputContainer">
+			<ion-icon name="list-outline" class="icon"></ion-icon>
+			<select id="NOTE_TYPE">
+				<optgroup label="Note Type">
+					<option value="ls">With lists</option>
+					<option value="kb">Kanban board</option>
+					<option value="pt" selected>Plain text</option>
+					<option value="sp">Snippet</option>
+					<option value="dy">Dairy</option>
+				</optgroup>
+			</select>
+		</div>
+		<span class="divider"></span>
+		<div class="inputContainer">
+			<!-- <ion-icon name="grid-outline" class="icon"></ion-icon> -->
+			<ion-icon name="resize-outline" class="icon"></ion-icon>
+			<select id="VIEW_TYPE">
+				<optgroup label="View type">
+					<option value="fx" selected>Flex view</option>
+					<option value="gv">Grid view</option>
+					<option value="sf">scaffold view</option>
+				</optgroup>
+			</select>
+		</div>
+	</nav>
+</body>
+
+</html>

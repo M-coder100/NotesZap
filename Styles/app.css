@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --color-base1: #6C25C7;
+    --color-base2: #6410D0;
+    --color-base2-lighter: #6310d0a1;
+    
+    --color-font1: #fff;
+    --color-font2: #ccc;
+    --color-font3: #757575;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+*:focus {
+    outline: none;
+    filter: brightness(85%) !important;
+    color: var(--color-base2) !important;
+}
+body {
+    /* recommended: https://images.unsplash.com/photo-1585219453989-79562fe2c856?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1334&q=80 */
+    /* https://images.unsplash.com/photo-1644100254664-dccb172c72aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80 */
+    background: url(https://images.unsplash.com/photo-1585219453989-79562fe2c856?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1334&q=80) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow-x: hidden;
+}
+.wrper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.wrper .divider {
+    height: 7px;
+    width: 30%;
+    background-color: var(--color-font2);
+    border-radius: 100px;
+}
+.inputContainer { display: flex; }
+.inputContainer .icon {
+    color: var(--color-base2);
+    background: var(--color-font1);
+    height: 31px;
+    padding: 0 5px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    --ionicon-stroke-width: 50px;
+}
+.inputContainer select {
+    padding: 5px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 0;
+    color: var(--color-font3);
+}
+#NOTES_CONTAINER msg { display: none; }
+#NOTES_CONTAINER msg {
+    display: flex;
+    padding: 15px;
+    background: linear-gradient(to bottom, var(--color-base2-lighter), purple);
+    margin: 10px;
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+    backdrop-filter: 20px;  
+	flex-direction: column;
+    width: 100%;
+    border-bottom: 10px solid var(--color-base2);
+}

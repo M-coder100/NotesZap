@@ -1,0 +1,117 @@
+/* top */
+
+nav.topBar {
+    height: 50px;
+    width: 100%;
+    background: var(--color-base2-lighter);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    backdrop-filter: blur(20px);
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+nav.topBar .logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 10px;
+}
+nav.topBar .logoContainer .logo {
+    height: 35px;
+    margin-top: 3px;
+    -webkit-user-drag: none;
+}
+nav.topBar .logoContainer .title {
+    color: var(--color-font1);
+    font-size: 20px;
+    user-select: none;
+}
+nav.topBar .searchBox { display: flex; }
+nav.topBar .searchBox .searchIcon { 
+    height: 30px;
+    padding: 0 10px;
+    background-color: var(--color-font1);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: var(--color-base2);
+    --ionicon-stroke-width: 70px;
+}
+nav.topBar .searchBox #SEARCH {
+    padding: 5px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 0;
+    width: 30vw;
+}
+nav.topBar #SETTINGS_BUTTON {
+    color: var(--color-font1);
+    font-size: x-large;
+    --ionicon-stroke-width: 50px;
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    color: #fff !important;
+}
+
+/* Bottom */
+nav.bottomNav {
+    background: var(--color-font1);
+    padding: 10px;
+    border-radius: 10px;
+    position: fixed;
+    margin: 10px 15px;
+    bottom: 0; left: 0;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(20px);
+}
+nav.bottomNav .inputContainer > * {
+    filter: brightness(80%);
+}
+nav.bottomNav .inputContainer > select {
+    color: #000;
+}
+nav.bottomNav .divider {
+    height: 30px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    color: var(--color-font3);
+    border-left: 2px solid;
+}
+nav.bottomNav #ADD_NEW_NOTE_BUTTON {
+    color: var(--color-base2) !important;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    background: var(--color-font1);
+    --ionicon-stroke-width: 60px;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    position: absolute;
+    left: 0; bottom: 0;
+    margin: 50px;
+}
+nav.bottomNav #ADD_NEW_NOTE_BUTTON::before {
+    content: "";
+    height: 10px;
+    width: 5px;
+    background: var(--color-font1);
+    position: absolute;
+    bottom: 0; left: -5px;
+    border-radius: 100% 0% 0% 0%;
+}
+nav.bottomNav #ADD_NEW_NOTE_BUTTON::after {
+    content: "";
+    height: 10px;
+    width: 5px;
+    background: var(--color-font1);
+    backdrop-filter: blur(20px);
+    position: absolute;
+    bottom: 0; right: -5px;
+    border-radius: 0% 100% 0% 00%;
+}

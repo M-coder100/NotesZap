@@ -1,0 +1,155 @@
+.noteEditor.compact {
+    position: fixed;
+    top: 50px; left: 0;
+    margin: 12px;
+    background: linear-gradient(to bottom,  var(--color-base2-lighter), #800080b0);
+    min-height: calc(100% - 70px);
+    width: 300px;
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    min-width: 480px; max-width: 70vw;
+    box-shadow: 0 0 var(--color-base2);
+    resize: horizontal;
+    z-index: 1;
+    transition: top, box-shadow .5s ease;
+}
+.noteEditor.compact.active:hover {
+    box-shadow: 30px 0 var(--color-base2);
+}
+.noteEditor.compact.active:hover nav.navBar {
+    right: -60px;
+    opacity: 1;
+}
+.noteEditor.full {
+    top: 0; left: 0 !important;
+    background: linear-gradient(to bottom,  var(--color-base2-lighter), #800080b0);
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    z-index: 9999;
+    transition: top .5s ease;
+}
+.noteEditor.compact.active { z-index: 2; }
+.noteEditor .topBar {
+    display: flex;  
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 10px;
+    color: #fff;
+    background: var(--color-base1);
+    align-items: center;
+    user-select: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.noteEditor .topBar #NOTEEDITOR_CLOSE {
+    height: 15px;
+    width: 15px;
+    background: #ff6161;
+    border-radius: 100px;
+}
+.noteEditor .topBar #NOTEEDITOR_MINIMIZE {
+    height: 15px;
+    width: 15px;
+    background: yellow;
+    border-radius: 100px;
+}
+.noteEditor .topBar #NOTEEDITOR_MAXIMIZE {
+    height: 15px;
+    width: 15px;
+    background: #01dd01;
+    border-radius: 100px;
+}
+.noteEditor .topBar #NOTEEDITOR_CLOSE:hover,
+.noteEditor .topBar #NOTEEDITOR_MINIMIZE:hover,
+.noteEditor .topBar #NOTEEDITOR_MAXIMIZE:hover {
+    filter: brightness(80%);
+}
+.noteEditor .topBar #NOTEEDITOR_TIME {
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+}
+.noteEditor .textField {
+    padding: 10px;
+    color: var(--color-font1);
+    position: relative;
+}
+.noteEditor .textField #HEADER_VALUE {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: #fff !important;
+    font-weight: 600;
+}
+.noteEditor .textField .noteText {
+    color: #fff !important;
+}
+.noteEditor .textField .noteText:empty:before {
+    content: attr(data-placeholder);
+}
+.noteEditor .textField #HEADER_VALUE::placeholder {
+    color: var(--color-font2);
+}
+.noteEditor .textField .noteText {
+    padding: 10px;
+    background-color: #00000029;
+    line-height: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: auto;
+    height: calc(100vh - 230px);
+}
+.noteEditor.compact nav.navBar .colorBar {
+    background: var(--color-base1);
+    padding: 10px 5px;
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px black;
+    flex-wrap: wrap;
+}
+.noteEditor.compact nav.navBar .colorBar .color {
+    height: 20px;
+    width: 100%;
+}
+.noteEditor.compact nav.navBar .colorBar .color:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.noteEditor.compact nav.navBar .colorBar .color:hover { 
+    filter: brightness(140%);
+    outline: 2px solid #ccc;
+}
+.noteEditor.compact nav.navBar .colorBar .color.selected {
+    outline: 3px solid white;
+    z-index: 1;
+}
+.noteEditor.compact nav.navBar .colorBar .color:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.noteEditor.compact nav.navBar {
+    position: absolute;
+    right: 0; top: 0;
+    padding: 0 10px;
+    opacity: 0;
+    z-index: -99;
+    transition: right, opacity, .5s ease;
+}
+.noteEditor.compact nav.navBar .saveButton {
+    font-size: 25px;
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 100px;
+    color: var(--color-font1);
+    background: var(--color-base1);
+    box-shadow: 0px 0px 10px black;
+    color: #fff !important;
+}
+.noteEditor.compact nav.navBar .saveButton:hover {
+    filter: brightness(140%);
+}

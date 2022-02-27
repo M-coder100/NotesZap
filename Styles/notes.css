@@ -1,0 +1,105 @@
+/* --- Notes structure ---
+    <note id="0" class="active Checked">
+        <div class="topBar">
+            <span id="TIME">Last Modified: 12:00</span>
+            <div class="grp">
+                <div class="option" id="EDIT"></div>
+                <div class="option" id="CHECK"></div>
+                <div class="option" id="PIN"></div>
+                <div class="option" id="DELETE"></div>
+            </div>
+        </div>
+        <h2 id="NOTE_HEADER">Blah blah blah...</h2>
+        <div class="wrper">
+            <div class="divider"></div>
+        </div>
+        <div id="NOTE_TEXT">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam eaque cum voluptates suscipit consequatur quaerat alias sit corrupti in. Fugiat eligendi quo mollitia ex recusandae sit voluptatem inventore dicta eveniet.</div>
+    </note>
+*/
+
+
+#NOTES_CONTAINER {
+    display: flex;
+    margin: 20px;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    margin-bottom: 110px;
+}
+#NOTES_CONTAINER note {
+    padding: 15px;
+    background: linear-gradient(to bottom, var(--color-base2-lighter), purple);
+    margin: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    color: #fff;
+    backdrop-filter: 20px;  
+    display: flex;
+	flex: 1 1 400px;
+	flex-direction: column;
+    position: relative;
+    box-shadow: 0 10px var(--color-base2);
+    transition: box-shadow, width, .5s ease;
+}
+#NOTES_CONTAINER note.new .topBar::after {
+    content: "New";
+    font-weight: 700;
+    color: var(--color-font1);
+    background: var(--color-base2);
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+#NOTES_CONTAINER note.new {
+    left: 100vw;
+    animation: moveRight .5s .5s ease both;
+}
+@keyframes moveRight { to { left: 0; } }
+#NOTES_CONTAINER note .topBar {
+    display: flex;
+    color: var(--color-font2);
+    gap: 10px;
+    position: relative;
+    transition: all .5s ease;
+}
+#NOTES_CONTAINER note .topBar .grp .option {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    border-radius: 100px;
+    display: none;
+}
+#NOTES_CONTAINER note:hover { box-shadow: 15px 15px 0px var(--color-base2);  filter: brightness(120%); }
+#NOTES_CONTAINER note .topBar .grp { display: flex }
+#NOTES_CONTAINER note:hover > .topBar .grp .option { display: block }
+#NOTES_CONTAINER note .topBar .grp .option#CHECK { background-color: #01dd01 }
+#NOTES_CONTAINER note .topBar .grp .option#PIN { background-color: yellow }
+#NOTES_CONTAINER note .topBar .grp .option#DELETE { background-color: #ff6161 }
+#NOTES_CONTAINER note .topBar .grp .option#CHECK:hover { filter: brightness(60%) }
+#NOTES_CONTAINER note .topBar .grp .option#PIN:hover { filter: brightness(60%) }
+#NOTES_CONTAINER note .topBar .grp .option#DELETE:hover { filter: brightness(60%) }
+
+#NOTES_CONTAINER note #NOTE_HEADER {
+    margin-top: 10px;
+}
+#NOTES_CONTAINER note #NOTE_HEADER::after {
+    content: "";
+    display: inline-block;
+    height: 0; width: 0;
+    border-left: 12px solid #fff;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    position: relative;
+    margin-left: -50px;
+    opacity: 0;
+    transition: all .2s  ease;
+}
+#NOTES_CONTAINER note:hover > #NOTE_HEADER::after {
+    opacity: 1;
+    margin-left: 20px;
+}
+#NOTES_CONTAINER note #NOTE_TEXT {
+    padding: 10px;
+    margin-top: 15px;
+    background: #00000029;
+    border-radius: 10px;
+    font-size: large;
+}
