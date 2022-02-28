@@ -2,7 +2,7 @@ import { getfullDate } from "./app.js";
 import makeNewNoteToDatabase from "./db.js";
 import $ from "./tquery.js";
 export default class NoteEditor {
-    constructor(type, subType) {
+    constructor(type, subType, index) {
         const div = $ `div`.create();
         let headerValue;
         let noteValue;
@@ -175,7 +175,76 @@ export default class NoteEditor {
                         break;
                 }
                 break;
+            case "Edit":
+                switch (subType) {
+                    case "pt":
+                        const notes = JSON.parse(localStorage.getItem("Notes"));
+                        const currentNote = notes[index];
+                        console.log(currentNote);
+                        $(div).HTML(`
+                        <div class="topBar">
+                            <div style="display: flex; gap: 5px;">
+                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
+                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button"></div>
+                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
+                            </div>
+                            <div id="NOTEEDITOR_TYPE">Edit</div>
+                            <div id="NOTEEDITOR_TIME">${currentNote.TIME}</div>
+                        </div>
+                        <div class="textField">
+                            <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note" value="${currentNote.TITLE}">
+                            <div class="wrper">
+                                <div class="divider"></div>
+                            </div>
+                            <div class="noteText" contenteditable="true" data-placeholder="I want to do...">${currentNote.NOTE}</div>
+                        </div>
+                        <nav class="navBar">
+                            <div class="colorBar">
+                                <div class="color" id="0" style="background-color: #F72585;"></div>
+                                <div class="color" id="1" style="background-color: #B5179E;"></div>
+                                <div class="color selected" id="2" style="background-color: #7209B7;"></div>
+                                <div class="color" id="3" style="background-color: #560BAD;"></div>
+                                <div class="color" id="4" style="background-color: #480CA8;"></div>
+                                <div class="color" id="5" style="background-color: #3A0CA3;"></div>
+                                <div class="color" id="6" style="background-color: #3F37C9;"></div>
+                                <div class="color" id="7" style="background-color: #4262F0;"></div>
+                                <div class="color" id="8" style="background-color: #4895EF;"></div>
+                                <div class="color" id="9" style="background-color: #4CC9F0;"></div>
+                            </div>
+                            <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
+                        </nav>
+
+                        `);
+                        $(document.body).append(div);
+                        $(div).addClass("noteEditor", "compact");
+                        $ `.saveButton`.each((element) => {
+                            $(element).on("click", () => {
+                                headerValue = $ `#HEADER_VALUE`.value;
+                                noteValue = $ `.noteText`.text;
+                                let activeNoteEditor = $ `.noteEditor.active`;
+                                if (headerValue.trim() || noteValue.trim()) {
+                                    activeNoteEditor.css.transition = "left 1s ease";
+                                    activeNoteEditor.css.left = `${screen.width}px`;
+                                    notes[index] = {
+                                        TITLE: headerValue,
+                                        NOTE: noteValue,
+                                        Pinned: false,
+                                        Checked: false,
+                                        TIME: fullDate,
+                                        TYPE: subType
+                                    };
+                                    localStorage.setItem("Notes", JSON.stringify(notes));
+                                    setTimeout(() => activeNoteEditor.remove(), 1000);
+                                }
+                            });
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                break;
             default:
+                console.log("Error in type!");
                 break;
         }
         if (!!div.classList[0]) {

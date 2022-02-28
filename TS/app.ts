@@ -1,7 +1,7 @@
 import $ from "./tquery.js";
 import NoteEditor from "./noteEditor.js";
-
 const addNoteButton = $("#ADD_NEW_NOTE_BUTTON");
+
 const sorts = {
     sortType: $`#SORT_BY`.element,
     noteType: $`#NOTE_TYPE`.element,

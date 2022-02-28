@@ -1,4 +1,5 @@
 import { addNoteButton } from "./app.js";
+import NoteEditor from "./noteEditor.js";
 import $ from "./tquery.js";
 addNoteButton.on("click", () => {
     $ `.saveButton`.on("click", () => {
@@ -15,16 +16,16 @@ function renderNotes(notes) {
         const msg = document.createElement("msg");
         $(msg).HTML(`<h1 id="NOTE_HEADER">No Notes Found</h1>Create your first note by clicking the add button or pressing the "+" key from your keyboard`);
         $ `#NOTES_CONTAINER`.append(msg);
+        return;
     }
+    // Main loop
     notes.forEach((item) => {
+        // default
         const note = document.createElement("note");
-        const classes = [
-            item.Checked ? "checked" : "",
-            item.Pinned ? "pinned" : ""
-        ];
         note.id = `${notes.indexOf(item)}`;
-        classes[0] ? note.classList.add(classes[0]) : false;
-        classes[1] ? note.classList.add(classes[1]) : false;
+        if (item.Checked) {
+            note.classList.add("checked");
+        }
         $(note).HTML(`
             <div class="topBar">
                 <div class="grp">
@@ -41,38 +42,60 @@ function renderNotes(notes) {
             <div id="NOTE_TEXT">${item.NOTE}</div>
         `);
         $ `#NOTES_CONTAINER`.append(note);
-    });
-}
-renderNotes(JSON.parse(localStorage.getItem("Notes")));
-function refreshNotes() {
-    if ($ `#NOTES_CONTAINER msg`.element)
-        $(`#NOTES_CONTAINER msg`).remove();
-    $ `note`?.each((element) => element.remove());
-    renderNotes(JSON.parse(localStorage.getItem("Notes")));
-    noteControl();
-}
-function noteControl() {
-    if (!!document.querySelector("note")) {
-        $ `note`.each((element) => {
-            $(".topBar .option").each((option) => {
+        // note options control
+        (function noteControl() {
+            document.querySelectorAll(`note[id='${note.id}'] .topBar .option`).forEach((option) => {
                 option.addEventListener("click", () => {
                     (function takeActionForTheNote(opt, index) {
+                        let clickedCheckBtn = false;
+                        let clickedPinBtn = false;
                         if (opt == "DELETE") {
                             deleteNote(index);
                             refreshNotes();
                         }
                         ;
-                    })(option.id, element.id);
+                        if (opt == "PIN") {
+                            pinNote(index, clickedPinBtn);
+                            refreshNotes();
+                        }
+                        ;
+                        if (opt == "CHECK") {
+                            checkNote(index, clickedCheckBtn);
+                            refreshNotes();
+                        }
+                        ;
+                    })(option.id, Number(note.id));
+                });
+                $(option.parentElement?.parentElement).on("dblclick", () => {
+                    editNote(Number(note.id));
                 });
             });
-        });
-    }
-    function deleteNote(index) {
-        let notes = JSON.parse(localStorage.getItem("Notes"));
-        let i = Number(index);
-        notes.splice(i, 1);
-        console.log("executed:", i);
-        localStorage.setItem("Notes", JSON.stringify(notes));
-    }
+            let notes = JSON.parse(localStorage.getItem("Notes"));
+            function deleteNote(index) {
+                if (confirm("==================== DELETE ==================== \nAre you sure? This action can not be reverted!")) {
+                    notes.splice(index, 1);
+                    localStorage.setItem("Notes", JSON.stringify(notes));
+                }
+            }
+            function pinNote(index, clicked) {
+                !clicked ? notes[index].Pinned = false : () => { notes[index].Pinned = true; clicked = true; };
+                localStorage.setItem("Notes", JSON.stringify(notes));
+            }
+            function checkNote(index, clicked) {
+                !clicked ? notes[index].Checked = false : () => { notes[index].Checked = true; clicked = true; };
+                console.log("runned");
+                localStorage.setItem("Notes", JSON.stringify(notes));
+            }
+            function editNote(index) {
+                new NoteEditor("Edit", notes[index].TYPE, index);
+            }
+        })();
+    });
 }
-noteControl();
+renderNotes(JSON.parse(localStorage.getItem("Notes")));
+export default function refreshNotes() {
+    if ($ `#NOTES_CONTAINER msg`.element)
+        $(`#NOTES_CONTAINER msg`).remove();
+    $ `note`?.each((element) => element.remove());
+    renderNotes(JSON.parse(localStorage.getItem("Notes")));
+}

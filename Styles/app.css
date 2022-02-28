@@ -20,6 +20,21 @@
     filter: brightness(85%) !important;
     color: var(--color-base2) !important;
 }
+*::-webkit-scrollbar {
+    width: 15px;
+    background: blueviolet;
+    opacity: 0.1;
+    height: 15px;
+    border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    background: var(--color-font2);
+    border-radius: 10px;
+    cursor: pointer;
+}
+*::-webkit-scrollbar-corner {
+    display: none;
+}
 body {
     /* recommended: https://images.unsplash.com/photo-1585219453989-79562fe2c856?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1334&q=80 */
     /* https://images.unsplash.com/photo-1644100254664-dccb172c72aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80 */
@@ -29,6 +44,9 @@ body {
     -o-background-size: cover;
     background-size: cover;
     overflow-x: hidden;
+}
+html {
+    scroll-behavior: smooth;
 }
 .wrper {
     display: flex;

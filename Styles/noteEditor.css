@@ -21,6 +21,7 @@
     opacity: 1;
 }
 .noteEditor.full {
+    position: fixed;
     top: 0; left: 0 !important;
     background: linear-gradient(to bottom,  var(--color-base2-lighter), #800080b0);
     width: 100% !important;

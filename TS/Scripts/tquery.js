@@ -55,7 +55,6 @@ const $ = (selector) => {
         value: correctSelector?.value,
         text: correctSelector?.innerText,
         css: correctSelector?.style,
-        all: () => { return document.querySelectorAll(selector); },
         each: (callback) => {
             document.querySelectorAll(selector).forEach((element) => callback(element));
         },
