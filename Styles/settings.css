@@ -1,0 +1,63 @@
+.settingsNav {
+    position: fixed;
+    right: 0; top: 0;
+    width: 30.5em;
+    height: 100%;
+    z-index: 9999;
+    background: var(--color-base2-lighter);
+    backdrop-filter: blur(10px);
+    color: var(--color-font1);
+}
+.settingsNav .topBar {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    font-weight: 800;
+    justify-content: space-between;
+    background: var(--color-base2);
+}
+.settingsNav .topBar #CLOSE {
+    font-size: x-large;
+    --ionicon-stroke-width: 70px;
+    cursor: pointer;
+}
+.settingsNav .header {
+    background: var(--color-base2);
+    width: 100%;
+    padding: 20px 10px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.settingsNav .header .searchBox {
+    background: var(--color-font1);
+    width: fit-content;
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+.settingsNav .header .searchBox .searchIcon {
+    color: var(--color-base2);
+    padding: 5px;
+    --ionicon-stroke-width: 50px;
+}
+.settingsNav .header .searchBox #SEARCH {
+    padding: 0 10px;
+    border: none;
+    width: 250px;
+}
+.settingsNav .settingsContainer {
+    padding: 10px;
+}
+.settingsNav .settingsContainer .setting {
+    background: var(--color-base2);
+    padding: 10px;
+    cursor: default;
+    color: var(--color-font1);
+    box-shadow: 0 10px 10px #00000060;
+    border-radius: 10px;
+}

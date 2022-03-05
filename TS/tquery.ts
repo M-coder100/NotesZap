@@ -1,20 +1,5 @@
-// let $ = (element:string) => {
-//     const self = {
-//         HTMLelement: document.querySelector(element),
-//         log: () => {
-//             console.log(self.HTMLelement);
-//         },
-//         create: (appendToDoc:boolean) => {
-//             const createdElement = document.createElement(element);
-//             if (appendToDoc) document.appendChild(createdElement);
-//             return createdElement;
-//         }
-//     }
-//     return self.HTMLelement;
-// }
-
 const $ = (selector: any) => {
-    let correctSelector;
+    let correctSelector: any;
     try {
         correctSelector = document.querySelector(selector);
     } catch (error) {
@@ -22,8 +7,13 @@ const $ = (selector: any) => {
     }
     let self = {
         element: correctSelector,
-        on: (event: any, callback: Function) => {
+        on: (event: keyof DocumentEventMap, callback: Function) => {
             self.element.addEventListener(event, callback);
+        },
+        On: (events: Array<keyof DocumentEventMap>, callback: Function) => {
+            events.forEach((event: string) => {
+                self.element.addEventListener(event, callback)
+            })
         },
         onGlobal: (event: any, callback: Function) => {
             document.addEventListener(event, e => {
@@ -49,9 +39,16 @@ const $ = (selector: any) => {
         removeClass: (...classes: Array<any>) => {
             self.element.classList.remove(...classes)
         },
+        toggleClass: (...classes: Array<any>) => {
+            self.element.classList.toggle(...classes)
+        },
         value: correctSelector?.value,
         text: correctSelector?.innerText,
         css: correctSelector?.style,
+        parent: correctSelector?.parentElement,
+        all: () => {
+            return [...document.querySelectorAll(selector)]
+        },
         each: (callback: Function) => {
             document.querySelectorAll(selector).forEach((element) => callback(element));
         },

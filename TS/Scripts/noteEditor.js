@@ -1,5 +1,6 @@
 import { getfullDate } from "./app.js";
 import makeNewNoteToDatabase from "./db.js";
+import refreshNotes from "./notes.js";
 import $ from "./tquery.js";
 export default class NoteEditor {
     constructor(type, subType, index) {
@@ -10,7 +11,7 @@ export default class NoteEditor {
         switch (type) {
             case "Create":
                 switch (subType) {
-                    case "pt":
+                    case "mk":
                         $(div).HTML(`
 
                         <div class="topBar">
@@ -31,42 +32,55 @@ export default class NoteEditor {
                         </div>
                         <nav class="navBar">
                             <div class="colorBar">
-                                <div class="color" id="0" style="background-color: #F72585;"></div>
-                                <div class="color" id="1" style="background-color: #B5179E;"></div>
-                                <div class="color selected" id="2" style="background-color: #7209B7;"></div>
-                                <div class="color" id="3" style="background-color: #560BAD;"></div>
-                                <div class="color" id="4" style="background-color: #480CA8;"></div>
-                                <div class="color" id="5" style="background-color: #3A0CA3;"></div>
-                                <div class="color" id="6" style="background-color: #3F37C9;"></div>
-                                <div class="color" id="7" style="background-color: #4262F0;"></div>
-                                <div class="color" id="8" style="background-color: #4895EF;"></div>
-                                <div class="color" id="9" style="background-color: #4CC9F0;"></div>
+                                <div class="color" id="#7fff00" style="background: #7fff00;"></div>
+                                <div class="color" id="#ffa72d" style="background: #ffa72d;"></div>
+                                <div class="color" id="#ff5d5d" style="background: #ff5d5d;"></div>
+                                <div class="color" id="#f72585" style="background: #f72585;"></div>
+                                <div class="color" id="#800080" style="background: #800080;"></div>
+                                <div class="color selected" id="#560bad" style="background: #560bad;"></div>
+                                <div class="color" id="#3a0ca3" style="background: #3a0ca3;"></div>
+                                <div class="color" id="#3f37c9" style="background: #3f37c9;"></div>
+                                <div class="color" id="#4262f0" style="background: #4262f0;"></div>
+                                <div class="color" id="#4CC9F0" style="background: #4CC9F0;"></div>
                             </div>
                             <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
                         </nav>
 
                         `);
                         $(document.body).append(div);
-                        $(div).addClass("noteEditor", "compact");
-                        $ `.saveButton`.each((element) => {
-                            $(element).on("click", () => {
-                                headerValue = $ `#HEADER_VALUE`.value;
-                                noteValue = $ `.noteText`.text;
-                                let activeNoteEditor = $ `.noteEditor.active`;
-                                if (headerValue.trim() || noteValue.trim()) {
-                                    activeNoteEditor.css.transition = "left 1s ease";
-                                    activeNoteEditor.css.left = `${screen.width}px`;
-                                    makeNewNoteToDatabase({
-                                        TITLE: headerValue,
-                                        NOTE: noteValue,
-                                        Pinned: false,
-                                        Checked: false,
-                                        TIME: fullDate,
-                                        TYPE: subType
-                                    });
-                                    setTimeout(() => activeNoteEditor.remove(), 1000);
-                                }
-                            });
+                        $ `.noteEditor`.each((item) => item.classList.remove("active"));
+                        $(div).addClass("noteEditor", "compact", "active");
+                        let colors = $ `.noteEditor.active .colorBar > .color`.all();
+                        let color = "#560bad";
+                        colors.forEach((colorItem) => {
+                            colorItem.onclick = () => {
+                                colors.forEach((elem) => elem.classList.remove("selected"));
+                                colorItem.classList.add("selected");
+                                color = colorItem.id;
+                                $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
+                                $(div.children[0]).css.background = `${color}`;
+                            };
+                        });
+                        $(div.children[2].children[1]).on("click", () => {
+                            headerValue = $(div.children[1].children[0]).value;
+                            noteValue = $(div.children[1].children[2]).text;
+                            let activeNoteEditor = $ `.noteEditor.active`;
+                            if (headerValue.trim() || noteValue.trim()) {
+                                activeNoteEditor.css.transition = "left 1s ease";
+                                activeNoteEditor.css.left = `${window.innerWidth}px`;
+                                makeNewNoteToDatabase({
+                                    TITLE: headerValue,
+                                    NOTE: noteValue,
+                                    Pinned: false,
+                                    Checked: false,
+                                    TIME: fullDate,
+                                    COLOR: color,
+                                    TYPE: subType
+                                });
+                                refreshNotes();
+                                $ `#NOTES_CONTAINER > note:last-child`.addClass("new");
+                                setTimeout(() => activeNoteEditor.remove(), 1000);
+                            }
                         });
                         break;
                     case "ls":
@@ -176,11 +190,13 @@ export default class NoteEditor {
                 }
                 break;
             case "Edit":
+                if (!index && index != 0)
+                    return;
                 switch (subType) {
-                    case "pt":
+                    case "mk":
                         const notes = JSON.parse(localStorage.getItem("Notes"));
                         const currentNote = notes[index];
-                        console.log(currentNote);
+                        div.id = JSON.stringify(index);
                         $(div).HTML(`
                         <div class="topBar">
                             <div style="display: flex; gap: 5px;">
@@ -200,43 +216,62 @@ export default class NoteEditor {
                         </div>
                         <nav class="navBar">
                             <div class="colorBar">
-                                <div class="color" id="0" style="background-color: #F72585;"></div>
-                                <div class="color" id="1" style="background-color: #B5179E;"></div>
-                                <div class="color selected" id="2" style="background-color: #7209B7;"></div>
-                                <div class="color" id="3" style="background-color: #560BAD;"></div>
-                                <div class="color" id="4" style="background-color: #480CA8;"></div>
-                                <div class="color" id="5" style="background-color: #3A0CA3;"></div>
-                                <div class="color" id="6" style="background-color: #3F37C9;"></div>
-                                <div class="color" id="7" style="background-color: #4262F0;"></div>
-                                <div class="color" id="8" style="background-color: #4895EF;"></div>
-                                <div class="color" id="9" style="background-color: #4CC9F0;"></div>
+                                <div class="color" id="#7fff00" style="background-color: #7fff00;"></div>
+                                <div class="color" id="#ffa72d" style="background-color: #ffa72d;"></div>
+                                <div class="color selected" id="#ff5d5d" style="background-color: #ff5d5d;"></div>
+                                <div class="color" id="#f72585" style="background-color: #f72585;"></div>
+                                <div class="color" id="#800080" style="background-color: #800080;"></div>
+                                <div class="color" id="#560bad" style="background-color: #560bad;"></div>
+                                <div class="color" id="#3a0ca3" style="background-color: #3a0ca3;"></div>
+                                <div class="color" id="#3f37c9" style="background-color: #3f37c9;"></div>
+                                <div class="color" id="#4262f0" style="background-color: #4262f0;"></div>
+                                <div class="color" id="#4CC9F0" style="background-color: #4CC9F0;"></div>
                             </div>
                             <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
                         </nav>
 
                         `);
                         $(document.body).append(div);
-                        $(div).addClass("noteEditor", "compact");
-                        $ `.saveButton`.each((element) => {
-                            $(element).on("click", () => {
-                                headerValue = $ `#HEADER_VALUE`.value;
-                                noteValue = $ `.noteText`.text;
-                                let activeNoteEditor = $ `.noteEditor.active`;
-                                if (headerValue.trim() || noteValue.trim()) {
-                                    activeNoteEditor.css.transition = "left 1s ease";
-                                    activeNoteEditor.css.left = `${screen.width}px`;
-                                    notes[index] = {
-                                        TITLE: headerValue,
-                                        NOTE: noteValue,
-                                        Pinned: false,
-                                        Checked: false,
-                                        TIME: fullDate,
-                                        TYPE: subType
-                                    };
-                                    localStorage.setItem("Notes", JSON.stringify(notes));
-                                    setTimeout(() => activeNoteEditor.remove(), 1000);
-                                }
+                        $ `.noteEditor`.each((item) => item.classList.remove("active"));
+                        $(div).addClass("noteEditor", "compact", "active");
+                        let colors = [...div.children[2].children[0].children];
+                        let color = currentNote.COLOR;
+                        $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
+                        $(div.children[0]).css.background = `${color}`;
+                        colors.forEach((colorItem) => {
+                            if (colorItem.id == color) {
+                                colors.forEach((elem) => elem.classList.remove("selected"));
+                                colorItem.classList.add("selected");
+                            }
+                            colorItem.addEventListener("click", () => {
+                                colors.forEach((elem) => elem.classList.remove("selected"));
+                                colorItem.classList.add("selected");
+                                color = colorItem.id;
+                                $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
+                                $(div.children[0]).css.background = `${color}`;
                             });
+                        });
+                        $(div.children[2].children[1]).on("click", (event) => {
+                            let activeNoteEditor = event.target?.parentElement?.parentElement;
+                            headerValue = $(activeNoteEditor.children[1].children[0]).value;
+                            noteValue = $(activeNoteEditor.children[1].children[2]).text;
+                            if (headerValue.trim() || noteValue.trim()) {
+                                activeNoteEditor.style.transition = "left 1s ease";
+                                activeNoteEditor.style.left = `${window.innerWidth}px`;
+                                notes[index] = {
+                                    TITLE: headerValue,
+                                    NOTE: noteValue,
+                                    Pinned: false,
+                                    Checked: false,
+                                    TIME: fullDate,
+                                    COLOR: color,
+                                    TYPE: subType
+                                };
+                                localStorage.setItem("Notes", JSON.stringify(notes));
+                                refreshNotes();
+                                $ `note`.all()[index].classList.add("edited");
+                                setTimeout(() => activeNoteEditor.remove(), 1000);
+                            }
                         });
                         break;
                     default:
@@ -244,7 +279,7 @@ export default class NoteEditor {
                 }
                 break;
             default:
-                console.log("Error in type!");
+                console.warn("Error in type!");
                 break;
         }
         if (!!div.classList[0]) {

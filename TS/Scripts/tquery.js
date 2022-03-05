@@ -1,17 +1,3 @@
-// let $ = (element:string) => {
-//     const self = {
-//         HTMLelement: document.querySelector(element),
-//         log: () => {
-//             console.log(self.HTMLelement);
-//         },
-//         create: (appendToDoc:boolean) => {
-//             const createdElement = document.createElement(element);
-//             if (appendToDoc) document.appendChild(createdElement);
-//             return createdElement;
-//         }
-//     }
-//     return self.HTMLelement;
-// }
 const $ = (selector) => {
     let correctSelector;
     try {
@@ -24,6 +10,11 @@ const $ = (selector) => {
         element: correctSelector,
         on: (event, callback) => {
             self.element.addEventListener(event, callback);
+        },
+        On: (events, callback) => {
+            events.forEach((event) => {
+                self.element.addEventListener(event, callback);
+            });
         },
         onGlobal: (event, callback) => {
             document.addEventListener(event, e => {
@@ -52,9 +43,16 @@ const $ = (selector) => {
         removeClass: (...classes) => {
             self.element.classList.remove(...classes);
         },
+        toggleClass: (...classes) => {
+            self.element.classList.toggle(...classes);
+        },
         value: correctSelector?.value,
         text: correctSelector?.innerText,
         css: correctSelector?.style,
+        parent: correctSelector?.parentElement,
+        all: () => {
+            return [...document.querySelectorAll(selector)];
+        },
         each: (callback) => {
             document.querySelectorAll(selector).forEach((element) => callback(element));
         },

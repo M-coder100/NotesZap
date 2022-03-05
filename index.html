@@ -11,10 +11,13 @@
 	<link rel="stylesheet" href="Styles/mediaQuery.css">
 	<link rel="stylesheet" href="Styles/notes.css">
 	<link rel="stylesheet" href="Styles/noteEditor.css">
+	<link rel="stylesheet" href="Styles/settings.css">
+	<link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
+
 	<script defer type="module" src="TS/Scripts/app.js"></script>
 	<script defer type="module" src="TS/Scripts/db.js"></script>
 	<script defer type="module" src="TS/Scripts/notes.js"></script>
-	<link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
+	
 	<script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 	<script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
@@ -75,7 +78,29 @@
 				</optgroup>
 			</select>
 		</div>
+		<ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0"></ion-icon>
 	</nav>
+	<div class="popupContainer"></div>
+	<!-- <nav class="settingsNav">
+		<div class="topBar">
+			<span>Settings</span>
+			<ion-icon name="close-outline" id="CLOSE"></ion-icon>
+		</div>
+		<h1 class="header">
+			Welcome to settings, customise NotesZap behaviour and appearance
+			<div class="searchBox">
+				<ion-icon name="search-outline" class="searchIcon"></ion-icon>
+				<input type="text" autocomplete="off" id="SEARCH" placeholder="Search Settings">
+			</div>
+		</h1>
+		<div class="settingsContainer">
+			<details class="setting" title="Import / Export data">
+				<summary class="title">Import / Export data</summary>
+				<li>Item1</li>
+				<li>Item2</li>
+			</details>
+		</div>
+	</nav> -->
 </body>
 
 </html>

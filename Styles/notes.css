@@ -5,6 +5,23 @@
     flex-wrap: wrap;
     margin-bottom: 110px;
 }
+#NOTES_CONTAINER > #PINNED {
+    display: flex;
+    height: fit-content;
+    border-bottom: 2px dashed var(--color-base2);
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+#NOTES_CONTAINER > #PINNED note .topBar::after {
+    content: "Important";
+    font-weight: 700;
+    color: var(--color-font1);
+    background: #cc2b2bd8;
+    padding: 2px 5px;
+    border-radius: 10px;
+    animation: glow 1.5s ease;
+}
 #NOTES_CONTAINER note {
     padding: 15px;
     background: linear-gradient(to bottom, var(--color-base2-lighter), purple);
@@ -19,6 +36,7 @@
     position: relative;
     box-shadow: 0 10px var(--color-base2);
     transition: box-shadow .5s ease;
+    filter: brightness(110%);
     max-width: calc(100% - 20px);
 }
 #NOTES_CONTAINER note.new .topBar::after {
@@ -29,11 +47,35 @@
     padding: 2px 5px;
     border-radius: 10px;
 }
+#NOTES_CONTAINER note.edited {
+    animation: glow 2s ease;
+}
+@keyframes glow {
+    from { filter: brightness(100%) }
+    50% { filter: brightness(150%) }
+    to { filter: brightness(100%) }
+}
+#NOTES_CONTAINER note.checked {
+    animation: glow 2s ease;
+}
 #NOTES_CONTAINER note.new {
     left: 100vw;
-    animation: moveRight .5s .5s ease both;
+    animation: moveRight .5s .5s ease both, glow 2s .5s ease;
 }
 @keyframes moveRight { to { left: 0; } }
+#NOTES_CONTAINER note.checked #NOTE_HEADER {
+    text-decoration: line-through;
+    font-style: italic;
+    text-decoration-thickness: 4px;
+}
+#NOTES_CONTAINER note.checked .topBar::after {
+    content: "Done";
+    font-weight: 700;
+    color: var(--color-font1);
+    background: #01dd01c4;
+    padding: 2px 4px;
+    border-radius: 10px;
+}
 #NOTES_CONTAINER note .topBar {
     display: flex;
     color: var(--color-font2);
@@ -44,12 +86,12 @@
 #NOTES_CONTAINER note .topBar .grp .option {
     height: 15px;
     width: 15px;
-    margin: 0 5px;
     border-radius: 100px;
     display: none;
+    border: 2px solid #0000008f;
 }
-#NOTES_CONTAINER note:hover { box-shadow: 15px 15px 0px var(--color-base2);  filter: brightness(120%); }
-#NOTES_CONTAINER note .topBar .grp { display: flex }
+#NOTES_CONTAINER note:hover { box-shadow: 15px 15px 0px var(--color-base2);  filter: brightness(150%); }
+#NOTES_CONTAINER note .topBar .grp { display: flex; align-items: center; gap: 5px;}
 #NOTES_CONTAINER note:hover > .topBar .grp .option { display: block }
 #NOTES_CONTAINER note .topBar .grp .option#CHECK { background-color: #01dd01 }
 #NOTES_CONTAINER note .topBar .grp .option#PIN { background-color: yellow }

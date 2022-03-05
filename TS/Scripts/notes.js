@@ -1,16 +1,5 @@
-import { addNoteButton } from "./app.js";
 import NoteEditor from "./noteEditor.js";
 import $ from "./tquery.js";
-addNoteButton.on("click", () => {
-    $ `.saveButton`.on("click", () => {
-        let headerValue = $ `#HEADER_VALUE`.value;
-        let noteValue = $ `.noteText`.text;
-        if (headerValue.trim() || noteValue.trim()) {
-            refreshNotes();
-            $ `note:last-child`.addClass("new");
-        }
-    });
-});
 function renderNotes(notes) {
     if (!notes || !notes[0]) {
         const msg = document.createElement("msg");
@@ -23,6 +12,7 @@ function renderNotes(notes) {
         // default
         const note = document.createElement("note");
         note.id = `${notes.indexOf(item)}`;
+        $(note).css.background = `linear-gradient(to bottom right, ${item.COLOR}c1, purple)`;
         if (item.Checked) {
             note.classList.add("checked");
         }
@@ -41,34 +31,33 @@ function renderNotes(notes) {
             </div>
             <div id="NOTE_TEXT">${item.NOTE}</div>
         `);
-        $ `#NOTES_CONTAINER`.append(note);
+        item.Pinned ? $ `#NOTES_CONTAINER > #PINNED`.append(note) : $ `#NOTES_CONTAINER`.append(note);
         // note options control
         (function noteControl() {
             document.querySelectorAll(`note[id='${note.id}'] .topBar .option`).forEach((option) => {
                 option.addEventListener("click", () => {
                     (function takeActionForTheNote(opt, index) {
-                        let clickedCheckBtn = false;
-                        let clickedPinBtn = false;
                         if (opt == "DELETE") {
                             deleteNote(index);
                             refreshNotes();
                         }
                         ;
                         if (opt == "PIN") {
-                            pinNote(index, clickedPinBtn);
+                            pinNote(index);
                             refreshNotes();
                         }
                         ;
                         if (opt == "CHECK") {
-                            checkNote(index, clickedCheckBtn);
+                            checkNote(index);
                             refreshNotes();
                         }
                         ;
                     })(option.id, Number(note.id));
                 });
-                $(option.parentElement?.parentElement).on("dblclick", () => {
-                    editNote(Number(note.id));
-                });
+                option = option;
+            });
+            $(note).on("dblclick", () => {
+                editNote(Number(note.id));
             });
             let notes = JSON.parse(localStorage.getItem("Notes"));
             function deleteNote(index) {
@@ -77,17 +66,28 @@ function renderNotes(notes) {
                     localStorage.setItem("Notes", JSON.stringify(notes));
                 }
             }
-            function pinNote(index, clicked) {
-                !clicked ? notes[index].Pinned = false : () => { notes[index].Pinned = true; clicked = true; };
+            function pinNote(index) {
+                notes[index].Pinned ? notes[index].Pinned = false : notes[index].Pinned = true;
                 localStorage.setItem("Notes", JSON.stringify(notes));
             }
-            function checkNote(index, clicked) {
-                !clicked ? notes[index].Checked = false : () => { notes[index].Checked = true; clicked = true; };
-                console.log("runned");
+            function checkNote(index) {
+                notes[index].Checked ? notes[index].Checked = false : notes[index].Checked = true;
                 localStorage.setItem("Notes", JSON.stringify(notes));
             }
             function editNote(index) {
-                new NoteEditor("Edit", notes[index].TYPE, index);
+                let noteEditors = $ `.noteEditor`.all();
+                if (noteEditors.length < 2) {
+                    if (!noteEditors[0]) {
+                        new NoteEditor("Edit", notes[index].TYPE, index);
+                        return;
+                    }
+                    noteEditors.forEach((element) => {
+                        Number(element.id) != index ? new NoteEditor("Edit", notes[index].TYPE, index) : element.remove();
+                        ;
+                    });
+                }
+                else
+                    alert("Maximum note editors reached.");
             }
         })();
     });
