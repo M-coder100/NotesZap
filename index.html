@@ -13,6 +13,13 @@
 	<link rel="stylesheet" href="Styles/noteEditor.css">
 	<link rel="stylesheet" href="Styles/settings.css">
 	<link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
+	<link rel="manifest" href="manifest.json">
+
+	<meta name="theme-color" content="#6410D0" />
+    <meta
+      name="description"
+      content="Notes Taking, redesingned"
+    />
 
 	<script defer type="module" src="TS/Scripts/app.js"></script>
 	<script defer type="module" src="TS/Scripts/db.js"></script>
@@ -20,20 +27,22 @@
 	
 	<script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 	<script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+	<script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+	<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script> -->
 </head>
 
 <body>
 	<nav class="topBar">
-		<div class="logoContainer" type="button" onclick="location.href = '/'"><img class="logo" src="src/Logo.svg"
-				alt="Logo" title="NotesZap">
-			<div class="title">NotesZap</div>
+		<div class="logoContainer" type="button" onclick="location.href = '/'">
+			<img class="logo" src="src/Logo.svg" alt="Logo-loading..." title="NotesZap">
+			<div class="title">Notes<span style="font-weight: 800;">Zap</span></div>
 		</div>
 		<div class="searchBox">
 			<ion-icon name="search-outline" class="searchIcon"></ion-icon>
 			<input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
 		</div>
 		<div class="inputContainer">
-			<ion-icon name="funnel-outline" class="icon"></ion-icon>
+			<ion-icon name="funnel-outline" class="icon" data-id="SORT_BY"></ion-icon>
 			<select id="SORT_BY">
 				<optgroup label="Sort By">
 					<option value="nw">Newest</option>
@@ -43,24 +52,32 @@
 					<option value="pn">Pinned</option>
 				</optgroup>
 			</select>
+			<ion-icon name="settings-outline" id="SETTINGS_BUTTON" tabindex="0"></ion-icon>
 		</div>
-		<ion-icon name="settings-outline" id="SETTINGS_BUTTON" tabindex="0"></ion-icon>
 	</nav>
 	<div id="NOTES_CONTAINER">
 		<div id="PINNED"></div>
+		<!-- <note>
+			<ins class="adsbygoogle"
+			style="display:block"
+			data-ad-client="ca-pub-1068941086415066"
+			data-ad-slot="6705523890"
+			data-ad-format="auto"
+			data-full-width-responsive="true"></ins>
+		</note> -->
 	</div>
 	<nav class="bottomNav">
 		<div id="ADD_NEW_NOTE_BUTTON" tabindex="0">
 			<ion-icon name="add-outline"></ion-icon>
 		</div>
-		<span style="color: var(--color-font3); padding-right: 10px;">Note type</span>
+		<span style="color: var(--color-font3); padding-right: 10px; white-space: pre;" class="dummy-type">Note type</span>
 		<div class="inputContainer">
-			<ion-icon name="list-outline" class="icon"></ion-icon>
+			<ion-icon name="list-outline" class="icon" data-id="NOTE_TYPE"></ion-icon>
 			<select id="NOTE_TYPE">
 				<optgroup label="Note Type">
 					<option value="ls">With lists</option>
 					<option value="kb">Kanban board</option>
-					<option value="pt" selected>Plain text</option>
+					<option value="mk" selected>Markdown</option>
 					<option value="sp">Snippet</option>
 					<option value="dy">Dairy</option>
 				</optgroup>
@@ -69,7 +86,7 @@
 		<span class="divider"></span>
 		<div class="inputContainer">
 			<!-- <ion-icon name="grid-outline" class="icon"></ion-icon> -->
-			<ion-icon name="resize-outline" class="icon"></ion-icon>
+			<ion-icon name="resize-outline" class="icon" data-id="VIEW_TYPE"></ion-icon>
 			<select id="VIEW_TYPE">
 				<optgroup label="View type">
 					<option value="fx" selected>Flex view</option>
@@ -101,6 +118,31 @@
 			</details>
 		</div>
 	</nav> -->
+
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066"
+     crossorigin="anonymous"></script>
+<!-- note.ad -->
+	<!-- <ins class="adsbygoogle"
+		style="display:block"
+		data-ad-client="ca-pub-1068941086415066"
+		data-ad-slot="6705523890"
+		data-ad-format="auto"
+		data-full-width-responsive="true"></ins> -->
+	<script>
+		// (adsbygoogle = window.adsbygoogle || []).push({});
+
+		if ('serviceWorker' in navigator) {
+		  // Register a service worker hosted at the root of the
+		  // site using the default scope.
+		  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+			console.log('Service worker registration succeeded:', registration);
+		  }, /*catch*/ function(error) {
+			console.log('Service worker registration failed:', error);
+		  });
+		} else {
+		  console.log('Service workers are not supported.');
+		}
+	</script>
 </body>
 
 </html>

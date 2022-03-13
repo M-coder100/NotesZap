@@ -1,0 +1,25 @@
+{
+    "short_name": "Notes Zap",
+    "name": "NotesZap \nNotes taking, redesigned",
+    "description": "Notes taking, redesigned.",
+    "icons": [
+        {
+            "src": "src/Logo.svg",
+            "sizes": "any",
+            "purpose": "maskable any"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#6410D0",
+    "background_color": "#6C25C7",
+    "shortcuts": [
+        {
+          "name": "Take a note",
+          "short_name": "Open",
+          "description": "Make beautiful notes, now!",
+          "url": "/",
+          "icons": [{ "src": "src/Logo.svg", "sizes": "192x192" }]
+        }
+    ]
+}  

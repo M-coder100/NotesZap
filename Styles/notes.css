@@ -76,8 +76,12 @@
     padding: 2px 4px;
     border-radius: 10px;
 }
+#NOTES_CONTAINER note .topBar span#TIME { 
+    white-space: pre;
+}
 #NOTES_CONTAINER note .topBar {
     display: flex;
+    height: 28px;
     color: var(--color-font2);
     gap: 10px;
     position: relative;

@@ -8,25 +8,25 @@
     --color-font2: #ccc;
     --color-font3: #757575;
 }
-*::selection { background: var(--color-base2-lighter) }
+*::selection { background: purple }
 * {
     font-family: "Poppins", sans-serif;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    transition: filter .5s ease;
 }
 *:focus {
     outline: none;
     filter: brightness(85%) !important;
     color: var(--color-base2);
-    transition: filter .5s ease;
+    outline: 1px dashed var(--color-font2);
 }
-*::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 15px;
     background: blueviolet;
     opacity: 0.1;
     height: 15px;
-    border-radius: 10px;
 }
 *::-webkit-scrollbar-thumb {
     background: var(--color-font2);
@@ -72,12 +72,12 @@ button {
     background-color: var(--color-font2);
     border-radius: 100px;
 }
-.inputContainer { display: flex; }
+.inputContainer { display: flex; align-items: center; position: relative;}
 .inputContainer .icon {
     color: var(--color-base2);
     background: var(--color-font1);
-    height: 31px;
     padding: 0 5px;
+    height: 31px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     --ionicon-stroke-width: 50px;
@@ -167,4 +167,20 @@ button {
     font-size: x-large;
     color: var(--color-font1);
     --ionicon-stroke-width: 70px;
+}
+
+
+
+a {
+   color: #46ffff;
+}
+hr {
+    margin-bottom: 10px;
+}
+#NOTES_CONTAINER note > #NOTE_TEXT h1 {
+    border-bottom: 4px solid #ccc;
+    margin-bottom: 10px;
+}
+h1::first-letter {
+    text-transform: uppercase;
 }

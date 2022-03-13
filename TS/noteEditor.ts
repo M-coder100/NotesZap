@@ -1,6 +1,6 @@
-import { getfullDate } from "./app.js";
+import { getfullDate, device } from "./app.js";
 import makeNewNoteToDatabase from "./db.js";
-import refreshNotes from "./notes.js";
+import { refreshNotes } from "./notes.js";
 import $ from "./tquery.js";
 export default class NoteEditor {
     constructor(type: string, subType: string, index?: number) {
@@ -13,7 +13,7 @@ export default class NoteEditor {
                 switch (subType) {
                     case "mk":
                         $(div).HTML(`
-
+                        
                         <div class="topBar">
                             <div style="display: flex; gap: 5px;">
                                 <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
@@ -22,26 +22,26 @@ export default class NoteEditor {
                             </div>
                             <div id="NOTEEDITOR_TYPE">Create</div>
                             <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                        </div>
+                            </div>
                         <div class="textField">
                             <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note">
                             <div class="wrper">
-                                <div class="divider"></div>
+                            <div class="divider"></div>
                             </div>
                             <div class="noteText" contenteditable="true" data-placeholder="I want to do..."></div>
-                        </div>
+                            </div>
                         <nav class="navBar">
                             <div class="colorBar">
-                                <div class="color" id="#7fff00" style="background: #7fff00;"></div>
-                                <div class="color" id="#ffa72d" style="background: #ffa72d;"></div>
-                                <div class="color" id="#ff5d5d" style="background: #ff5d5d;"></div>
-                                <div class="color" id="#f72585" style="background: #f72585;"></div>
-                                <div class="color" id="#800080" style="background: #800080;"></div>
-                                <div class="color selected" id="#560bad" style="background: #560bad;"></div>
-                                <div class="color" id="#3a0ca3" style="background: #3a0ca3;"></div>
-                                <div class="color" id="#3f37c9" style="background: #3f37c9;"></div>
-                                <div class="color" id="#4262f0" style="background: #4262f0;"></div>
-                                <div class="color" id="#4CC9F0" style="background: #4CC9F0;"></div>
+                                <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
+                                <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
+                                <input class="color selected" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
+                                <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
+                                <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
+                                <input class="color" id="#560bad" style="background-color: #560bad;" type="radio" name="option"/>
+                                <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
+                                <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
+                                <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
+                                <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
                             </div>
                             <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
                         </nav>
@@ -49,8 +49,8 @@ export default class NoteEditor {
                         `);
                         $(document.body).append(div);
                         $`.noteEditor`.each((item: HTMLElement) => item.classList.remove("active"));
-                        $(div).addClass("noteEditor", "compact", "active");
-                        
+                        $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
+                        $(div.children[1].children[0]).element.focus();
                         let colors = $`.noteEditor.active .colorBar > .color`.all();
                         let color: string = "#560bad";
                         colors.forEach((colorItem: HTMLElement) => {
@@ -65,11 +65,14 @@ export default class NoteEditor {
                         
                         $(div.children[2].children[1]).on("click", () => {
                             headerValue = $(div.children[1].children[0]).value;
-                            noteValue = $(div.children[1].children[2]).text;
-                            let activeNoteEditor = $`.noteEditor.active`;
+                            noteValue = $(div.children[1].children[2]).element.innerHTML;
+                            let activeNoteEditor: HTMLElement = $`.noteEditor.active`.element;
                             if (headerValue.trim() || noteValue.trim()) {
-                                activeNoteEditor.css.transition = "left 1s ease";
-                                activeNoteEditor.css.left = `${window.innerWidth}px`;
+                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = noteValue.replace(/<b>(.*?)<\/b>/g, "**$1**");
+                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
+                                noteValue = $(activeNoteEditor.children[1].children[2]).text;
+                                activeNoteEditor.style.transition = "left 1s ease";
+                                activeNoteEditor.style.left = `${window.innerWidth}px`;
                                 makeNewNoteToDatabase({
                                     TITLE: headerValue,
                                     NOTE: noteValue,
@@ -196,8 +199,9 @@ export default class NoteEditor {
                 if (!index && index != 0) return;
                 switch (subType) {
                     case "mk":
-                        const notes: object[] = JSON.parse(localStorage.getItem("Notes"));
-                        const currentNote: object = notes[index];
+                        const notes: object[] = JSON.parse(localStorage.getItem("Notes") || "{}");
+                        const currentNote: any = notes[index];
+                        currentNote.NOTE = currentNote.NOTE.replace(/\n/g, "<br/>");
                         div.id = JSON.stringify(index);
                         $(div).HTML(`
                         <div class="topBar">
@@ -218,16 +222,16 @@ export default class NoteEditor {
                         </div>
                         <nav class="navBar">
                             <div class="colorBar">
-                                <div class="color" id="#7fff00" style="background-color: #7fff00;"></div>
-                                <div class="color" id="#ffa72d" style="background-color: #ffa72d;"></div>
-                                <div class="color selected" id="#ff5d5d" style="background-color: #ff5d5d;"></div>
-                                <div class="color" id="#f72585" style="background-color: #f72585;"></div>
-                                <div class="color" id="#800080" style="background-color: #800080;"></div>
-                                <div class="color" id="#560bad" style="background-color: #560bad;"></div>
-                                <div class="color" id="#3a0ca3" style="background-color: #3a0ca3;"></div>
-                                <div class="color" id="#3f37c9" style="background-color: #3f37c9;"></div>
-                                <div class="color" id="#4262f0" style="background-color: #4262f0;"></div>
-                                <div class="color" id="#4CC9F0" style="background-color: #4CC9F0;"></div>
+                                <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
+                                <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
+                                <input class="color selected" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
+                                <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
+                                <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
+                                <input class="color" id="#560bad" style="background-color: #560bad;" type="radio" name="option"/>
+                                <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
+                                <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
+                                <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
+                                <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
                             </div>
                             <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
                         </nav>
@@ -235,9 +239,10 @@ export default class NoteEditor {
                         `);
                         $(document.body).append(div);
                         $`.noteEditor`.each((item: HTMLElement) => item.classList.remove("active"))
-                        $(div).addClass("noteEditor", "compact", "active");
+                        $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
+                        $(div.children[1].children[0]).element.focus();
 
-                        let colors = [...div.children[2].children[0].children];
+                        let colors: Element[] = [...div.children[2].children[0].children];
                         let color: string = currentNote.COLOR;
                         $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
                         $(div.children[0]).css.background = `${color}`;
@@ -254,26 +259,57 @@ export default class NoteEditor {
                                 $(div.children[0]).css.background = `${color}`;
                             })
                         })
-                        $(div.children[2].children[1]).on("click", (event: Event) => {
-                            let activeNoteEditor: HTMLElement = event.target?.parentElement?.parentElement;
-                            headerValue = $(activeNoteEditor.children[1].children[0]).value;
-                            noteValue = $(activeNoteEditor.children[1].children[2]).text;
-                            if (headerValue.trim() || noteValue.trim()) {
-                                activeNoteEditor.style.transition = "left 1s ease";
-                                activeNoteEditor.style.left = `${window.innerWidth}px`;
-                                notes[index] = {
-                                    TITLE: headerValue,
-                                    NOTE: noteValue,
-                                    Pinned: false,
-                                    Checked: false,
-                                    TIME: fullDate,
-                                    COLOR: color,
-                                    TYPE: subType
+                        $(div.children[2].children[1]).On(["click", "keyup"], (event: any) => {
+                            if (event.type == "click") {
+                                let activeNoteEditor: HTMLElement = event.target?.parentElement?.parentElement;
+                                headerValue = $(activeNoteEditor.children[1].children[0]).value;
+                                noteValue = $(activeNoteEditor.children[1].children[2]).element.innerHTML;
+                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = noteValue.replace(/<b>(.*?)<\/b>/g, "**$1**");
+                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
+                                noteValue = $(activeNoteEditor.children[1].children[2]).text;
+                                
+                                if (headerValue.trim() || noteValue.trim()) {
+                                    activeNoteEditor.style.transition = "left 1s ease";
+                                    device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
+                                    notes[index] = {
+                                        TITLE: headerValue,
+                                        NOTE: noteValue,
+                                        Pinned: currentNote.Pinned,
+                                        Checked: currentNote.Checked,
+                                        TIME: fullDate,
+                                        COLOR: color,
+                                        TYPE: subType
+                                    }
+                                    localStorage.setItem("Notes", JSON.stringify(notes));
+                                    refreshNotes();
+                                    $`note`.all()[index].classList.add("edited");
+                                    setTimeout(() => activeNoteEditor.remove(), 1000);
                                 }
-                                localStorage.setItem("Notes", JSON.stringify(notes));
-                                refreshNotes();
-                                $`note`.all()[index].classList.add("edited");
-                                setTimeout(() => activeNoteEditor.remove(), 1000);
+                            } else if (event.key == "Enter") {
+                                let activeNoteEditor: HTMLElement = event.target?.parentElement?.parentElement;
+                                headerValue = $(activeNoteEditor.children[1].children[0]).value;
+                                noteValue = $(activeNoteEditor.children[1].children[2]).element.innerHTML;
+                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = noteValue.replace(/<b>(.*?)<\/b>/g, "**$1**");
+                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
+                                noteValue = $(activeNoteEditor.children[1].children[2]).text;
+                                
+                                if (headerValue.trim() || noteValue.trim()) {
+                                    activeNoteEditor.style.transition = "left 1s ease";
+                                    device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
+                                    notes[index] = {
+                                        TITLE: headerValue,
+                                        NOTE: noteValue,
+                                        Pinned: currentNote.Pinned,
+                                        Checked: currentNote.Checked,
+                                        TIME: fullDate,
+                                        COLOR: color,
+                                        TYPE: subType
+                                    }
+                                    localStorage.setItem("Notes", JSON.stringify(notes));
+                                    refreshNotes();
+                                    $`note`.all()[index].classList.add("edited");
+                                    setTimeout(() => activeNoteEditor.remove(), 1000);
+                                }
                             }
                         })
                         break;
@@ -292,7 +328,7 @@ export default class NoteEditor {
                 const topBar = div.children[0];
                 let currentDiv: any;
                 let isDown: boolean;
-                $(topBar).on('mousedown', function (e: any) {
+                $(topBar).on('mousedown', function (e: MouseEvent) {
                     isDown = true;
                     const offset = [
                         div.offsetLeft - e.clientX,
@@ -300,10 +336,17 @@ export default class NoteEditor {
                     div.setAttribute('data-offset', JSON.stringify(offset));
                     currentDiv = div;
                 });
-                document.addEventListener('mouseup', function () {
-                    isDown = false;
-                }, true);
-                document.addEventListener('mousemove', function (event) {
+                $(topBar).on('touchstart', function (event: TouchEvent) {
+                    isDown = true;
+                    const offset = [
+                        div.offsetLeft - event.touches[0].clientX,
+                    ];
+                    div.setAttribute('data-offset', JSON.stringify(offset));
+                    currentDiv = div;
+                });
+                document.addEventListener('mouseup', () => isDown = false, true);
+                document.addEventListener('touchend', () => isDown = false, true);
+                document.addEventListener('mousemove', (event: MouseEvent) => {
                     event.preventDefault();
                     if (isDown && currentDiv) {
                         const mousePosition = {
@@ -313,21 +356,32 @@ export default class NoteEditor {
                         currentDiv.style.left = (mousePosition.x + offset[0]) + 'px';
                     }
                 }, true);
+                document.addEventListener('touchmove', (event: TouchEvent) => {
+                    if (isDown && currentDiv) {
+                        const mousePosition = {
+                            x: event.touches[0].clientX,
+                        };
+                        const offset = JSON.parse(currentDiv.getAttribute('data-offset'));
+                        currentDiv.style.left = (mousePosition.x + offset[0]) + 'px';
+                    }
+                }, { passive: true });
             })()
 
             $("#NOTEEDITOR_CLOSE").each((element: Element) => { $(element).on("click", () => element.parentElement?.parentElement?.parentElement?.remove()) })
-            $("#NOTEEDITOR_MINIMIZE").each((element: Element) => {
-                $(element).on("click", () => {
-                    element.parentElement?.parentElement?.parentElement?.classList.add("compact");
-                    element.parentElement?.parentElement?.parentElement?.classList.remove("full")
+            if (device == "desktop") {
+                $("#NOTEEDITOR_MINIMIZE").each((element: Element) => {
+                    $(element).on("click", () => {
+                        element.parentElement?.parentElement?.parentElement?.classList.add("compact");
+                        element.parentElement?.parentElement?.parentElement?.classList.remove("full")
+                    })
                 })
-            })
-            $("#NOTEEDITOR_MAXIMIZE").each((element: Element) => {
-                $(element).on("click", () => {
-                    element.parentElement?.parentElement?.parentElement?.classList.add("full");
-                    element.parentElement?.parentElement?.parentElement?.classList.remove("compact");
+                $("#NOTEEDITOR_MAXIMIZE").each((element: Element) => {
+                    $(element).on("click", () => {
+                        element.parentElement?.parentElement?.parentElement?.classList.add("full");
+                        element.parentElement?.parentElement?.parentElement?.classList.remove("compact");
+                    })
                 })
-            })
+            } 
         }
     }
 }

@@ -1,13 +1,14 @@
 import $ from "./tquery.js";
 import NoteEditor from "./noteEditor.js";
-import refreshNotes from "./notes.js";
+import { renderNotes, refreshNotes } from "./notes.js";
 import popup from "./poup.js";
+import { arraySearch } from "./utils.js";
 
 if (!localStorage.getItem("Notes")) {
     new popup(`
     <nav class="topBar">
         <ion-icon name="close-outline" id="CLOSE" tabindex="0"></ion-icon>
-        <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.1 )</span>
+        <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.2 )</span>
     </nav>
     <div class="main">
         <img src="src/Logo.svg" class="logo"/>
@@ -24,8 +25,17 @@ const sorts = {
     noteType: $`#NOTE_TYPE`.element,
     viewType: $`#VIEW_TYPE`.element 
 }
+let getfullDate = () => `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
+const device = (() => window.innerWidth <= 550 ? "mobile" : "desktop")();
+console.log(device);
+
 const d = new Date();
-let getfullDate = () => `${d.getDay()+2}/${d.getDate()}/${d.getFullYear()}`;
+$`#SEARCH`.on("input", () => {
+    if ($`#SEARCH`.value && localStorage.getItem("Notes")) {
+        $`note`?.each((element: Element) => element.remove())
+        renderNotes(arraySearch($`#SEARCH`.value, JSON.parse(localStorage.getItem("Notes") || "{}")))
+    } else refreshNotes();
+})
 
 $(document).on("keyup", (key: KeyboardEvent) => {
     if (((key.key == "+") || (key.key == "=")) && ($`.noteEditor`.all().length == 0)) {
@@ -77,4 +87,4 @@ $(document).on("click", () => {
         })
     }
 })
-export { getfullDate }
+export { getfullDate, device }

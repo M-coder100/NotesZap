@@ -1,0 +1,57 @@
+@media screen and (max-width: 768px) {
+    nav.bottomNav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 0px;
+        border-radius: 0;
+    }
+    nav.topBar .inputContainer #SORT_BY {
+        position: absolute;
+        width: 20px;
+        left: 0;
+        opacity: 0;
+    }
+    nav.topBar .inputContainer .icon[data-id="SORT_BY"] {
+        padding: 0 10px;
+    }
+    nav.topBar .inputContainer #SETTINGS_BUTTON {
+        background: var(--color-font1);
+        color: var(--color-base2) !important;
+        padding: 6.5px;
+        padding-right: 10px;
+        font-size: 18px;
+        margin: 0rem;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    #NOTES_CONTAINER note .topBar {
+        font-size: small;
+    }
+}
+@media screen and (max-width: 550px) {
+    .inputContainer #VIEW_TYPE,
+    .inputContainer .icon[data-id="VIEW_TYPE"],
+    nav.bottomNav span.divider {
+        display: none;
+    }
+    nav.topBar .logoContainer .title {
+        font-size: medium;
+    }
+    .searchBox > #SEARCH {
+        font-size: 12px;
+    }
+    .searchBox .searchIcon {
+        padding: 0 5px !important;
+    }
+    #NOTES_CONTAINER note #NOTE_HEADER {
+        font-size: xx-large !important;
+    }
+    #NOTES_CONTAINER note #NOTE_TEXT {
+        font-size: 1em !important;
+    }
+    #NOTES_CONTAINER {
+        margin: 60px 8px !important;
+        margin-bottom: 120px !important;
+    }
+}

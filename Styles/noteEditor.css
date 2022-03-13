@@ -32,7 +32,9 @@
     border-radius: 10px;
     backdrop-filter: blur(20px);
     overflow: hidden;
+    border-radius: 0;
     z-index: 9999;
+    box-shadow: none !important;
 }
 .noteEditor.compact.active { z-index: 2; }
 .noteEditor .topBar {
@@ -87,9 +89,6 @@
     color: #fff !important;
     font-weight: 600;
 }
-.noteEditor .textField .noteText {
-    color: #fff !important;
-}
 .noteEditor .textField .noteText:empty:before {
     content: attr(data-placeholder);
 }
@@ -97,13 +96,15 @@
     color: var(--color-font2);
 }
 .noteEditor .textField .noteText {
+    color: #fff !important;
     padding: 10px;
     background-color: #00000029;
     line-height: 20px;
     margin-top: 10px;
     border-radius: 10px;
     overflow: auto;
-    height: calc(100vh - 230px);
+    max-width: 100%;
+    height: calc(100vh - 220px);
 }
 .noteEditor.compact nav.navBar .colorBar {
     background: var(--color-base1);
@@ -113,25 +114,34 @@
     box-shadow: 0px 0px 10px black;
     flex-wrap: wrap;
 }
-.noteEditor.compact nav.navBar .colorBar .color {
+.noteEditor nav.navBar .colorBar .color {
     height: 20px;
     width: 100%;
+    appearance: none;
 }
 .noteEditor.compact nav.navBar .colorBar .color:first-child {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.noteEditor.compact nav.navBar .colorBar .color:hover { 
-    filter: brightness(140%);
-    outline: 2px solid #ccc;
+.noteEditor.full nav.navBar .colorBar .color:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
-.noteEditor.compact nav.navBar .colorBar .color.selected {
-    outline: 3px solid white;
+.noteEditor nav.navBar .colorBar .color:hover { 
+    filter: brightness(140%);
+    border: 2px solid #ccc;
+}
+.noteEditor nav.navBar .colorBar .color.selected {
+    border: 3px solid white;
     z-index: 1;
 }
 .noteEditor.compact nav.navBar .colorBar .color:last-child {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+.noteEditor.full nav.navBar .colorBar .color:last-child {
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .noteEditor.compact nav.navBar {
     position: absolute;
@@ -140,17 +150,38 @@
     opacity: 0;
     visibility: hidden;
     transition: right, opacity, .5s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-.noteEditor.compact nav.navBar .saveButton {
+.noteEditor.full nav.navBar {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    left: 0; bottom: 0;
+    padding: 10px;
+    gap: 10px;
+    justify-content: center;
+}
+.noteEditor.full nav.navBar .colorBar {
+    display: flex;
+    box-shadow: 0px 0px 10px black;
+    width: 500px;
+    padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(var(--color-base1), var(--color-base2-lighter));
+}
+.noteEditor nav.navBar .saveButton {
     font-size: 25px;
     padding: 8px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     border-radius: 100px;
     color: var(--color-font1);
     background: var(--color-base1);
     box-shadow: 0px 0px 10px black;
     color: #fff !important;
 }
-.noteEditor.compact nav.navBar .saveButton:hover {
+.noteEditor nav.navBar .saveButton:hover {
     filter: brightness(140%);
 }

@@ -49,10 +49,8 @@ nav.topBar #SETTINGS_BUTTON {
     color: var(--color-font1);
     font-size: x-large;
     --ionicon-stroke-width: 50px;
-    position: absolute;
-    right: 0;
-    margin: 20px;
     color: #fff !important;
+    margin: 0 10px;
 }
 
 /* Bottom */
@@ -93,7 +91,7 @@ nav.bottomNav #ADD_NEW_NOTE_BUTTON {
     border-top-right-radius: 100px;
     position: absolute;
     left: 0; bottom: 0;
-    margin: 54px;
+    margin: 50px;
 }
 nav.bottomNav #ADD_NEW_NOTE_BUTTON::before {
     content: "";
@@ -117,7 +115,7 @@ nav.bottomNav #ADD_NEW_NOTE_BUTTON::after {
 nav.bottomNav .refreshNotesBtn {
     margin: 0 10px;
     padding: 5px;
-    font-size: 24px;
+    font-size: 20px;
     display: flex;
     background: var(--color-font1);
     border-radius: 10px;
