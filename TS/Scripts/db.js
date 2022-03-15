@@ -5,7 +5,7 @@ export default function makeNewNoteToDatabase(props) {
         localStorage.setItem("Notes", JSON.stringify([props]));
     }
     else {
-        let notes = JSON.parse(localStorage.getItem("Notes"));
+        let notes = JSON.parse(localStorage.getItem("Notes") || "{}");
         notes.push(props);
         function uniqBy(a) {
             let seen = new Set();

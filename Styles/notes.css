@@ -133,11 +133,11 @@
     overflow: auto;
     max-height: 50vh;
 }
-#NOTES_CONTAINER note #NOTE_TEXT::-webkit-scrollbar {
+/* #NOTES_CONTAINER note #NOTE_TEXT::-webkit-scrollbar {
     height: 10px;
     width: 10px;
 }
 #NOTES_CONTAINER note #NOTE_TEXT::-webkit-scrollbar-thumb {
     background: var(--color-font2);
     border-radius: 10px;
-}
+} */

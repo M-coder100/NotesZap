@@ -1,25 +1,49 @@
 {
-    "short_name": "Notes Zap",
-    "name": "NotesZap \nNotes taking, redesigned",
-    "description": "Notes taking, redesigned.",
-    "icons": [
+  "short_name": "Notes Zap",
+  "name": "NotesZap - Notes taking, redesigned",
+  "description": "- Notes taking, redesigned",
+  "icons": [
+    {
+      "src": "src/logos/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "src/logos/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "src/logos/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "src/logos/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "fullscreen",
+  "theme_color": "#6410D0",
+  "background_color": "#ffffff",
+  "shortcuts": [
+    {
+      "name": "Take a note",
+      "short_name": "Open",
+      "description": "Make beautiful notes, now!",
+      "url": "/",
+      "icons": [
         {
-            "src": "src/Logo.svg",
-            "sizes": "any",
-            "purpose": "maskable any"
+          "src": "src/Logo.svg",
+          "sizes": "96x96"
         }
-    ],
-    "start_url": "/",
-    "display": "standalone",
-    "theme_color": "#6410D0",
-    "background_color": "#6C25C7",
-    "shortcuts": [
-        {
-          "name": "Take a note",
-          "short_name": "Open",
-          "description": "Make beautiful notes, now!",
-          "url": "/",
-          "icons": [{ "src": "src/Logo.svg", "sizes": "192x192" }]
-        }
-    ]
-}  
+      ]
+    }
+  ]
+}

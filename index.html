@@ -1,63 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesZap</title>
+    <link rel="stylesheet" href="Styles/app.css">
+    <link rel="stylesheet" href="Styles/navBar.css">
+    <link rel="stylesheet" href="Styles/mediaQuery.css">
+    <link rel="stylesheet" href="Styles/notes.css">
+    <link rel="stylesheet" href="Styles/noteEditor.css">
+    <link rel="stylesheet" href="Styles/settings.css">
+    <link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6410D0">
+    <meta name="description" content="Notes Taking, Redesingned">
+    <script defer="" type="module" src="TS/Scripts/app.js"></script>
+    <script defer="" type="module" src="TS/Scripts/db.js"></script>
+    <script defer="" type="module" src="TS/Scripts/notes.js"></script>
+    <script defer="" type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script defer="" nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
 
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>NotesZap</title>
-	<link rel="stylesheet" href="Styles/app.css">
-	<link rel="stylesheet" href="Styles/navBar.css">
-	<link rel="stylesheet" href="Styles/mediaQuery.css">
-	<link rel="stylesheet" href="Styles/notes.css">
-	<link rel="stylesheet" href="Styles/noteEditor.css">
-	<link rel="stylesheet" href="Styles/settings.css">
-	<link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
-	<link rel="manifest" href="manifest.json">
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script> -->
+    <link rel="apple-touch-icon" href="src/logos/apple-icon-180.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2388-1668.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2048-1536.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1668-2224.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2224-1668.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1620-2160.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2160-1620.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1284-2778.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2778-1284.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2532-1170.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2436-1125.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2688-1242.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1792-828.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1242-2208.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-2208-1242.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-750-1334.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+  </head>
+  <body>
+    <nav class="topBar">
+      <div class="logoContainer" type="button" onclick="location.href = '/'">
+        <img class="logo" src="src/Logo.svg" alt="Logo-loading..." title="NotesZap">
+        <div class="title">Notes<span style="font-weight: 800;">Zap</span></div>
+      </div>
+      <div class="searchBox">
+        <ion-icon name="search-outline" class="searchIcon"></ion-icon>
+        <input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
+      </div>
+      <div class="inputContainer">
+        <ion-icon name="funnel-outline" class="icon" data-id="SORT_BY"></ion-icon>
+        <select id="SORT_BY">
+          <optgroup label="Sort By">
+            <option value="nw">Newest</option>
+            <option value="ol">Oldest</option>
+            <option value="az">A - Z</option>
+            <option value="ck">Checked</option>
+            <option value="pn">Pinned</option>
+          </optgroup>
+        </select>
+        <ion-icon name="settings-outline" id="SETTINGS_BUTTON" tabindex="0"></ion-icon>
+      </div>
+    </nav>
+    <div id="NOTES_CONTAINER">
+      <div id="PINNED"></div>
 
-	<meta name="theme-color" content="#6410D0" />
-    <meta
-      name="description"
-      content="Notes Taking, redesingned"
-    />
-
-	<script defer type="module" src="TS/Scripts/app.js"></script>
-	<script defer type="module" src="TS/Scripts/db.js"></script>
-	<script defer type="module" src="TS/Scripts/notes.js"></script>
-	
-	<script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-	<script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-	<script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
-	<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script> -->
-</head>
-
-<body>
-	<nav class="topBar">
-		<div class="logoContainer" type="button" onclick="location.href = '/'">
-			<img class="logo" src="src/Logo.svg" alt="Logo-loading..." title="NotesZap">
-			<div class="title">Notes<span style="font-weight: 800;">Zap</span></div>
-		</div>
-		<div class="searchBox">
-			<ion-icon name="search-outline" class="searchIcon"></ion-icon>
-			<input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
-		</div>
-		<div class="inputContainer">
-			<ion-icon name="funnel-outline" class="icon" data-id="SORT_BY"></ion-icon>
-			<select id="SORT_BY">
-				<optgroup label="Sort By">
-					<option value="nw">Newest</option>
-					<option value="ol">Oldest</option>
-					<option value="az">A - Z</option>
-					<option value="ck">Checked</option>
-					<option value="pn">Pinned</option>
-				</optgroup>
-			</select>
-			<ion-icon name="settings-outline" id="SETTINGS_BUTTON" tabindex="0"></ion-icon>
-		</div>
-	</nav>
-	<div id="NOTES_CONTAINER">
-		<div id="PINNED"></div>
-		<!-- <note>
+      <!-- <note>
 			<ins class="adsbygoogle"
 			style="display:block"
 			data-ad-client="ca-pub-1068941086415066"
@@ -65,40 +87,42 @@
 			data-ad-format="auto"
 			data-full-width-responsive="true"></ins>
 		</note> -->
-	</div>
-	<nav class="bottomNav">
-		<div id="ADD_NEW_NOTE_BUTTON" tabindex="0">
-			<ion-icon name="add-outline"></ion-icon>
-		</div>
-		<span style="color: var(--color-font3); padding-right: 10px; white-space: pre;" class="dummy-type">Note type</span>
-		<div class="inputContainer">
-			<ion-icon name="list-outline" class="icon" data-id="NOTE_TYPE"></ion-icon>
-			<select id="NOTE_TYPE">
-				<optgroup label="Note Type">
-					<option value="ls">With lists</option>
-					<option value="kb">Kanban board</option>
-					<option value="mk" selected>Markdown</option>
-					<option value="sp">Snippet</option>
-					<option value="dy">Dairy</option>
-				</optgroup>
-			</select>
-		</div>
-		<span class="divider"></span>
-		<div class="inputContainer">
-			<!-- <ion-icon name="grid-outline" class="icon"></ion-icon> -->
-			<ion-icon name="resize-outline" class="icon" data-id="VIEW_TYPE"></ion-icon>
-			<select id="VIEW_TYPE">
-				<optgroup label="View type">
-					<option value="fx" selected>Flex view</option>
-					<option value="gv">Grid view</option>
-					<option value="sf">scaffold view</option>
-				</optgroup>
-			</select>
-		</div>
-		<ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0"></ion-icon>
-	</nav>
-	<div class="popupContainer"></div>
-	<!-- <nav class="settingsNav">
+    </div>
+    <nav class="bottomNav">
+      <div id="ADD_NEW_NOTE_BUTTON" tabindex="0">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+      <span style="color: var(--color-font3); padding-right: 10px; white-space: pre;" class="dummy-type">Note type</span>
+      <div class="inputContainer">
+        <ion-icon name="list-outline" class="icon" data-id="NOTE_TYPE"></ion-icon>
+        <select id="NOTE_TYPE">
+          <optgroup label="Note Type">
+            <option value="ls">With lists</option>
+            <option value="kb">Kanban board</option>
+            <option value="mk" selected="">Markdown</option>
+            <option value="sp">Snippet</option>
+            <option value="dy">Dairy</option>
+          </optgroup>
+        </select>
+      </div>
+      <span class="divider"></span>
+      <div class="inputContainer">
+
+        <!-- <ion-icon name="grid-outline" class="icon"></ion-icon> -->
+        <ion-icon name="resize-outline" class="icon" data-id="VIEW_TYPE"></ion-icon>
+        <select id="VIEW_TYPE">
+          <optgroup label="View type">
+            <option value="fx" selected="">Flex view</option>
+            <option value="gv">Grid view</option>
+            <option value="sf">scaffold view</option>
+          </optgroup>
+        </select>
+      </div>
+      <ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0"></ion-icon>
+    </nav>
+    <div class="popupContainer"></div>
+
+    <!-- <nav class="settingsNav">
 		<div class="topBar">
 			<span>Settings</span>
 			<ion-icon name="close-outline" id="CLOSE"></ion-icon>
@@ -118,31 +142,29 @@
 			</details>
 		</div>
 	</nav> -->
+    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script>
 
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066"
-     crossorigin="anonymous"></script>
-<!-- note.ad -->
-	<!-- <ins class="adsbygoogle"
+    <!-- note.ad -->
+
+    <!-- <ins class="adsbygoogle"
 		style="display:block"
 		data-ad-client="ca-pub-1068941086415066"
 		data-ad-slot="6705523890"
 		data-ad-format="auto"
 		data-full-width-responsive="true"></ins> -->
-	<script>
-		// (adsbygoogle = window.adsbygoogle || []).push({});
-
-		if ('serviceWorker' in navigator) {
-		  // Register a service worker hosted at the root of the
-		  // site using the default scope.
-		  navigator.serviceWorker.register('/sw.js').then(function(registration) {
-			console.log('Service worker registration succeeded:', registration);
-		  }, /*catch*/ function(error) {
-			console.log('Service worker registration failed:', error);
-		  });
-		} else {
-		  console.log('Service workers are not supported.');
-		}
-	</script>
-</body>
-
+    <script>
+      // (adsbygoogle = window.adsbygoogle || []).push({});
+      if ('serviceWorker' in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('Service worker registration succeeded:', registration);
+        }, /*catch*/ function(error) {
+          console.log('Service worker registration failed:', error);
+        });
+      } else {
+        console.log('Service workers are not supported.');
+      }
+    </script>
+  </body>
 </html>
