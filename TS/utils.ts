@@ -1,4 +1,21 @@
-const mk = (value: string) => new Remarkable().render(value);
+const mk = (value: string) => new Remarkable(
+    "full",
+    {
+        breaks: true,
+        highlight: function (str: string, lang: string) {
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(lang, str).value;
+                } catch (err) {}
+            }
+            try {
+                return hljs.highlightAuto(str).value;
+            } catch (err) {}
+    
+            return ''; // use external default escaping
+        }
+    }
+).render(value);
 function replaceURLs(text: string) {
     if (!text) return;
     var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;

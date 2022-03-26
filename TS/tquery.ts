@@ -10,9 +10,9 @@ const $ = (selector: any) => {
         on: (event: keyof DocumentEventMap, callback: Function) => {
             self.element.addEventListener(event, callback);
         },
-        On: (events: Array<keyof DocumentEventMap>, callback: Function) => {
-            events.forEach((event: string) => {
-                self.element.addEventListener(event, callback)
+        On: (events: Array<keyof DocumentEventMap>, callback: Function, checkKeyPress?: boolean) => {
+            events.forEach((event: any) => {
+                if ((event == "keypress") || (event == "keydown") || (event == "keyup")) self.element.addEventListener(event, (e: any) => { if (e.key == "Enter") callback(e) }); else self.element.addEventListener(event, callback);
             })
         },
         onGlobal: (event: any, callback: Function) => {

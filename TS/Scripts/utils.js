@@ -1,4 +1,19 @@
-const mk = (value) => new Remarkable().render(value);
+const mk = (value) => new Remarkable("full", {
+    breaks: true,
+    highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(lang, str).value;
+            }
+            catch (err) { }
+        }
+        try {
+            return hljs.highlightAuto(str).value;
+        }
+        catch (err) { }
+        return ''; // use external default escaping
+    }
+}).render(value);
 function replaceURLs(text) {
     if (!text)
         return;

@@ -1,7 +1,7 @@
 import $ from "./tquery.js";
 import NoteEditor from "./noteEditor.js";
 import { renderNotes, refreshNotes } from "./notes.js";
-import popup from "./poup.js";
+import popup from "./popup.js";
 import { arraySearch } from "./utils.js";
 
 if (!localStorage.getItem("Notes")) {
@@ -46,34 +46,19 @@ $(document).on("keyup", (key: KeyboardEvent) => {
 })
 $("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], (event: KeyboardEvent) => {    
     if ($`.noteEditor`.all().length <= 1) {
-        if (event.type == "keyup") {
-            if (event.key == "Enter") {
-                console.log(event);
-                new NoteEditor("Create", sorts.noteType.value)
-                $`.noteEditor`.addClass("active");
-            }
-        } else {
-            new NoteEditor("Create", sorts.noteType.value)
-            $`.noteEditor`.addClass("active");
-        }
+        new NoteEditor("Create", sorts.noteType.value)
+        $`.noteEditor`.addClass("active");
     } else {
         alert("Maximum create note editors reached.")
     }
-})
+}, true)
+
 let rotation: number = 360;
 $`.refreshNotesBtn`.On(["click", "keyup"], (event: KeyboardEvent) => {
-    if (event.type == "keyup") {
-        if (event.key == "Enter") {
-            $`.refreshNotesBtn`.css.transform = `rotate(${rotation}deg)`;
-            rotation += 360;
-            refreshNotes();
-        }
-    } else {
-        $`.refreshNotesBtn`.css.transform = `rotate(${rotation}deg)`;
-        rotation += 360;
-        refreshNotes();
-    }
-})
+    $`.refreshNotesBtn`.css.transform = `rotate(${rotation}deg)`;
+    rotation += 360;
+    refreshNotes();
+}, true)
 
 $(document).on("click", () => {
     if ($(document).contains(".noteEditor")) {

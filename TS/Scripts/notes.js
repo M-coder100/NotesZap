@@ -27,7 +27,7 @@ export function renderNotes(notes) {
         console.log(id);
         // default
         note.id = id;
-        $(note).css.background = `linear-gradient(to bottom right, ${item.COLOR}c1, purple)`;
+        $(note).css.background = `linear-gradient(to bottom right, ${item.COLOR}c1, purple 100%)`;
         if (item.Checked) {
             note.classList.add("checked");
         }

@@ -29,7 +29,7 @@ export function renderNotes(notes: object[]) {
 
         // default
         note.id = id;
-        $(note).css.background = `linear-gradient(to bottom right, ${item.COLOR}c1, purple)`
+        $(note).css.background = `linear-gradient(to bottom right, ${item.COLOR}c1, purple 100%)`
         if (item.Checked) { note.classList.add("checked") }
 
         if (item.NOTE) {
@@ -72,7 +72,7 @@ export function renderNotes(notes: object[]) {
             })
             let touchtime: number = 0;
             $(note).on("click", () => {
-                if (touchtime == 0) 
+                if (touchtime == 0)
                     touchtime = new Date().getTime();
                 else {
                     // compare first click to this click and see if they occurred within double click threshold

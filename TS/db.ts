@@ -11,9 +11,11 @@ export default function makeNewNoteToDatabase(props: object) {
             let seen = new Set();
             return a.filter(item => {
                 let k = JSON.stringify(item);
-                return seen.has(k) ? false : seen.add(k);
+                return seen.has(k) ? console.log("Has") : seen.add(k);
             });
         }
+        console.log("exec");
+        
         localStorage.setItem("Notes", JSON.stringify(uniqBy(notes)));
     }
 }

@@ -27,7 +27,7 @@
     height: 15px;
 }
 *:hover::-webkit-scrollbar {
-    background: var(--color-font1);
+    background: var(--color-font1) !important;
 }
 *:hover::-webkit-scrollbar-thumb {
     background: var(--color-base1);
@@ -48,18 +48,8 @@ body {
 }
 html {
     scroll-behavior: smooth;
-}
-button {
-    background-color: var(--color-base1);
-    color: var(--color-font1) !important;
-    border-radius: 10px;
-    padding: 0 10px;
-    font-size: medium;
-    border: 0;
-    display: block;
-    margin: 10px 0;
-    border-bottom: 2px solid var(--color-font1);
-}
+} 
+
 
 .wrper {
     display: flex;
@@ -175,42 +165,59 @@ a {
    color: #46ffff;
 }
 hr {
+    margin-top: 5px;
     margin-bottom: 10px;
 }
-#NOTES_CONTAINER note > #NOTE_TEXT h1 {
+#NOTES_CONTAINER note > #NOTE_TEXT h1,
+.noteEditor .previewPanel .preview h1 {
     border-bottom: 4px solid #ccc;
     margin-bottom: 10px;
 }
 h1::first-letter {
     text-transform: uppercase;
 }
-pre {
-    width: 100% !important;
-    text-overflow: ellipsis;
-    margin: 10px 0;
-    margin-bottom: 20px;
-}
-pre > code {
-    padding: 10px;
-    display: flex;
-    color: #000;
-    background: var(--color-font2);
-    margin-right: 10px;
+ul { padding-left: 20px; }
+button {
+    background-color: var(--color-base1);
+    color: var(--color-font1) !important;
     border-radius: 10px;
-    overflow: auto;
+    padding: 0 10px;
+    font-size: medium;
+    border: 0;
+    display: block;
+    margin: 10px 0;
+    border-bottom: 2px solid var(--color-font1);
 }
-code::-webkit-scrollbar {width: 0; height: 0;}
-code {
-    color: #000;
-    background: var(--color-font2);
-    padding: 0 5px;
-    border-radius: 5px;
+blockquote {
+    padding: 10px;
+    font-size: large;
+    margin: 10px 0;
+    border-left: 5px solid #ccc;
 }
-li {
-    padding-left: 20px;
-    display: flex;
+
+table {
+    color: black;
 }
-li:before{
-    content: "";
-    display: list-item;
+thead {
+	background-color: #333333b4;
+	color: white;
+	font-size: 0.875rem;
+	text-transform: uppercase;
+	letter-spacing: 2%;
+}
+thead th { padding: 10px; text-align: center !important; }
+td { padding: 5px; }
+tr > td[style="text-align:left"]:first-of-type {
+    width: 0;
+    font-weight: 800; 
+    padding: 0 20px;
+}
+tr > td[style="text-align:right"]:first-of-type {
+    width: 100%;
+}
+tbody tr:nth-child(odd) {
+    background-color: #ffffffd4;
+}
+tbody tr:nth-child(even) {
+    background-color: #ccceee;
 }

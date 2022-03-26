@@ -2,6 +2,7 @@ import { getfullDate, device } from "./app.js";
 import makeNewNoteToDatabase from "./db.js";
 import { refreshNotes } from "./notes.js";
 import $ from "./tquery.js";
+import { mk } from "./utils.js";
 export default class NoteEditor {
     constructor(type, subType, index) {
         const div = $ `div`.create();
@@ -22,7 +23,7 @@ export default class NoteEditor {
                             </div>
                             <div id="NOTEEDITOR_TYPE">Create</div>
                             <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                            </div>
+                        </div>
                         <div class="textField">
                             <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note">
                             <div class="wrper">
@@ -34,23 +35,50 @@ export default class NoteEditor {
                             <div class="colorBar">
                                 <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
                                 <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
-                                <input class="color selected" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
+                                <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
                                 <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
                                 <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
-                                <input class="color" id="#560bad" style="background-color: #560bad;" type="radio" name="option"/>
+                                <input class="color selected" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
                                 <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
                                 <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
                                 <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
                                 <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
                             </div>
-                            <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
+                            <div class="btnGrp">
+                            <ion-icon name="logo-markdown" class="preview editorNavBtn" type="button" tabindex="0" title="Preview"></ion-icon>
+                            <ion-icon name="arrow-forward-outline" class="saveButton editorNavBtn" type="button" tabindex="0" title="Save"></ion-icon>
+                            </div>
                         </nav>
-
+                        <div class="previewPanel">
+                            <nav class="topbar">Markdown preview</nav>
+                            <div class="preview"></div>
+                        </div>
                         `);
                         $(document.body).append(div);
                         $ `.noteEditor`.each((item) => item.classList.remove("active"));
                         $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
-                        $(div.children[1].children[0]).element.focus();
+                        const elements = {
+                            navBar: {
+                                this: div.children[2],
+                                colorBar: {
+                                    this: div.children[2].children[0],
+                                    colors: div.children[2].children[0].children
+                                },
+                                toMarkdownBtn: div.children[2].children[1].children[0],
+                                saveButton: div.children[2].children[1].children[1],
+                            },
+                            previewPanel: {
+                                this: div.children[3],
+                                topBar: div.children[3].children[0],
+                                preview: div.children[3].children[1]
+                            },
+                            topBar: div.children[0],
+                            textField: {
+                                noteHeader: () => div.children[1].children[0],
+                                noteValue: () => div.children[1].children[2]
+                            },
+                        };
+                        $(elements.textField.noteHeader()).element.focus();
                         let colors = $ `.noteEditor.active .colorBar > .color`.all();
                         let color = "#560bad";
                         colors.forEach((colorItem) => {
@@ -62,7 +90,23 @@ export default class NoteEditor {
                                 $(div.children[0]).css.background = `${color}`;
                             };
                         });
-                        $(div.children[2].children[1]).on("click", () => {
+                        $(elements.textField.noteValue()).on("input", () => {
+                            elements.previewPanel.preview.innerHTML = mk($(elements.textField.noteValue()).element.innerText);
+                        });
+                        $(elements.navBar.toMarkdownBtn).On(["click", "keyup"], (event) => {
+                            if (event.type == "click") {
+                                event.target.classList.toggle("active");
+                                div.classList.toggle("side");
+                                event.target.classList.contains("active") ? $(elements.previewPanel.this).css.display = "block" : $(elements.previewPanel.this).css.display = "none";
+                                elements.previewPanel.preview.innerHTML = mk($(elements.textField.noteValue()).element.innerText);
+                            }
+                            else if (event.key == "Enter") {
+                                event.target.classList.toggle("active");
+                                event.target.classList.contains("active") ? $(elements.previewPanel.this).css.display = "block" : $(elements.previewPanel.this).css.display = "none";
+                                elements.previewPanel.preview.innerHTML = mk($(elements.textField.noteValue()).element.innerText);
+                            }
+                        });
+                        $(elements.navBar.saveButton).On(["click", "keyup"], () => {
                             headerValue = $(div.children[1].children[0]).value;
                             noteValue = $(div.children[1].children[2]).element.innerHTML;
                             let activeNoteEditor = $ `.noteEditor.active`.element;
@@ -71,7 +115,7 @@ export default class NoteEditor {
                                 $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
                                 noteValue = $(activeNoteEditor.children[1].children[2]).text;
                                 activeNoteEditor.style.transition = "left 1s ease";
-                                activeNoteEditor.style.left = `${window.innerWidth}px`;
+                                device == "desktop" ? activeNoteEditor.style.left = `${window.innerWidth}px` : activeNoteEditor.remove();
                                 makeNewNoteToDatabase({
                                     TITLE: headerValue,
                                     NOTE: noteValue,
@@ -85,7 +129,7 @@ export default class NoteEditor {
                                 $ `#NOTES_CONTAINER > note:last-child`.addClass("new");
                                 setTimeout(() => activeNoteEditor.remove(), 1000);
                             }
-                        });
+                        }, true);
                         break;
                     case "ls":
                         $(div).HTML(`
@@ -223,27 +267,55 @@ export default class NoteEditor {
                             <div class="colorBar">
                                 <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
                                 <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
-                                <input class="color selected" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
+                                <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
                                 <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
                                 <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
-                                <input class="color" id="#560bad" style="background-color: #560bad;" type="radio" name="option"/>
+                                <input class="color" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
                                 <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
                                 <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
                                 <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
                                 <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
                             </div>
-                            <ion-icon name="arrow-forward-outline" class="saveButton" type="button" tabindex="0" title="Save"></ion-icon>
+                            <div class="btnGrp">
+                                <ion-icon name="logo-markdown" class="preview editorNavBtn" type="button" tabindex="0" title="Preview"></ion-icon>
+                                <ion-icon name="arrow-forward-outline" class="saveButton editorNavBtn" type="button" tabindex="0" title="Save"></ion-icon>
+                            </div>
                         </nav>
+                        <div class="previewPanel">
+                            <nav class="topbar">Markdown preview</nav>
+                            <div class="preview"></div>
+                        </div>
 
                         `);
+                        const elements = {
+                            navBar: {
+                                this: div.children[2],
+                                colorBar: {
+                                    this: div.children[2].children[0],
+                                    colors: div.children[2].children[0].children
+                                },
+                                toMarkdownBtn: div.children[2].children[1].children[0],
+                                saveButton: div.children[2].children[1].children[1],
+                            },
+                            previewPanel: {
+                                this: div.children[3],
+                                topBar: div.children[3].children[0],
+                                preview: div.children[3].children[1]
+                            },
+                            topBar: div.children[0],
+                            textField: {
+                                noteHeader: () => div.children[1].children[0],
+                                noteValue: () => div.children[1].children[2]
+                            },
+                        };
                         $(document.body).append(div);
                         $ `.noteEditor`.each((item) => item.classList.remove("active"));
                         $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
-                        $(div.children[1].children[0]).element.focus();
-                        let colors = [...div.children[2].children[0].children];
+                        $(elements.textField.noteHeader()).element.focus();
+                        let colors = [...elements.navBar.colorBar.colors];
                         let color = currentNote.COLOR;
                         $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
-                        $(div.children[0]).css.background = `${color}`;
+                        $(elements.topBar).css.background = `${color}`;
                         colors.forEach((colorItem) => {
                             if (colorItem.id == color) {
                                 colors.forEach((elem) => elem.classList.remove("selected"));
@@ -254,61 +326,42 @@ export default class NoteEditor {
                                 colorItem.classList.add("selected");
                                 color = colorItem.id;
                                 $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
-                                $(div.children[0]).css.background = `${color}`;
+                                $(elements.topBar).css.background = `${color}`;
                             });
                         });
-                        $(div.children[2].children[1]).On(["click", "keyup"], (event) => {
-                            if (event.type == "click") {
-                                let activeNoteEditor = event.target?.parentElement?.parentElement;
-                                headerValue = $(activeNoteEditor.children[1].children[0]).value;
-                                noteValue = $(activeNoteEditor.children[1].children[2]).element.innerHTML;
-                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = noteValue.replace(/<b>(.*?)<\/b>/g, "**$1**");
-                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
-                                noteValue = $(activeNoteEditor.children[1].children[2]).text;
-                                if (headerValue.trim() || noteValue.trim()) {
-                                    activeNoteEditor.style.transition = "left 1s ease";
-                                    device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
-                                    notes[index] = {
-                                        TITLE: headerValue,
-                                        NOTE: noteValue,
-                                        Pinned: currentNote.Pinned,
-                                        Checked: currentNote.Checked,
-                                        TIME: fullDate,
-                                        COLOR: color,
-                                        TYPE: subType
-                                    };
-                                    localStorage.setItem("Notes", JSON.stringify(notes));
-                                    refreshNotes();
-                                    $ `note`.all()[index].classList.add("edited");
-                                    setTimeout(() => activeNoteEditor.remove(), 1000);
-                                }
+                        $(elements.textField.noteValue()).on("input", () => elements.previewPanel.preview.innerHTML = mk($(elements.textField.noteValue()).element.innerText));
+                        $(elements.navBar.toMarkdownBtn).On(["click", "keyup"], (event) => {
+                            event.target.classList.toggle("active");
+                            div.classList.toggle("side");
+                            event.target.classList.contains("active") ? $(elements.previewPanel.this).css.display = "block" : $(elements.previewPanel.this).css.display = "none";
+                            elements.previewPanel.preview.innerHTML = mk($(elements.textField.noteValue()).element.innerText);
+                        }, true);
+                        $(elements.navBar.saveButton).On(["click", "keyup"], (event) => {
+                            let activeNoteEditor = event.target?.parentElement?.parentElement.parentElement;
+                            headerValue = $(activeNoteEditor.children[1].children[0]).value;
+                            noteValue = $(activeNoteEditor.children[1].children[2]).element.innerHTML;
+                            $(activeNoteEditor.children[1].children[2]).element.innerHTML = noteValue.replace(/<b>(.*?)<\/b>/g, "**$1**");
+                            $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
+                            noteValue = $(activeNoteEditor.children[1].children[2]).text;
+                            if (headerValue.trim() || noteValue.trim()) {
+                                activeNoteEditor.style.transition = "left 1s ease";
+                                device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
+                                elements.previewPanel.this.remove();
+                                notes[index] = {
+                                    TITLE: headerValue,
+                                    NOTE: noteValue,
+                                    Pinned: currentNote.Pinned,
+                                    Checked: currentNote.Checked,
+                                    TIME: fullDate,
+                                    COLOR: color,
+                                    TYPE: subType
+                                };
+                                localStorage.setItem("Notes", JSON.stringify(notes));
+                                refreshNotes();
+                                $ `note`.all()[index].classList.add("edited");
+                                setTimeout(() => activeNoteEditor.remove(), 1000);
                             }
-                            else if (event.key == "Enter") {
-                                let activeNoteEditor = event.target?.parentElement?.parentElement;
-                                headerValue = $(activeNoteEditor.children[1].children[0]).value;
-                                noteValue = $(activeNoteEditor.children[1].children[2]).element.innerHTML;
-                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = noteValue.replace(/<b>(.*?)<\/b>/g, "**$1**");
-                                $(activeNoteEditor.children[1].children[2]).element.innerHTML = $(activeNoteEditor.children[1].children[2]).element.innerHTML.replace(/<i>(.*?)<\/i>/g, "_$1_");
-                                noteValue = $(activeNoteEditor.children[1].children[2]).text;
-                                if (headerValue.trim() || noteValue.trim()) {
-                                    activeNoteEditor.style.transition = "left 1s ease";
-                                    device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
-                                    notes[index] = {
-                                        TITLE: headerValue,
-                                        NOTE: noteValue,
-                                        Pinned: currentNote.Pinned,
-                                        Checked: currentNote.Checked,
-                                        TIME: fullDate,
-                                        COLOR: color,
-                                        TYPE: subType
-                                    };
-                                    localStorage.setItem("Notes", JSON.stringify(notes));
-                                    refreshNotes();
-                                    $ `note`.all()[index].classList.add("edited");
-                                    setTimeout(() => activeNoteEditor.remove(), 1000);
-                                }
-                            }
-                        });
+                        }, true);
                         break;
                     default:
                         break;

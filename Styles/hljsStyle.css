@@ -1,0 +1,62 @@
+pre {
+    width: 100% !important;
+    margin: 10px 0;
+    margin-bottom: 20px;
+    background: #282a36;
+    padding: 10px;
+    border-radius: 10px;
+    overflow: auto;
+}
+code {
+    color: #ccc;
+    font-family: Consolas, "Courier New", monospace;
+    padding: 0 5px;
+    border-radius: 5px;
+}
+pre::-webkit-scrollbar {width: 0; height: 0;}
+
+
+span.hljs-keyword {
+    color: #f179c6;
+    font-family: monospace;
+    font-weight: 800;
+    text-shadow: 0 0 10px #f179c6;
+}
+span.hljs-variable {
+    font-weight: 800;
+    color: #49e37b;
+    font-style: italic;
+}
+span.hljs-title {
+    color: #ad56ff;
+    font-weight: 800;
+}
+span.hljs-property {
+    color: #79e9fd;
+}
+span.hljs-number {
+    color: #ad56ff;
+}
+span.hljs-string {
+    color: yellowgreen;
+}
+span.hljs-comment {
+    font-style: italic;
+    color: var(--color-font3);
+}
+span.hljs-attr {
+    color: aquamarine;
+}
+span.hljs-built_in{
+    color: burlywood;
+}
+span.hljs-params {
+    font-style: italic;
+}
+span.hljs-literal {
+    color: indianred;
+    font-weight: 800;
+    background: #2a142a;
+    padding: 0 5px;
+    border-radius: 5px;
+}

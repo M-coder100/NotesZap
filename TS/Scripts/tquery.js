@@ -11,9 +11,13 @@ const $ = (selector) => {
         on: (event, callback) => {
             self.element.addEventListener(event, callback);
         },
-        On: (events, callback) => {
+        On: (events, callback, checkKeyPress) => {
             events.forEach((event) => {
-                self.element.addEventListener(event, callback);
+                if ((event == "keypress") || (event == "keydown") || (event == "keyup"))
+                    self.element.addEventListener(event, (e) => { if (e.key == "Enter")
+                        callback(e); });
+                else
+                    self.element.addEventListener(event, callback);
             });
         },
         onGlobal: (event, callback) => {

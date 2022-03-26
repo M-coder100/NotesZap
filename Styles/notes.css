@@ -24,15 +24,15 @@
 }
 #NOTES_CONTAINER note {
     padding: 15px;
-    background: linear-gradient(to bottom, var(--color-base2-lighter), purple);
+    background: linear-gradient(to bottom, #6310d0a1, purple);
     margin: 10px;
     margin-bottom: 20px;
     border-radius: 10px;
     color: #fff;
-    backdrop-filter: 20px;  
+    backdrop-filter: 20px;
     display: flex;
-	flex: 1 1 400px;
-	flex-direction: column;
+    flex: 1 1 400px;
+    flex-direction: column;
     position: relative;
     box-shadow: 0 10px var(--color-base2);
     transition: box-shadow .5s ease;
