@@ -1,7 +1,7 @@
 {
   "short_name": "Notes Zap",
-  "name": "NotesZap - Notes taking, redesigned",
-  "description": "- Notes taking, redesigned",
+  "name": "NotesZap",
+  "description": "Notes taking, redesigned",
   "icons": [
     {
       "src": "src/logos/manifest-icon-192.maskable.png",
@@ -29,7 +29,7 @@
     }
   ],
   "start_url": ".",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#6410D0",
   "background_color": "#ffffff",
   "shortcuts": [

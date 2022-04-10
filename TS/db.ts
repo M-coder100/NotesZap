@@ -6,16 +6,14 @@ export default function makeNewNoteToDatabase(props: object) {
     }
     else {
         let notes: object[] = JSON.parse(localStorage.getItem("Notes") || "{}")
-        notes.push(props);
-        function uniqBy(a: any[]) {
+        notes.unshift(props);
+        function uniqBy(a: Array<object>) {
             let seen = new Set();
             return a.filter(item => {
                 let k = JSON.stringify(item);
-                return seen.has(k) ? console.log("Has") : seen.add(k);
+                return seen.has(k) ? false : seen.add(k);
             });
         }
-        console.log("exec");
-        
         localStorage.setItem("Notes", JSON.stringify(uniqBy(notes)));
     }
 }

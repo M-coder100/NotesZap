@@ -179,6 +179,7 @@
     font-size: 25px;
     padding: 8px;
     color: var(--color-font1) !important;
+    --ionicon-stroke-width: 60px;
 }
 .noteEditor nav.navBar .editorNavBtn:hover {
     filter: brightness(140%);
@@ -192,8 +193,11 @@
 }
 .noteEditor.full nav.navBar .btnGrp {
     flex-direction: row;
-    z-index: 1;
+    z-index: 2;
 }
+
+
+/* PREVIEW PANEL >mk< */
 .noteEditor nav.navBar .btnGrp .preview { transition: box-shadow .5s ease;}
 .noteEditor.compact nav.navBar .btnGrp .preview.active {
     width: 25px;
@@ -236,6 +240,7 @@
     min-height: 100vh;
     color: var(--color-font1);
     background: var(--color-base1);
+    z-index: 1;
 }
 .noteEditor .previewPanel .topbar {
     background: var(--color-base2);
@@ -264,7 +269,34 @@
 }
 .noteEditor .previewPanel .preview:empty::after {
     color: var(--color-font2);
-    content: "Try typing some markdown in the editor for live changes. \a\a• Quik tips: \a use '#' for headings; \a use '+' for lists; \a use '**text**' to bold; \a use '_text_' to italic.";
+    content: "Try typing some markdown in\athe editor for live changes. \a\a• Quik tips: \a use '#' for headings; \a use '+' for lists; \a use '**text**' to bold; \a use '_text_' to italic.";
     white-space: pre;
     line-height: 30px;
+}
+
+/* noteText >ls< */
+.noteText .note_item {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #0000006b;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: auto;
+}
+.noteText .note_item .text {
+    width: 100%;
+    min-width: 10px !important;
+    color: #fff;
+    white-space: nowrap;
+}
+.noteText .note_item .text:empty::after {
+    content: "Sub task";
+    font-style: italic;
+    color: #ccc;
+}
+.noteText .note_item::-webkit-scrollbar { height: 0; }
+.noteText .note_item input.checkBox {
+    margin-left: 10px;
 }

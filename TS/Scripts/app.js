@@ -1,3 +1,8 @@
+/* ====================================
+*  NotesZap ~ Notes taking, redesigned.
+*  -- -- -- -- BETA 0.4v -- -- -- -- --
+* =====================================
+*/
 import $ from "./tquery.js";
 import NoteEditor from "./noteEditor.js";
 import { renderNotes, refreshNotes } from "./notes.js";
@@ -46,17 +51,16 @@ $(document).on("keyup", (key) => {
     else if (key.key == "Escape" && $ `.noteEditor`.all().length > 0)
         $ `.noteEditor.active`.remove();
 });
-$("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], (event) => {
-    if ($ `.noteEditor`.all().length <= 1) {
+$("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], () => {
+    if (($ `.noteEditor`.all().length <= 2)) {
         new NoteEditor("Create", sorts.noteType.value);
-        $ `.noteEditor`.addClass("active");
     }
     else {
         alert("Maximum create note editors reached.");
     }
 }, true);
 let rotation = 360;
-$ `.refreshNotesBtn`.On(["click", "keyup"], (event) => {
+$ `.refreshNotesBtn`.On(["click", "keyup"], () => {
     $ `.refreshNotesBtn`.css.transform = `rotate(${rotation}deg)`;
     rotation += 360;
     refreshNotes();

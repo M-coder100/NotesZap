@@ -12,6 +12,7 @@ code {
     font-family: Consolas, "Courier New", monospace;
     padding: 0 5px;
     border-radius: 5px;
+    background: #282a36;
 }
 pre::-webkit-scrollbar {width: 0; height: 0;}
 

@@ -18,9 +18,13 @@ const assets = [
     "/TS/Scripts/tquery.js",
     "/TS/Scripts/utils.js",
     "/404.html",
+    
+    "https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js",    
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js",
+    "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js",
 ]
 self.addEventListener("install", event => {
-    console.log("installing...");
+    console.log("%cInstalling...", "color:  cyan;");
     event.waitUntil(
         caches
             .open(cache_name)
@@ -31,13 +35,11 @@ self.addEventListener("install", event => {
     );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function(event) {    
+    console.log("fetched"+ event.request.url);
     event.respondWith(
         caches.match(event.request).then(function(response) {
             return response || fetch(event.request);
         })
     );
-});
-self.addEventListener("fetch", event => {
-    console.log("You fetched " + event.url);
 });

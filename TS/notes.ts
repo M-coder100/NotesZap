@@ -25,37 +25,88 @@ export function renderNotes(notes: object[]) {
         let storageData: Array<any> = JSON.parse(localStorage.getItem("Notes") || "{}");
         let id: string = "";
         storageData.forEach((elem: any) => elem.NOTE ? elem.NOTE == item.NOTE ? id = JSON.stringify(storageData.indexOf(elem)) : false : elem.TITLE == item.TITLE ? id = JSON.stringify(storageData.indexOf(elem)) : false)
-        console.log(id);
+        note.id = id;
 
         // default
-        note.id = id;
         $(note).css.background = `linear-gradient(to bottom right, ${item.COLOR}c1, purple 100%)`
         if (item.Checked) { note.classList.add("checked") }
+        switch (item.TYPE) {
+            case "mk":
+                if (item.NOTE) {
+                    item.NOTE = utils.replaceURLs(item.NOTE);
+                    item.NOTE = utils.mk(item.NOTE);
+                }
+                $(note).HTML(`
+                    <div class="topBar">
+                        <div class="grp">
+                            <div class="option" id="CHECK" title="Mark done"></div>
+                            <div class="option" id="PIN" title="Pin to top"></div>
+                            <div class="option" id="DELETE" title="Move to trash"></div>
+                        </div>
+                        <span id="TIME">Modified: ${item.TIME} ( Markdown )</span>
+                    </div>
+                    ${item.TITLE ? `
+                        <h1 id="NOTE_HEADER" style="font-size: ${item.NOTE ? "40px" : "60px"};">${item.TITLE}</h1>
+                        ${item.NOTE ? `
+                        <div class="wrper">
+                            <div class="divider"></div>
+                        </div>
+                        <div id="NOTE_TEXT">${item.NOTE}</div>
+                        ` : ""}
+                    ` : `<div id="NOTE_TEXT" style="font-size: 25px; height: 100%;">${item.NOTE}</div>`}
+                `)
+                break;
+            case "ls":
+                $(note).HTML(`
+                    <div class="topBar">
+                        <div class="grp">
+                            <div class="option" id="CHECK" title="Mark done"></div>
+                            <div class="option" id="PIN" title="Pin to top"></div>
+                            <div class="option" id="DELETE" title="Move to trash"></div>
+                        </div>
+                        <span id="TIME">Modified: ${item.TIME} ( List )</span>
+                    </div>
+                    ${item.TITLE ? `
+                        <h1 id="NOTE_HEADER">${item.TITLE}</h1>
+                        <div class="wrper"><div class="divider"></div></div>
+                    ` : ""}
+                    <div class="items" id="NOTE_TEXT"></div>
+                `)
+                item.NOTE.split("\n").forEach((elem: string) => {
+                    note.children[note.children.length-1].innerHTML += `<div class='item ${item.NOTE.split("\n").indexOf(elem)}' id="checklist"><input type="checkbox" ${elem.split("✔️")[1] && "checked"}/><label class="text">${elem.split("✔️")[1] || elem}</label></div>`;
+                })
+                let noteItems = [...note.children[note.children.length-1].children];
+                let values: string[] = item.NOTE.split("\n");
+                noteItems.forEach((noteItem: Element) => {
+                    $(noteItem.children[0]).On(["click", "keyup"], () => {
+                        let index = noteItem.classList[1];
+                        let notes: any[] = JSON.parse(localStorage.getItem("Notes") || "{}");                        
 
-        if (item.NOTE) {
-            item.NOTE = utils.replaceURLs(item.NOTE);
-            item.NOTE = utils.mk(item.NOTE);
+                        if (!noteItem.children[0].checked) {
+                            values[Number(index[0])] = values[Number(index[0])].split("✔️")[1];
+                        } else {
+                            values[Number(index[0])] = "✔️"+values[Number(index[0])];
+                        }
+
+                        notes[Number(note.id)] = {
+                            TITLE: item.TITLE,
+                            NOTE: values.join("\n"),
+                            Pinned: item.Pinned,
+                            Checked: item.Checked,
+                            TIME: item.TIME,
+                            COLOR: item.COLOR,
+                            TYPE: item.TYPE
+                        }
+                        console.log(notes);
+                        
+                        localStorage.setItem("Notes", JSON.stringify(notes));
+                    })
+                })
+                break;
+
+            default:
+                break;
         }
-
-        $(note).HTML(`
-            <div class="topBar">
-                <div class="grp">
-                    <div class="option" id="CHECK" title="Mark done"></div>
-                    <div class="option" id="PIN" title="Pin to top"></div>
-                    <div class="option" id="DELETE" title="Move to trash"></div>
-                </div>
-                <span id="TIME">Modified: ${item.TIME} ( Markdown )</span>
-            </div>
-            ${item.TITLE ? `
-                <h1 id="NOTE_HEADER" style="font-size: ${item.NOTE ? "40px" : "60px"};">${item.TITLE}</h1>
-                ${item.NOTE ? `
-                <div class="wrper">
-                    <div class="divider"></div>
-                </div>
-                <div id="NOTE_TEXT">${item.NOTE}</div>
-                ` : ""}
-            ` : `<div id="NOTE_TEXT" style="font-size: 25px; height: 100%;">${item.NOTE}</div>`}
-        `)
         item.Pinned ? $`#NOTES_CONTAINER > #PINNED`.append(note) : $`#NOTES_CONTAINER`.append(note);
 
         // note options control 
@@ -71,7 +122,12 @@ export function renderNotes(notes: object[]) {
                 option = option;
             })
             let touchtime: number = 0;
-            $(note).on("click", () => {
+            $(note).on("click", (e:MouseEvent) => {
+                if (e.ctrlKey) {
+                    editNote(Number(note.id))
+                    touchtime = 0;
+                    return;
+                }
                 if (touchtime == 0)
                     touchtime = new Date().getTime();
                 else {
@@ -79,7 +135,6 @@ export function renderNotes(notes: object[]) {
                     if (((new Date().getTime()) - touchtime) < 800) {
                         // double click occurred
                         editNote(Number(note.id))
-                        touchtime = 0;
                     } else touchtime = new Date().getTime();
                 }
             })
@@ -106,7 +161,7 @@ export function renderNotes(notes: object[]) {
                         return;
                     }
                     noteEditors.forEach((element: HTMLElement) => {
-                        Number(element.id) != index ? new NoteEditor("Edit", notes[index].TYPE, index) : element.remove();;
+                        Number(element.id) != index ? new NoteEditor("Edit", notes[index].TYPE, index) : element.remove();
                     })
                 }
                 else alert("Maximum note editors reached.")
