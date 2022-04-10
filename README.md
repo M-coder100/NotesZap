@@ -1,4 +1,4 @@
-# NotesZap -_Notes Taking, Redesigned_
+# NotesZap -_Notes Taking, Redesigned_ ( BETA )
 ![image](https://user-images.githubusercontent.com/82762527/161482707-fb3ac56d-c513-4270-943d-0a86a3e97f8a.png)
 
 NotesZap is a notes taking website which would help you to write **better notes** and  boost your productivity.
