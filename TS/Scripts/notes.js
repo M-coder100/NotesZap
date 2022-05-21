@@ -11,6 +11,7 @@ export function renderNotes(notes) {
     // Main loop
     notes.forEach((item) => {
         const note = document.createElement("note");
+        note.tabIndex = 0;
         if (item.TYPE == "msg") {
             note.innerHTML = `
                 <h1>${item.TITLE}</h1>
@@ -81,7 +82,8 @@ export function renderNotes(notes) {
                     $(noteItem.children[0]).On(["click", "keyup"], () => {
                         let index = noteItem.classList[1];
                         let notes = JSON.parse(localStorage.getItem("Notes") || "{}");
-                        if (!noteItem.children[0].checked) {
+                        let checkbox = noteItem.children[0];
+                        if (checkbox.checked) {
                             values[Number(index[0])] = values[Number(index[0])].split("✔️")[1];
                         }
                         else {
@@ -107,7 +109,26 @@ export function renderNotes(notes) {
         item.Pinned ? $ `#NOTES_CONTAINER > #PINNED`.append(note) : $ `#NOTES_CONTAINER`.append(note);
         // note options control 
         (function noteControl() {
-            document.querySelectorAll(`note[id='${note.id}'] .topBar .option`).forEach((option) => {
+            $(note).on("keyup", ({ key }) => {
+                switch (key) {
+                    case "e" || " ":
+                        editNote(Number(note.id));
+                        break;
+                    case "d":
+                        deleteNote(Number(note.id));
+                        break;
+                    case "c":
+                        checkNote(Number(note.id));
+                        break;
+                    case "p":
+                        pinNote(Number(note.id));
+                        break;
+                    default: return;
+                }
+                refreshNotes();
+                document.getElementById(note.id)?.focus();
+            });
+            document.getElementById(note.id)?.querySelectorAll(`.topBar .option`).forEach((option) => {
                 option.addEventListener("click", () => {
                     (function takeActionForTheNote(opt, index) {
                         if (opt == "DELETE") {

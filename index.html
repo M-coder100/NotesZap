@@ -10,20 +10,24 @@
     <link rel="stylesheet" href="Styles/mediaQuery.css">
     <link rel="stylesheet" href="Styles/notes.css">
     <link rel="stylesheet" href="Styles/noteEditor.css">
+    <link rel="stylesheet" href="Styles/app_window.css">
     <link rel="stylesheet" href="Styles/settings.css">
     <link rel="stylesheet" href="Styles/hljsStyle.css">
-    <link rel="shortcut icon" href="src/Logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="Styles/CMDPallete.styles.css">
+    <link rel="shortcut icon" href="src/Logo.round.png" type="image/x-icon">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6410D0">
     <meta name="description" content="Notes Taking, Redesingned">
     <script defer type="module" src="TS/Scripts/app.js"></script>
     <script defer type="module" src="TS/Scripts/db.js"></script>
     <script defer type="module" src="TS/Scripts/notes.js"></script>
-    <script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+    <script defer type="module" src="/TS/Scripts/app_window.js"></script>
+    <script defer type="module" src="/update.js"></script>
+    <!-- <script defer type="module" src="TS/Scripts/cmdPallete.js"></script> -->
     <meta name="google-site-verification" content="CuxBNy8fw00tarwlJ9EtgpWG4Q6v52QCHN1F0fywV2o" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/introjs.min.css" integrity="sha512-iaYE9B9u4GU8+KkRTOdRdZuzKdYw1X0hOAa4GwDV/uwdXgoX/ffT3ph1+HG1m4LPZD/HV+dkuHvWFLZtPviylQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script> -->
     
@@ -57,16 +61,22 @@
     <link rel="apple-touch-startup-image" href="src/logos/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
   </head>
   <body>
-    <nav class="topBar">
-      <div class="logoContainer" type="button" onclick="location.href = '/'">
-        <img class="logo" src="src/Logo.svg" alt="Logo-loading..." title="NotesZap">
-        <div class="title">Notes<span style="font-weight: 800;">Zap</span></div>
+    <div class="appWindow_container"></div>
+    <div class="loader-container">
+      <div class="loader">
+        <img src="src/Logo.image.png" alt="Loading">
       </div>
-      <div class="searchBox">
+    </div>
+    <nav class="topBar">
+      <div class="logoContainer" type="button" onclick="location.href = '/'" title="NotesZap">
+        <img class="logo" src="src/Logo.round.png" alt="Logo">
+        <img class="title" src="src/Logo_text.png" alt="NotesZap"/>
+      </div>
+      <div class="searchBox" data-intro="Type here to search the notes" data-title="Search">
         <ion-icon name="search-outline" class="searchIcon"></ion-icon>
         <input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
       </div>
-      <div class="inputContainer">
+      <div class="inputContainer" data-intro="Select filter notes by different sorts" data-title="Filter">
         <ion-icon name="funnel-outline" class="icon" data-id="SORT_BY"></ion-icon>
         <select id="SORT_BY">
           <optgroup label="Sort By">
@@ -82,7 +92,9 @@
     </nav>
     <div id="NOTES_CONTAINER">
       <div id="PINNED"></div>
-
+      <noscript>
+        <note><h1>Please allow JavaScript to run this app</h1></note>
+      </noscript>
       <!-- <note>
 			<ins class="adsbygoogle"
 			style="display:block"
@@ -90,25 +102,34 @@
 			data-ad-slot="6705523890"
 			data-ad-format="auto"
 			data-full-width-responsive="true"></ins>
-		</note> -->
+    </note> -->
     </div>
     <nav class="bottomNav">
-      <div id="ADD_NEW_NOTE_BUTTON" tabindex="0">
+      <div 
+      id="ADD_NEW_NOTE_BUTTON"
+      tabindex="0"
+      data-intro="Click here to take a new note"
+      data-title="Create"
+      
+      data-hint="Click to create your first note"
+      data-hint-position="bottom-middle"
+      >
         <ion-icon name="add-outline"></ion-icon>
       </div>
-      <span style="color: var(--color-font3); padding-right: 10px; white-space: pre;" class="dummy-type">Note type</span>
-      <div class="inputContainer">
+      <span style="color: #505050; padding-right: 10px; white-space: pre;" class="dummy-type">Note type</span>
+      <div class="inputContainer" data-intro="You can change this dropdown to which note you prefer among the Markdown, lists and many other notes" data-title="Note Types">
         <ion-icon name="list-outline" class="icon" data-id="NOTE_TYPE"></ion-icon>
         <select id="NOTE_TYPE">
           <optgroup label="Note Type">
             <option value="ls">With lists</option>
             <option value="kb">Kanban board</option>
-            <option value="mk" selected="">Markdown</option>
+            <option value="mk" selected>Markdown</option>
             <option value="sp">Snippet</option>
             <option value="dy">Dairy</option>
           </optgroup>
         </select>
       </div>
+
       <span class="divider"></span>
       <div class="inputContainer">
 
@@ -122,7 +143,11 @@
           </optgroup>
         </select>
       </div>
-      <ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0"></ion-icon>
+      <ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0" data-intro="Click to refresh the notes without reloading the whole page" data-title="refresh"></ion-icon>
+    </nav>
+    <nav class="appBar bottomNav">
+      <span style="color: #505050;">Quick apps:</span>
+      <div class="app inputContainer" id="trigger_calculator"><ion-icon name="calculator" class="icon"></ion-icon> Calculator</div>
     </nav>
     <div class="popupContainer"></div>
 
@@ -156,6 +181,11 @@
 		data-ad-slot="6705523890"
 		data-ad-format="auto"
 		data-full-width-responsive="true"></ins> -->
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/intro.min.js" integrity="sha512-B0B1bdTGi9XHtoCINbtR6z9Vi8IYvvtImIE8KWMtqWAVUt2Wn2k69GxM7ya/3rQcz/Pgm/o1WcDU347/5k202A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
       // (adsbygoogle = window.adsbygoogle || []).push({});
       if ('serviceWorker' in navigator) {
@@ -168,7 +198,7 @@
         });
       } else {
         console.log('Service workers are not supported.');
-      }
-    </script>
+      };
+      </script>
   </body>
 </html>

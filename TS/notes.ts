@@ -12,6 +12,7 @@ export function renderNotes(notes: object[]) {
     // Main loop
     notes.forEach((item: any) => {
         const note = document.createElement("note");
+        note.tabIndex = 0;
         if (item.TYPE == "msg") {
             note.innerHTML = `
                 <h1>${item.TITLE}</h1>
@@ -80,9 +81,18 @@ export function renderNotes(notes: object[]) {
                 noteItems.forEach((noteItem: Element) => {
                     $(noteItem.children[0]).On(["click", "keyup"], () => {
                         let index = noteItem.classList[1];
-                        let notes: any[] = JSON.parse(localStorage.getItem("Notes") || "{}");                        
-
-                        if (!noteItem.children[0].checked) {
+                        type dbNoteType = {
+                            TITLE: string,
+                            NOTE: string,
+                            Pinned: boolean,
+                            Checked: boolean,
+                            TIME: string,
+                            COLOR: string,
+                            TYPE: string
+                        }
+                        let notes: dbNoteType[] = JSON.parse(localStorage.getItem("Notes") || "{}");                        
+                        let checkbox: any = noteItem.children[0];
+                        if (checkbox.checked) {
                             values[Number(index[0])] = values[Number(index[0])].split("✔️")[1];
                         } else {
                             values[Number(index[0])] = "✔️"+values[Number(index[0])];
@@ -111,7 +121,26 @@ export function renderNotes(notes: object[]) {
 
         // note options control 
         (function noteControl() {
-            document.querySelectorAll(`note[id='${note.id}'] .topBar .option`).forEach((option: Element) => {
+            $(note).on("keyup", ({key}: KeyboardEvent) => {
+                switch(key) {
+                    case "e" || " ":
+                        editNote(Number(note.id));
+                        break;
+                    case "d":
+                        deleteNote(Number(note.id));
+                        break;
+                    case "c":
+                        checkNote(Number(note.id));
+                        break;
+                    case "p":
+                        pinNote(Number(note.id));
+                        break;
+                    default: return;
+                }
+                refreshNotes();
+                document.getElementById(note.id)?.focus();
+            })
+            document.getElementById(note.id)?.querySelectorAll(`.topBar .option`).forEach((option: Element) => {
                 option.addEventListener("click", () => {
                     (function takeActionForTheNote(opt: string, index: number) {
                         if (opt == "DELETE") { deleteNote(index); refreshNotes() };

@@ -1,0 +1,175 @@
+body {
+    background: hsla(268, 88%, 36%, 1) !important;
+
+    background: linear-gradient(-45deg, hsla(268, 88%, 36%, 1) 0%, hsla(312, 100%, 50%, 1) 100%) fixed !important;
+
+    background: -moz-linear-gradient(-45deg, hsla(268, 88%, 36%, 1) 0%, hsla(312, 100%, 50%, 1) 100%) fixed !important;
+
+    background: -webkit-linear-gradient(-45deg, hsla(268, 88%, 36%, 1) 0%, hsla(312, 100%, 50%, 1) 100%) fixed !important;
+}
+a:not(:hover) {
+    color: black;
+    text-decoration: none;
+}
+nav.topBar {
+    height: 50px;
+    color: #fff;
+    background: var(--color-base2);
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    z-index: 1;
+    justify-content: space-evenly;
+}
+.logo {
+    display: flex;
+    align-items: inherit;
+    font-size: larger;
+}
+.logo .icon {
+    height: 40px;
+}
+nav.topBar .list {
+    display: inline-flex;
+    list-style: none;
+    gap: 20px;
+}
+nav.topBar .list a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+
+header {
+    color: #fff;
+    padding-inline: 100px;
+    padding: 100px;
+}
+footer {
+    background: #fff;
+    padding: 100px;
+    padding-inline: 100px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+footer div:nth-of-type(2) {
+    padding-left: 1%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    border-left: 2px solid #ccc;
+}
+footer div ul {
+    translate: -15px;
+    width: 150px;
+}
+footer div ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+footer div span {
+    color: var(--color-font3);
+}
+section {
+    padding-inline: 100px;
+    min-height: 100vh;   
+}
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hero .container {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    position: relative;
+    right: -120px;
+    opacity: 0;
+    animation: moveLeft_POPUP 1s .5s ease both;
+}
+.hero h1.header {
+    font-size: 6em;
+    width: 650px;
+}
+.hero button {
+    width: fit-content;
+    font-size: x-large;
+    padding: 10px;
+}
+.hero p.desc {
+    color: var(--color-font2);
+    font-size: x-large;
+    width: 700px;
+    padding-left: 20px;
+    border-top: 5px solid transparent;
+    border-left: 5px solid;
+    border-bottom: 5px solid transparent;
+}
+.hero .img-container {
+    margin: 60px;
+    position: relative;
+    bottom: 0;
+    animation: float 2s ease infinite alternate;
+}
+.section2 {
+    z-index: 2;
+    color: black;
+    position: relative;
+    margin: 100px;
+    height: 120vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px 10px var(--color-base1);
+    background: var(--color-font1);
+}
+.section2 .img-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 100px;
+}
+.section2 .img-container img {
+    box-shadow: 0 10px 20px 5px black;
+    width: 90%;
+    border-radius: 20px;
+}
+.section2 .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.section2 .cards-container .card {
+    width: 100%;
+    background: wheat;
+    margin: 10px;
+    display: inline-flex;
+    align-items: center;
+    padding-right: 10px;
+    gap: 20px; flex: 1 1 550px;
+}
+.section2 .cards-container .card .icon {
+    font-size: 60px;
+    display: flex;
+    background: #e2b7ff;
+    padding: 10px;
+    border-left: 4px solid var(--color-base1);
+    color: var(--color-base2);
+}
+
+/* section3 */
+.section3 {
+    background: var(--color-base1);
+    padding-top: 100px;
+}
+
+
+
+
+
+/* media queries */

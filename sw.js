@@ -36,7 +36,7 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener('fetch', function(event) {    
-    console.log("fetched"+ event.request.url);
+    console.log("%cfetched: "+ event.request.url, "color: blueviolet; background: #0e0e0e; padding: 5px;");
     event.respondWith(
         caches.match(event.request).then(function(response) {
             return response || fetch(event.request);

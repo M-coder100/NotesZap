@@ -5,12 +5,16 @@ NotesZap is a notes taking website which would help you to write **better notes*
 ## Features
 * A better UI ( inspired by apple )
 * A PWA ( can be installed as an native mobile/desktop app )
-* Works offline ( a it is a PWA )
+* Works offline ( as it is a PWA )
 * Window based editing ( you will know what I am talking about )
+* Currently 2 types of notes
+  * Markdown
+  * Lists
 * And one of the important features, Markdown.
   * You can create/edit Markdown notes
   * Quick preview panel
-  * Tables, hedings, typography, font-styles
+  * Code block with syntax highlighting
+  * Tables, headings, typography, font-styles
   * Uses Remarkable.js
 * Weekly updates
 ## Try It

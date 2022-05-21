@@ -7,18 +7,18 @@ const $ = (selector: any) => {
     }
     let self = {
         element: correctSelector,
-        on: (event: keyof DocumentEventMap, callback: Function) => {
-            self.element.addEventListener(event, callback);
+        on: (event: keyof DocumentEventMap, callback: any, options?: object) => {
+            self.element.addEventListener(event, callback, options);
         },
-        On: (events: Array<keyof DocumentEventMap>, callback: Function, checkKeyPress?: boolean) => {
+        On: (events: Array<keyof DocumentEventMap>, callback: Function, options?: object) => {
             events.forEach((event: any) => {
-                if ((event == "keypress") || (event == "keydown") || (event == "keyup")) self.element.addEventListener(event, (e: any) => { if (e.key == "Enter") callback(e) }); else self.element.addEventListener(event, callback);
+                if ((event == "keypress") || (event == "keydown") || (event == "keyup")) self.element.addEventListener(event, (e: any) => { if (e.key == "Enter") callback(e) }, options); else self.element.addEventListener(event, callback, options);
             })
         },
-        onGlobal: (event: any, callback: Function) => {
+        onGlobal: (event: any, callback: Function, options?: object) => {
             document.addEventListener(event, e => {
                 if (e.target.matches(selector)) callback(e);
-            })
+            }, options)
         },
         log: () => console.log("Element: ", self.element),
         create: (appendToDoc?: boolean) => {

@@ -1,0 +1,135 @@
+.appWindow {
+    position: relative;
+    left: 50%; transform: translateX(-50%);
+    border-radius: 10px;
+    overflow: hidden !important;
+    background: var(--color-base2-lighter);
+    backdrop-filter: blur(20px);
+    box-shadow: 2px 2px 10px rgb(44, 0, 133);
+    -moz-resize: both;
+    resize: both; min-width: 400px; min-height: 600px;
+}
+.appWindow.full {
+    width: 100% !important;
+    height: 100% !important;
+    position: fixed; 
+    top: 0 !important; left: 0 !important;
+    border-radius: 0;
+    transform: translateX(0%);
+}
+.appWindow .appTopbar {
+    padding: 5px 10px;
+    background: var(--color-base1);
+    display: flex;
+    align-items: center;
+}
+.appWindow .appTopbar .appControls .app-control {
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    border: 1px solid #000000c5;
+}
+.appWindow .appTopbar .appControls .app-control.CLOSE {
+    background-color: #ff6161;
+}
+.appWindow .appTopbar .appControls .app-control.MINIMIZE {
+    background-color: yellow;
+}
+.appWindow .appTopbar .appControls .app-control.MAXIMIZE {
+    background-color: #01dd01;
+}
+.appWindow .appTopbar .appControls {
+    display: flex;
+    gap: 5px;
+}
+.appWindow .appTopbar .appName {
+    margin-left: 5px;
+    font-size: larger;
+    cursor: default;
+}
+.appWindow .appTopbar .appIcon { 
+    margin-left: 10px;
+    font-size: larger;
+}
+.appWindow main.application { 
+    padding: 10px;
+    overflow: auto;
+    height: 100%;
+}
+
+/* Application: Calcultor */
+[app-calculator] .application {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+[app-calculator] .buttons {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+    width: 100%;
+    height: 50%;
+    border-top: 5px solid #ccc;
+}
+[app-calculator] .buttons div {
+    display: grid;
+    place-items: center;
+    background: var(--color-base2);
+    margin: 2.5px;
+    border-radius: 5px;
+    box-shadow: 0 0 20px #34007e7c;
+    font-size: larger;
+    position: relative;
+    user-select: none;
+}
+[app-calculator] .buttons div:hover {
+    filter: brightness(180%);
+}
+[app-calculator] .buttons div:nth-child(-n+3) {
+    background-color: #acacac;
+    color: black;
+    font-weight: 580;
+}
+[app-calculator] .buttons div#NUM_0 {
+    grid-column: 1 / 3;
+}
+[app-calculator] .buttons div.math-sign {
+    background: #10004a;
+    font-size: xx-large;
+}
+[app-calculator] .output {
+    text-align: end;
+    padding-inline: 10px;
+    width: 100%;
+}
+[app-calculator] .output input#number-placeholder {
+    transition: background 1s ease;
+    font-size: 5rem;
+    border-radius: 10px;
+    width: 100%;
+    outline: none;
+    overflow: auto;
+    text-align: end;
+    color: #fff;
+    padding-inline: 10px;
+    border: none;
+    background: #0000002c;
+    /* 
+    makes the input type number's up 
+    and down buttons to disappear for Firefox
+    */
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0; 
+}
+[app-calculator] .output input#number-placeholder:focus {
+    background: #10004a;
+}
+
+/* This code also does the same thing but for Chrome */
+input#number-placeholder::-webkit-inner-spin-button,
+input#number-placeholder::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}

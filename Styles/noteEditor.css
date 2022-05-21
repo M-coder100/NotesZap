@@ -8,6 +8,7 @@
     margin: 12px;
     background: linear-gradient(to bottom,  var(--color-base2-lighter), #800080b0);
     border-radius: 10px;
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     box-shadow: 0 0 var(--color-base2);
     width: 300px;
@@ -34,6 +35,7 @@
     border-radius: 0;
     z-index: 9999;
     box-shadow: none !important;
+    max-width: 100vw;
 }
 .noteEditor.full.side {
     min-width: calc(100% - 500px);
@@ -52,30 +54,38 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.noteEditor .topBar > div:first-child > div{
-    height: 15px;
-    width: 15px;
-    border-radius: 100px;
-    border: 1px solid #000000c5;
+.noteEditor .topBar > div:first-child > div {
+    height: 20px;
+    width: 20px;
 }
 .noteEditor .topBar #NOTEEDITOR_CLOSE {
     background: #ff6161;
 }
 .noteEditor .topBar #NOTEEDITOR_MINIMIZE {
-    background: yellow;
+    background: #feb529;
 }
 .noteEditor .topBar #NOTEEDITOR_MAXIMIZE {
     background: #01dd01;
+}
+.noteEditor .topBar > div:first-child {
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 0 10px #0000004f;
+    border-radius: 5px;
 }
 .noteEditor .topBar #NOTEEDITOR_CLOSE:hover,
 .noteEditor .topBar #NOTEEDITOR_MINIMIZE:hover,
 .noteEditor .topBar #NOTEEDITOR_MAXIMIZE:hover {
     filter: brightness(80%);
 }
+.noteEditor .topBar #NOTEEDITOR_TYPE {
+    font-size: larger;
+}
 .noteEditor .topBar #NOTEEDITOR_TIME {
     position: absolute;
     right: 0;
     margin-right: 10px;
+    color: #d4d4d4;
 }
 .noteEditor .textField {
     padding: 10px;
@@ -106,6 +116,7 @@
     border-radius: 10px;
     overflow: auto;
     max-width: 100%;
+    cursor: text;
     height: calc(100vh - 220px);
 }
 .noteEditor.compact nav.navBar .colorBar {
@@ -276,7 +287,6 @@
 
 /* noteText >ls< */
 .noteText .note_item {
-    list-style: none;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -286,17 +296,18 @@
     overflow: auto;
 }
 .noteText .note_item .text {
-    width: 100%;
-    min-width: 10px !important;
     color: #fff;
-    white-space: nowrap;
+    cursor: text;
 }
 .noteText .note_item .text:empty::after {
     content: "Sub task";
     font-style: italic;
     color: #ccc;
 }
-.noteText .note_item::-webkit-scrollbar { height: 0; }
+.noteText .note_item .text:empty {
+    width: 100% !important;
+}
+.noteText .note_item::-webkit-scrollbar { height: 0px; }
 .noteText .note_item input.checkBox {
     margin-left: 10px;
 }

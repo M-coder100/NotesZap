@@ -1,7 +1,7 @@
 /* ====================================
 *  NotesZap ~ Notes taking, redesigned.
-*  -- -- -- -- BETA 0.4v -- -- -- -- --
-* =====================================
+*  -- -- -- -- -- BETA -- -- -- -- -- -
+*  ====================================
 */
 import $ from "./tquery.js";
 import NoteEditor from "./noteEditor.js";
@@ -15,12 +15,12 @@ if (!localStorage.getItem("Notes")) {
         <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.2 )</span>
     </nav>
     <div class="main">
-        <img src="src/Logo.svg" class="logo"/>
+        <img src="src/Logo.image.png" class="logo"/>
         <div class="desc">
             <h1 class="header">Notes taking, <br>redesigned</h1>
             Welcome to the new era of notes taking. Make more notes beautiful than ever and help yourself to remember things faster and better.
-            <button id="CLOSE">Get Started</button>
-        </div>
+            <button id="CLOSE" autofocus>Get Started</button>
+        </div>  
     </div>
     `);
 }
@@ -33,7 +33,6 @@ const sorts = {
 };
 let getfullDate = () => `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
 const device = (() => window.innerWidth <= 550 ? "mobile" : "desktop")();
-console.log(device);
 const d = new Date();
 $ `#SEARCH`.on("input", () => {
     if ($ `#SEARCH`.value && localStorage.getItem("Notes")) {
@@ -43,12 +42,17 @@ $ `#SEARCH`.on("input", () => {
     else
         refreshNotes();
 });
-$(document).on("keyup", (key) => {
-    if (((key.key == "+") || (key.key == "=")) && ($ `.noteEditor`.all().length == 0)) {
+$(document).on("keydown", (e) => {
+    if (isFinite(Number(e.key)) && e.ctrlKey) {
+        e.preventDefault();
+        document.getElementById(`${Number(e.key) - 1}`)?.focus();
+        Number(e.key) == 0 && document.getElementById("9")?.focus();
+    }
+    if (((e.key == "+") || (e.key == "=")) && ($ `.noteEditor`.all().length == 0) && !document.querySelector(":focus")) {
         new NoteEditor("Create", sorts.noteType.value);
         $ `.noteEditor`.addClass("active");
     }
-    else if (key.key == "Escape" && $ `.noteEditor`.all().length > 0)
+    else if (e.key == "Escape" && $ `.noteEditor`.all().length > 0)
         $ `.noteEditor.active`.remove();
 });
 $("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], () => {
@@ -58,23 +62,18 @@ $("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], () => {
     else {
         alert("Maximum create note editors reached.");
     }
-}, true);
+});
 let rotation = 360;
 $ `.refreshNotesBtn`.On(["click", "keyup"], () => {
     $ `.refreshNotesBtn`.css.transform = `rotate(${rotation}deg)`;
     rotation += 360;
     refreshNotes();
-}, true);
-$(document).on("click", () => {
-    if ($(document).contains(".noteEditor")) {
-        $ `.noteEditor`.each((element) => {
-            $(element).on("mousedown", () => {
-                $ `.noteEditor`.each((element) => {
-                    $(element).removeClass("active");
-                });
-                element.classList.add("active");
-            });
-        });
-    }
+});
+$ `.noteEditor.compact`.onGlobal("click", ({ target }) => {
+    console.log(target);
+    $ `.noteEditor`.each((elem) => {
+        $(elem).removeClass("active");
+    });
+    $(target).addClass("active");
 });
 export { getfullDate, device };

@@ -26,6 +26,7 @@ function replaceURLs(text) {
         return `[${hyperlink}](${hyperlink})`;
     });
 }
+let intro = (selector) => introJs?.(selector);
 function arraySearch(text, array) {
     text.trim();
     let searchedItems = [];
@@ -47,4 +48,4 @@ function arraySearch(text, array) {
             TYPE: "msg"
         }] : searchedItems;
 }
-export { mk, replaceURLs, arraySearch };
+export { mk, replaceURLs, arraySearch, intro };

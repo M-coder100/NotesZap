@@ -1,0 +1,72 @@
+.cmd_pallete_container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 0;
+}
+nav.CMD_pallete {
+    background: var(--color-base2-lighter);
+    backdrop-filter: blur(20px);
+    z-index: 99999999;
+    position: absolute;
+    color: #fff;
+    margin-top: 60px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 80%;
+    border-bottom: 10px solid var(--color-base1);
+}
+nav.CMD_pallete .search_box {
+    padding: 5px;
+    width: 100%;
+    border-radius: 10px;
+    border: 0;
+}
+nav.CMD_pallete .search_box:focus {
+    border-bottom: 5px solid var(--color-base1);
+}
+nav.CMD_pallete .search_suggestions {
+    padding: 5px;
+    margin-top: 12px;
+    padding-top: 25px;
+    position: relative;
+    display: flex;
+    border-top: 2px solid #ccc;
+    gap: 5px;
+    flex-wrap: wrap;
+    max-height: 200px;
+    overflow: auto;
+}
+nav.CMD_pallete .search_suggestions::after {
+    content: "🔽 All commands";
+    color: aqua;
+    position: absolute;
+    top: 0; right: 5px;
+}
+nav.CMD_pallete .search_suggestions .search_suggestion {
+    display: flex;
+    background: #0000005f;
+    margin: 2px 0;
+    padding: 5px;
+    border-radius: 5px;
+    justify-content: space-between;
+    height: 38px;
+    align-items: center;
+    color: #fff;
+    width: 100%;
+}
+nav.CMD_pallete .search_suggestions .search_suggestion:hover {
+    background: #000;
+}
+nav.CMD_pallete .search_suggestions .search_suggestion:focus .command_name {
+    color: aqua;
+}
+nav.CMD_pallete .search_suggestions .search_suggestion .command_name {
+    font-size: larger;
+}
+nav.CMD_pallete .search_suggestions .search_suggestion .command_name span.from {
+    color: #eeeeee;
+    font-size: medium;
+}

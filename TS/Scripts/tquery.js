@@ -8,23 +8,23 @@ const $ = (selector) => {
     }
     let self = {
         element: correctSelector,
-        on: (event, callback) => {
-            self.element.addEventListener(event, callback);
+        on: (event, callback, options) => {
+            self.element.addEventListener(event, callback, options);
         },
-        On: (events, callback, checkKeyPress) => {
+        On: (events, callback, options) => {
             events.forEach((event) => {
                 if ((event == "keypress") || (event == "keydown") || (event == "keyup"))
                     self.element.addEventListener(event, (e) => { if (e.key == "Enter")
-                        callback(e); });
+                        callback(e); }, options);
                 else
-                    self.element.addEventListener(event, callback);
+                    self.element.addEventListener(event, callback, options);
             });
         },
-        onGlobal: (event, callback) => {
+        onGlobal: (event, callback, options) => {
             document.addEventListener(event, e => {
                 if (e.target.matches(selector))
                     callback(e);
-            });
+            }, options);
         },
         log: () => console.log("Element: ", self.element),
         create: (appendToDoc) => {

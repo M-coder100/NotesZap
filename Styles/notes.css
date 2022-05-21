@@ -1,11 +1,11 @@
 #NOTES_CONTAINER {
     display: flex;
-    margin: 20px;
+    margin-inline: 20px;
     margin-top: 60px;
     flex-wrap: wrap;
     margin-bottom: 110px;
 }
-#NOTES_CONTAINER > #PINNED {
+#PINNED {
     display: flex;
     height: fit-content;
     border-bottom: 2px dashed var(--color-base2);
@@ -13,106 +13,114 @@
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
-#NOTES_CONTAINER > #PINNED note .topBar::after {
-    content: "Important";
-    font-weight: 700;
-    color: var(--color-font1);
-    background: #cc2b2bd8;
-    padding: 2px 5px;
+#PINNED note .topBar::after {
+    content: "";
+    position: absolute;
+    right: 10px; background: #d68b00;
+    height: 20px;
+    width: 20px;
     border-radius: 10px;
     animation: glow 1.5s ease;
 }
-#NOTES_CONTAINER note {
-    padding: 15px;
-    background: linear-gradient(to bottom, #6310d0a1, purple);
+note {
+    padding-bottom: 10px;
+    background: #6310d0a1;
     margin: 10px;
     margin-bottom: 20px;
     border-radius: 10px;
-    color: #fff;
-    backdrop-filter: 20px;
+    color: #fff !important;
     display: flex;
     flex: 1 1 400px;
     flex-direction: column;
     position: relative;
     box-shadow: 0 10px var(--color-base2);
     transition: box-shadow .5s ease;
-    filter: brightness(110%);
+    filter: brightness(120deg);
+    backdrop-filter: blur(20px);
     max-width: calc(100% - 20px);
 }
-#NOTES_CONTAINER note.new .topBar::after {
-    content: "New";
-    font-weight: 700;
-    color: var(--color-font1);
-    background: var(--color-base2);
-    padding: 2px 5px;
-    border-radius: 10px;
-}
-#NOTES_CONTAINER note.edited {
-    animation: glow 2s ease;
+note.edited {
+    animation: glow 2s .5s ease;
 }
 @keyframes glow {
     from { filter: brightness(100%) }
     50% { filter: brightness(150%) }
     to { filter: brightness(100%) }
 }
-#NOTES_CONTAINER note.checked {
-    animation: glow 2s ease;
+note.checked {
+    animation: glow 2s 2s ease;
 }
-#NOTES_CONTAINER note.new {
+note.new {
     right: 100vw;
-    animation: moveLeft .5s .5s ease both, glow 2s .5s ease;
+    animation: moveLeft .5s .5s ease both, glow 2s 2s ease;
 }
 @keyframes moveLeft { to { right: 0; } }
-#NOTES_CONTAINER note.checked #NOTE_HEADER {
+note.checked #NOTE_HEADER {
     text-decoration: line-through;
     font-style: italic;
     text-decoration-thickness: 4px;
 }
-#NOTES_CONTAINER note.checked .topBar::after {
-    content: "Done";
-    font-weight: 700;
-    color: var(--color-font1);
-    background: #01dd01c4;
-    padding: 2px 4px;
+note.checked .topBar::after {
+    content: "";
+    background: #00ff00;
+    height: 20px;
+    width: 20px;
     border-radius: 10px;
+    position: absolute;
+    right: 10px;
 }
-#NOTES_CONTAINER note .topBar span#TIME { 
+note .topBar span#TIME { 
     white-space: pre;
+    position: absolute;
+    top: 0; right: 40px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px; 
+    padding: 10px;
+    background: #00000029;
+    color: #979797;
 }
-#NOTES_CONTAINER note .topBar {
+note .topBar {
     display: flex;
     height: 28px;
     color: var(--color-font2);
     gap: 10px;
-    position: relative;
     transition: all .5s ease;
     overflow: auto;
+    justify-content: flex-end;
     align-items: center;
+    margin: 10px;
 }
-#NOTES_CONTAINER note .topBar::-webkit-scrollbar { display: none;}
-#NOTES_CONTAINER note .topBar .grp .option {
-    height: 15px;
-    width: 15px;
-    border-radius: 100px;
-    margin-inline: 3px;
-    display: none;
-    border: 1px solid #000000c5;
+note .topBar::-webkit-scrollbar { display: none;}
+note .topBar .grp .option {
+    height: 28px;
+    width: 28px;
+    opacity: 0.4;
+    filter: blur(20px);
 }
-#NOTES_CONTAINER note:hover { box-shadow: 15px 15px 0px var(--color-base2);  filter: brightness(150%); }
-#NOTES_CONTAINER note .topBar .grp { display: flex;}
-#NOTES_CONTAINER note:hover > .topBar .grp .option { display: block }
-#NOTES_CONTAINER note .topBar .grp .option#CHECK { background-color: #01dd01 }
-#NOTES_CONTAINER note .topBar .grp .option#PIN { background-color: yellow }
-#NOTES_CONTAINER note .topBar .grp .option#DELETE { background-color: #ff6161 }
-#NOTES_CONTAINER note .topBar .grp .option:hover { filter: brightness(60%) }
-
-#NOTES_CONTAINER note #NOTE_HEADER {
-    margin-top: 10px;
-    white-space: nowrap;
+note .topBar .grp { 
+    display: flex;
+    position: absolute;
+    border-radius: 10px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    left: 14px;
 }
-#NOTES_CONTAINER note #NOTE_HEADER::after {
+note:hover, note:focus { box-shadow: 15px 15px 0px var(--color-base2);  filter: brightness(150%); }
+note:hover > .topBar .grp, note:focus { box-shadow: 0 0 5px black; z-index: 1; }
+note:hover > .topBar .grp .option, note:focus { opacity: 1 !important; filter: blur(0); }
+note .topBar .grp .option#CHECK { background-color: #00ff00 }
+note .topBar .grp .option#PIN { background-color: #d68b00 }
+note .topBar .grp .option#DELETE { background-color: #ff6161; border-left: 1px solid #00000029; }
+note .topBar .grp .option:hover { filter: brightness(60%) }
+
+note #NOTE_HEADER {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-inline: 15px;
+}
+note #NOTE_HEADER::after {
     content: "";
     display: inline-block;
     height: 0; width: 0;
@@ -124,11 +132,11 @@
     opacity: 0;
     transition: all .2s  ease;
 }
-#NOTES_CONTAINER note:hover > #NOTE_HEADER::after {
+note:hover > #NOTE_HEADER::after {
     opacity: 1;
     margin-left: 20px;
 }
-#NOTES_CONTAINER note #NOTE_TEXT {
+note #NOTE_TEXT {
     padding: 10px;
     margin-top: 15px;
     background: #00000029;
@@ -136,19 +144,15 @@
     font-size: large;
     overflow: auto;
     max-height: 50vh;
+    margin-inline: 15px;
 }
 
-
-
-
-
-/* kb *TYPE* */
-#NOTES_CONTAINER note .items {
+note .items {
     padding: 5px;
     display: grid;
     gap: 10px;
 }
-#NOTES_CONTAINER note .items .item {
+note .items .item {
     background: #00000029;
     padding: 5px;
     display: flex;
@@ -156,4 +160,3 @@
     gap: 10px;
     border-radius: 10px;
 }
-#NOTES_CONTAINER note *:focus { color: #ccc }
