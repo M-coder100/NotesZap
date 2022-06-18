@@ -1,23 +1,24 @@
-.noteEditor {
-    transition: top, background, box-shadow .5s ease;
-}
 .noteEditor.compact {
     position: fixed;
-    top: 50px; left: 0;
-    z-index: 1;
+    top: 100px; left: 0;
+    z-index: 2; opacity: 0;
     margin: 12px;
-    background: linear-gradient(to bottom,  var(--color-base2-lighter), #800080b0);
     border-radius: 10px;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
-    box-shadow: 0 0 var(--color-base2);
     width: 300px;
+    background: var(--color-base2-lighter);
     min-height: calc(100% - 70px);
     min-width: 480px; max-width: 70vw;
-    resize: horizontal;
+    resize: horizontal !important;
+    box-shadow: 0 0 10px black;
+    animation: fadeIn .5s ease both;
 }
-.noteEditor.compact.active {
-    box-shadow: 30px 0 var(--color-base2);
+@keyframes fadeIn {
+    to {
+        top: 50px;
+        opacity: 1;
+    }
 }
 .noteEditor.compact.active nav.navBar {
     right: -60px;
@@ -40,7 +41,7 @@
 .noteEditor.full.side {
     min-width: calc(100% - 500px);
 }
-.noteEditor.compact.active { z-index: 2; }
+.noteEditor.compact.active { z-index: 3; }
 .noteEditor .topBar {
     display: flex;  
     flex-wrap: nowrap;
@@ -209,32 +210,23 @@
 
 
 /* PREVIEW PANEL >mk< */
-.noteEditor nav.navBar .btnGrp .preview { transition: box-shadow .5s ease;}
-.noteEditor.compact nav.navBar .btnGrp .preview.active {
-    width: 25px;
-    border-top-left-radius: 10px;
-    background: var(--color-base1);
-    filter: brightness(100%) !important;
-    box-shadow: 10px 0 var(--color-base1);
-}
-.noteEditor.compact .previewPanel {
+.noteEditor.compact.active .previewPanel {
     position: absolute;
-    left: 500px;
-    top: 0;
-    z-index: -1;
-    height: 100%;
-    min-height: calc(100vh - 70px);
-    min-width: 480px; max-width: 70vw;
+    top: 0; left: 0;
+    z-index: -999;
+    min-height: 312px;
+    min-width: 480px; max-width: 70vw !important;
     color: var(--color-font1);
     border-radius: 10px;
-    overflow: hidden;
-    resize: horizontal !important;
+    overflow: auto;
+    resize: both !important;
     background: var(--color-base1);
-    backdrop-filter: blur(0px);
-    display: none;
-    opacity: 0;
+    display: none; opacity: 0;
+    box-shadow: 0 0 10px black;
+    max-height: 100%;
     animation: opacity__left .5s ease both;
 }
+.noteEditor.side .previewPanel { display: block !important;  }
 @keyframes opacity__left {
     to {
         opacity: 1;
@@ -248,35 +240,26 @@
     top: 0;
     display: none;
     min-width: 500px; max-width: 500px;
-    min-height: 100vh;
+    min-height: 100vh; max-height: 100vh;
     color: var(--color-font1);
     background: var(--color-base1);
     z-index: 1;
+    overflow: auto;
 }
 .noteEditor .previewPanel .topbar {
     background: var(--color-base2);
     padding: 10px;
-    width: 20;
     white-space: nowrap;
+    position: sticky !important;
+    top: 0; left: 0;
+}
+.noteEditor.full .previewPanel .topbar {
+    width: 100% !important;
 }
 .noteEditor .previewPanel .preview {
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    overflow: auto;
-    min-height: calc(100% - 40px);
-    max-height: 100%;
-    overflow: auto !important;
-    padding-bottom: 50px;
-}
-.noteEditor.full .previewPanel .preview {
-    max-height: 100vh;
-}
-.noteEditor .previewPanel .preview::-webkit-scrollbar-thumb {
-    background: var(--color-base2);
-}
-.noteEditor .previewPanel .preview::-webkit-scrollbar {
-    background: var(--color-base2);
+    padding: 10px; 
 }
 .noteEditor .previewPanel .preview:empty::after {
     color: var(--color-font2);

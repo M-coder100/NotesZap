@@ -21,8 +21,8 @@ const $ = (selector) => {
             });
         },
         onGlobal: (event, callback, options) => {
-            document.addEventListener(event, e => {
-                if (e.target.matches(selector))
+            document.addEventListener(event, (e) => {
+                if (e.target?.matches(selector))
                     callback(e);
             }, options);
         },

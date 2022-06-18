@@ -28,7 +28,7 @@ function replaceURLs(text: string) {
     });
 }
 let intro = (selector?: string) => introJs?.(selector);
-function arraySearch(text: string, array: any[]) {
+function arraySearch(text: string, array: any[]): object {
     text.trim();
     let searchedItems = [];
     for (let i = 0; i < array.length; i++) {

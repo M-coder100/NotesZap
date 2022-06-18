@@ -1,4 +1,4 @@
-const data = await fetch("/version.json").then(res => res.json());
+const data = await fetch("/.well-known/version.json").then(res => res.json());
 localStorage.getItem("version") || localStorage.setItem("version", "0.01");
 let lastVersion = Number(localStorage.getItem("version"))
 if (data.version > lastVersion) {

@@ -8,41 +8,61 @@ export default class NoteEditor {
         const div = $ `div`.create(true);
         let headerValue;
         let noteValue;
-        let fullDate = getfullDate();
+        const fullDate = getfullDate();
         let elements;
+        const colorBar = `
+        <div class="colorBar">
+            <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
+            <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
+            <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
+            <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
+            <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
+            <input class="color selected" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
+            <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
+            <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
+            <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
+            <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
+        </div>
+        `;
+        const topBar = `
+        <div class="topBar">
+            <div>
+                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
+                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button"></div>
+                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
+            </div>
+            <div id="NOTEEDITOR_TYPE">Create</div>
+            <div id="NOTEEDITOR_TIME">${fullDate}</div>
+        </div>
+        `;
+        function addNewLine() {
+            let lastElement = [...elements.textField.list_items()].at(-1);
+            if (lastElement.children[1].innerHTML) {
+                lastElement.insertAdjacentHTML("afterend", `<li class="note_item" id="checklist"><input class="checkBox" type="checkbox"/><label class="text" contenteditable></label></li>`);
+                lastElement = [...elements.textField.list_items()].at(-1);
+                lastElement.children[1]?.focus();
+                $(lastElement).on("keydown", (e) => {
+                    if (e.key == "Enter") {
+                        e.preventDefault();
+                        addNewLine();
+                    }
+                });
+            }
+        }
+        const divider = `<div class="wrper"><div class="divider"></div></div>`;
         switch (type) {
             case "Create":
                 switch (subType) {
                     case "mk":
                         $(div).HTML(`
-                        
-                        <div class="topBar">
-                            <div>
-                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
-                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button"></div>
-                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
-                            </div>
-                            <div id="NOTEEDITOR_TYPE">Create</div>
-                            <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                        </div>
+                        ${topBar}
                         <div class="textField">
                             <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note" data-intro="Type your note header here">
-                            <div class="wrper"><div class="divider"></div></div>
+                            ${divider}
                             <div class="noteText" contenteditable="true" data-placeholder="I want to do..."></div>
                         </div>
                         <nav class="navBar">
-                            <div class="colorBar">
-                                <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
-                                <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
-                                <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
-                                <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
-                                <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
-                                <input class="color selected" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
-                                <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
-                                <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
-                                <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
-                                <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
-                            </div>
+                            ${colorBar}
                             <div class="btnGrp">
                             <ion-icon name="logo-markdown" class="preview editorNavBtn" type="button" tabindex="0" title="Preview"></ion-icon>
                             <ion-icon name="arrow-forward-outline" class="saveButton editorNavBtn" type="button" tabindex="0" title="Save"></ion-icon>
@@ -137,34 +157,14 @@ export default class NoteEditor {
                         break;
                     case "ls":
                         $(div).HTML(`
-
-                        <div class="topBar">
-                            <div>
-                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
-                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button"></div>
-                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
-                            </div>
-                            <div id="NOTEEDITOR_TYPE">Create</div>
-                            <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                        </div>
+                        ${topBar}
                         <div class="textField">
                             <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note">
-                            <div class="wrper"><div class="divider"></div></div>
+                            ${divider}
                             <div class="noteText"><li class="note_item" id="checklist"><input class="checkBox" type="checkbox"/><label class="text" contenteditable></label></li></div>
                         </div>
                         <nav class="navBar">
-                            <div class="colorBar">
-                                <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
-                                <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
-                                <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
-                                <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
-                                <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
-                                <input class="color selected" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
-                                <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
-                                <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
-                                <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
-                                <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
-                            </div>
+                            ${colorBar}
                             <div class="btnGrp">
                                 <ion-icon name="add-outline" class="addNewLineBtn editorNavBtn" type="button" tabindex="0" title="Add new line"></ion-icon>
                                 <ion-icon name="arrow-forward-outline" class="saveButton editorNavBtn" type="button" tabindex="0" title="Save"></ion-icon>
@@ -191,6 +191,8 @@ export default class NoteEditor {
                             },
                         };
                         $(elements.textField.noteHeader()).element.focus();
+                        $(elements.textField.noteHeader()).on("keyup", ({ key }) => { if (key == "Enter")
+                            elements.textField.list_items()[0].children[1].focus(); });
                         var colors = $ `.noteEditor.active .colorBar > .color`.all();
                         var color = "#6410D0";
                         colors.forEach((colorItem) => {
@@ -249,82 +251,6 @@ export default class NoteEditor {
                                 }
                             }
                         }
-                        function addNewLine() {
-                            if (lastElement.children[1].innerHTML) {
-                                lastElement.insertAdjacentHTML("afterend", `<li class="note_item" id="checklist"><input class="checkBox" type="checkbox"/><label class="text" contenteditable></label></li>`);
-                                lastElement = elements.textField.list_items()[elements.textField.list_items().length - 1];
-                                lastElement.children[1].focus();
-                                $(lastElement).on("keydown", (e) => {
-                                    if (e.key == "Enter") {
-                                        e.preventDefault();
-                                        addNewLine();
-                                    }
-                                });
-                            }
-                        }
-                        break;
-                    case "kb":
-                        // makeNewNoteToDatabase({
-                        //     TITLE: "",
-                        //     items: [],
-                        //     TIME: fullDate,
-                        //     Checked: false,
-                        //     Pinned: false,
-                        //     TYPE: subType,
-                        //     COLOR: "#560bad"
-                        // })
-                        // refreshNotes();
-                        // $`#NOTES_CONTAINER > note:first-of-type`.addClass("new")
-                        break;
-                    case "sp":
-                        $(div).HTML(`
-
-                        <div class="topBar">
-                            <div>
-                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
-                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button" disabled></div>
-                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
-                            </div>
-                            <div id="NOTEEDITOR_TYPE">Create</div>
-                            <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                        </div>
-                        <div class="textField">
-                            <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note">
-                            <div class="wrper">
-                                <div class="divider"></div>
-                            </div>
-                            <div class="noteText">
-                                <div class="text">I want to do...</div>
-                            </div>
-                        </div>
-
-                        `);
-                        $(div).addClass("noteEditor", "compact");
-                        break;
-                    case "dy":
-                        $(div).HTML(`
-
-                        <div class="topBar">
-                            <div>
-                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
-                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button" disabled></div>
-                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
-                            </div>
-                            <div id="NOTEEDITOR_TYPE">Create</div>
-                            <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                        </div>
-                        <div class="textField">
-                            <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note">
-                            <div class="wrper">
-                                <div class="divider"></div>
-                            </div>
-                            <div class="noteText">
-                                <div class="text">I want to do...</div>
-                            </div>
-                        </div>
-
-                        `);
-                        $(div).addClass("noteEditor", "compact");
                         break;
                 }
                 break;
@@ -338,35 +264,14 @@ export default class NoteEditor {
                         currentNote.NOTE = currentNote.NOTE.replace(/\n/g, "<br/>");
                         div.id = JSON.stringify(index);
                         $(div).HTML(`
-                        <div class="topBar">
-                            <div>
-                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
-                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button"></div>
-                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
-                            </div>
-                            <div id="NOTEEDITOR_TYPE">Edit</div>
-                            <div id="NOTEEDITOR_TIME">${currentNote.TIME}</div>
-                        </div>
+                        ${topBar}
                         <div class="textField">
                             <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note" value="${currentNote.TITLE}">
-                            <div class="wrper">
-                                <div class="divider"></div>
-                            </div>
+                            ${divider}
                             <div class="noteText" contenteditable="true" data-placeholder="I want to do...">${currentNote.NOTE}</div>
                         </div>
                         <nav class="navBar">
-                            <div class="colorBar">
-                                <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
-                                <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
-                                <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
-                                <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
-                                <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
-                                <input class="color" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
-                                <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
-                                <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
-                                <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
-                                <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
-                            </div>
+                            ${colorBar}
                             <div class="btnGrp">
                                 <ion-icon name="logo-markdown" class="preview editorNavBtn" type="button" tabindex="0" title="Preview"></ion-icon>
                                 <ion-icon name="arrow-forward-outline" class="saveButton editorNavBtn" type="button" tabindex="0" title="Save"></ion-icon>
@@ -466,33 +371,14 @@ export default class NoteEditor {
                         break;
                     case "ls":
                         $(div).HTML(`
-                        <div class="topBar">
-                            <div>
-                                <div id="NOTEEDITOR_CLOSE" title="Close" type="button"></div>
-                                <div id="NOTEEDITOR_MINIMIZE" title="Minimize" type="button"></div>
-                                <div id="NOTEEDITOR_MAXIMIZE" title="Maximize" type="button"></div>
-                            </div>
-                            <div id="NOTEEDITOR_TYPE">Edit</div>
-                            <div id="NOTEEDITOR_TIME">${fullDate}</div>
-                        </div>
+                        ${topBar}
                         <div class="textField">
                             <input id="HEADER_VALUE" autofocus type="text" autocomplete="off" placeholder="Header of my note" value="${currentNote.TITLE}" data-intro="Type your note header here">
-                            <div class="wrper"><div class="divider"></div></div>
+                            ${divider}
                             <div class="noteText" data-intro="Type what are you going to do today"></div>
                         </div>
                         <nav class="navBar">
-                            <div class="colorBar">
-                                <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
-                                <input class="color" id="#ffa72d" style="background-color: #ffa72d;" type="radio" name="option"/>
-                                <input class="color" id="#ff5d5d" style="background-color: #ff5d5d;" type="radio" name="option"/>
-                                <input class="color" id="#f72585" style="background-color: #f72585;" type="radio" name="option"/>
-                                <input class="color" id="#800080" style="background-color: #800080;" type="radio" name="option"/>
-                                <input class="color selected" id="#6410D0" style="background-color: #6410D0;" type="radio" name="option"/>
-                                <input class="color" id="#3a0ca3" style="background-color: #3a0ca3;" type="radio" name="option"/>
-                                <input class="color" id="#3f37c9" style="background-color: #3f37c9;" type="radio" name="option"/>
-                                <input class="color" id="#4262f0" style="background-color: #4262f0;" type="radio" name="option"/>
-                                <input class="color" id="#4CC9F0" style="background-color: #4CC9F0;" type="radio" name="option"/>
-                            </div>
+                            ${colorBar}
                             <div class="btnGrp">
                                 <ion-icon name="add-outline" class="addNewLineBtn editorNavBtn" type="button" tabindex="0" title="Add new line"></ion-icon>
                                 <ion-icon name="arrow-forward-outline" class="saveButton editorNavBtn" type="button" tabindex="0" title="Save" data-intro="Click to save your note"></ion-icon>
@@ -522,6 +408,8 @@ export default class NoteEditor {
                             },
                         };
                         $(elements.textField.noteHeader()).element.focus();
+                        $(elements.textField.noteHeader()).on("keyup", ({ key }) => { if (key == "Enter")
+                            elements.textField.list_items()[0].children[1].focus(); });
                         var colors = $ `.noteEditor.active .colorBar > .color`.all();
                         var color = currentNote.COLOR;
                         $(div).css.background = `linear-gradient(to bottom,  ${color}a1, #800080b0)`;
@@ -589,19 +477,6 @@ export default class NoteEditor {
                                     $ `note`.all()[index || 0].classList.add("edited");
                                     setTimeout(() => div.remove(), 1000);
                                 }
-                            }
-                        }
-                        function addNewLine() {
-                            if (lastElement.children[1].innerHTML) {
-                                lastElement.insertAdjacentHTML("afterend", `<li class="note_item" id="checklist"><input class="checkBox" type="checkbox"/><label class="text" contenteditable></label></li>`);
-                                lastElement = elements.textField.list_items()[elements.textField.list_items().length - 1];
-                                lastElement.children[1].focus();
-                                $(lastElement).on("keydown", (e) => {
-                                    if (e.key == "Enter") {
-                                        e.preventDefault();
-                                        addNewLine();
-                                    }
-                                });
                             }
                         }
                         break;

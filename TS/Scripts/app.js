@@ -12,7 +12,7 @@ if (!localStorage.getItem("Notes")) {
     new popup(`
     <nav class="topBar">
         <ion-icon name="close-outline" id="CLOSE" tabindex="0"></ion-icon>
-        <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.2 )</span>
+        <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.10 )</span>
     </nav>
     <div class="main">
         <img src="src/Logo.image.png" class="logo"/>
@@ -31,13 +31,14 @@ const sorts = {
     noteType: $ `#NOTE_TYPE`.element,
     viewType: $ `#VIEW_TYPE`.element
 };
-let getfullDate = () => `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
+const getfullDate = () => `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
 const device = (() => window.innerWidth <= 550 ? "mobile" : "desktop")();
 const d = new Date();
 $ `#SEARCH`.on("input", () => {
     if ($ `#SEARCH`.value && localStorage.getItem("Notes")) {
         $ `note`?.each((element) => element.remove());
-        renderNotes(arraySearch($ `#SEARCH`.value, JSON.parse(localStorage.getItem("Notes") || "{}")));
+        let ofDB = arraySearch($ `#SEARCH`.value, JSON.parse(localStorage.getItem("Notes") || "{}"));
+        renderNotes(ofDB);
     }
     else
         refreshNotes();
@@ -52,8 +53,10 @@ $(document).on("keydown", (e) => {
         new NoteEditor("Create", sorts.noteType.value);
         $ `.noteEditor`.addClass("active");
     }
-    else if (e.key == "Escape" && $ `.noteEditor`.all().length > 0)
+    else if (e.key == "Escape" && $ `.noteEditor`.all().length > 0) {
         $ `.noteEditor.active`.remove();
+        $ `.noteEditor`.addClass("active");
+    }
 });
 $("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], () => {
     if (($ `.noteEditor`.all().length <= 2)) {
@@ -69,11 +72,18 @@ $ `.refreshNotesBtn`.On(["click", "keyup"], () => {
     rotation += 360;
     refreshNotes();
 });
-$ `.noteEditor.compact`.onGlobal("click", ({ target }) => {
-    console.log(target);
-    $ `.noteEditor`.each((elem) => {
-        $(elem).removeClass("active");
-    });
-    $(target).addClass("active");
-});
 export { getfullDate, device };
+(() => {
+    let QsParsed = Qs?.parse(location.search, { ignoreQueryPrefix: true });
+    if (QsParsed?.ex) {
+        $ `#NOTES_CONTAINER`.HTML `<div id="PINNED"></div>`;
+        $ `#NOTES_CONTAINER > #PINNED`.HTML `<note style="padding: 10px; text-align: center;"><h1>You are currently in Experiment Mode</h1><a href="/">Click here to go back</a></note>`;
+        renderNotes([{ "TITLE": "", "NOTE": "| Notes Zap |\n|:-:|\n|![NotesZap Logo](./src/Logo.round.png 'NotesZap')|\n> Share: <https://notes-zap.web.app/>", "Pinned": false, "Checked": false, "TIME": "4/25/2022", "COLOR": "#6410D0", "TYPE": "mk" }, { "TITLE": "Important snippet for interview", "NOTE": "```\nconst name = \"MODE\";\nfunction greet(str) {\n   console.log(\"Welcome \" + str);\n}\n```\n```js\ngreet(name)\n```", "Pinned": false, "Checked": false, "TIME": "4/25/2022", "COLOR": "#6410D0", "TYPE": "mk" }, { "TITLE": "🧺 Groceries", "NOTE": "✔️Bread\nVegetables\n✔️Oreo (<i>biscuits</i>)\nMilk <b>&nbsp;2L</b>", "Pinned": false, "Checked": false, "TIME": "4/6/2022", "COLOR": "#f72585", "TYPE": "ls" }]);
+    }
+    if (QsParsed?.action == "newMkNote") {
+        new NoteEditor("Create", "mk");
+    }
+    if (QsParsed?.action == "newLsNote") {
+        new NoteEditor("Create", "ls");
+    }
+})();

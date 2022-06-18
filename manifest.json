@@ -16,22 +16,16 @@
       "purpose": "any"
     },
     {
-      "src": "src/logos/manifest-icon-192.maskable.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
       "src": "src/logos/manifest-icon-512.maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "src/logos/manifest-icon-512.maskable.png",
+      "src": "src/Logo.round.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
   "start_url": ".",
@@ -40,16 +34,18 @@
   "background_color": "#6C25C7",
   "shortcuts": [
     {
-      "name": "Take a note",
-      "short_name": "Open",
-      "description": "Make beautiful notes, now!",
-      "url": "/",
-      "icons": [
-        {
-          "src": "src/Logo.svg",
-          "sizes": "96x96"
-        }
-      ]
+      "name": "New Markdown Note",
+      "short_name": "New Note",
+      "url": "/?action=newMkNote"
+    },
+    {
+      "name": "New List Note",
+      "short_name": "New Note",
+      "url": "/?action=newLsNote"
+    },
+    {
+      "name": "Demo mode",
+      "url": "/?ex=true"
     }
   ]
 }

@@ -15,9 +15,9 @@ const $ = (selector: any) => {
                 if ((event == "keypress") || (event == "keydown") || (event == "keyup")) self.element.addEventListener(event, (e: any) => { if (e.key == "Enter") callback(e) }, options); else self.element.addEventListener(event, callback, options);
             })
         },
-        onGlobal: (event: any, callback: Function, options?: object) => {
-            document.addEventListener(event, e => {
-                if (e.target.matches(selector)) callback(e);
+        onGlobal: (event: keyof DocumentEventMap, callback: Function, options?: object) => {
+            document.addEventListener(event, (e: Event) => {
+                if ((e.target as HTMLInputElement)?.matches(selector)) callback(e);
             }, options)
         },
         log: () => console.log("Element: ", self.element),
