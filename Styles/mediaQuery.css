@@ -14,24 +14,88 @@
     .popupContainer .popup .logo {
         margin: 30px;
     }
-}
-@media screen and (max-width: 768px) {
-    nav.bottomNav {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        margin: 0px;
-        border-radius: 0;
+    nav.topBar {
+        top: 60px;
+        z-index: 1;
     }
-    nav.topBar .inputContainer #SORT_BY {
+    aside.sideBar .collectionGrp { 
+        position: fixed;
+        width: 30vw;
+        opacity: 0;
+        height: 100vh !important;
+        z-index: 9 !important;
+        top: 0; left: -100%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center !important;
+        background: var(--color-font1);
+    }
+    aside.sideBar .collectionGrp.enter {
+        animation: enter .5s ease-in-out both;
+    }
+    aside.sideBar .collectionGrp.fade-out {
+        animation: enter .5s ease-in-out both reverse !important;
+    }
+    @keyframes enter {
+        to {
+            opacity: 1;
+            left: 0%;
+        }
+    }
+    aside.sideBar .noteTypeWrper.active {
+        display: none !important;
+    }
+    aside.sideBar {
+        position: initial;
+        height: 8vh;
+        width: var(--offsetWidth);
+        z-index: 2;
+        flex-direction: row;
+        align-items: center;
+        box-sizing: content-box;
+        overflow: initial;
+        background: var(--color-base2);
+        padding-bottom: 30px;
+        padding-inline: 20px;
+    }
+    aside.sideBar .newNoteBtnWrper {
+        position: fixed;
+        bottom: 0;
+        z-index: 2;
+        right: 100px;
+    }
+    aside.sideBar > ion-icon {
+        display: initial !important;
+        font-size: xx-large;
+        color: var(--color-font1);
+    }
+    aside.sideBar .logoContainer {
+        transform: scale(80%);
+        background: none;
+        padding: 0;
+    }
+    #NOTES_CONTAINER {
+        margin-top: 50px !important;    
+    }
+    aside.sideBar .logoContainer::after { all: unset }
+    /* #ADD_NEW_NOTE_BUTTON.rotate {
+        top: 100px !important;
+    } */
+    :root { --offsetWidth: calc(100% - var(--margin)*2) }
+}
+@media screen and (max-width: 778px) {
+    nav.topBar .inputContainer select, .inputContainer.iconOnly select {
         position: absolute;
         width: 20px;
         left: 0;
         opacity: 0;
     }
-    nav.topBar .inputContainer .icon[data-id="SORT_BY"] {
-        padding: 0 10px;
+    aside.sideBar {
+        width: var(--offsetWidth) - var(--margin);
     }
+    nav.topBar .inputContainer .icon { padding: 0 5px }
     nav.topBar .inputContainer #SETTINGS_BUTTON {
         background: var(--color-font1);
         color: var(--color-base2) !important;
@@ -52,30 +116,34 @@
     .noteEditor.full.side {
         min-width: 100% !important;
     }
+    aside.sideBar .collectionGrp {
+        width: 50vw;
+    }
 }
 @media screen and (max-width: 550px) {
-    .inputContainer #VIEW_TYPE,
-    .inputContainer .icon[data-id="VIEW_TYPE"],
-    nav.bottomNav span.divider {
-        display: none;
+    :root { 
+        --margin: 10px;
+        --offsetWidth: calc(100% - var(--margin)*2);
     }
-    nav.topBar .logoContainer .title { display: none; }
-    .searchBox > #SEARCH {
-        font-size: 12px;
+    nav.bottomNav {
+        width: calc((var(--offsetWidth) - var(--margin)));
+        justify-content: space-between;
+        padding: 10px;
     }
-    .searchBox .searchIcon {
-        padding: 0 5px !important;
-    }
+    nav.bottomNav ion-icon { font-size: xx-large;}
+    nav.topBar .newNoteBtn span { display: none }
+    nav.topBar { padding-inline: 10px; }
     note #NOTE_HEADER {
         font-size: xx-large !important;
     }
+    nav.topBar .refreshNotesBtn { display: none };
     note #NOTE_TEXT {
         font-size: 1em !important;
     }
     #NOTES_CONTAINER {
-        margin-inline: 5px !important;
-        margin-bottom: 120px !important;
-        margin-top: 60px;
+        width: 100% !important;
+        margin: 0px !important;
+        padding: 45px 15px;
     }
     .popupContainer .popup .logo {
         height: 200px;
@@ -105,4 +173,15 @@
     }
     note .topBar .grp .option:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
     note .topBar .grp .option:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+    aside.sideBar .newNoteBtnWrper {
+        width: 100vw;
+        right: 0;
+        height: 0;
+        margin-bottom: 100px;
+        overflow: visible;
+        z-index: 3;
+    }
+    aside.sideBar .collectionGrp {
+        width: 80vw;
+    }
 }

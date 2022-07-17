@@ -5,7 +5,8 @@ pre {
     background: #282a36;
     padding: 10px;
     border-radius: 10px;
-    overflow: auto;
+    overflow: auto !important;
+    max-width: 100%;
 }
 code {
     color: #ccc;

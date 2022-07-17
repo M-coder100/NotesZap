@@ -1,4 +1,4 @@
-export default function makeNewNoteToDatabase(props) {
+function makeNewNoteToDatabase(props) {
     if (!props)
         return;
     if (!localStorage.getItem("Notes")) {
@@ -17,3 +17,4 @@ export default function makeNewNoteToDatabase(props) {
         localStorage.setItem("Notes", JSON.stringify(uniqBy(notes)));
     }
 }
+export { makeNewNoteToDatabase };

@@ -7,15 +7,15 @@ const $ = (selector: any) => {
     }
     let self = {
         element: correctSelector,
-        on: (event: keyof DocumentEventMap, callback: any, options?: object) => {
+        on: (event: keyof DocumentEventMap, callback: any, options?: AddEventListenerOptions) => {
             self.element.addEventListener(event, callback, options);
         },
-        On: (events: Array<keyof DocumentEventMap>, callback: Function, options?: object) => {
+        On: (events: Array<keyof DocumentEventMap>, callback: Function, options?: AddEventListenerOptions) => {
             events.forEach((event: any) => {
                 if ((event == "keypress") || (event == "keydown") || (event == "keyup")) self.element.addEventListener(event, (e: any) => { if (e.key == "Enter") callback(e) }, options); else self.element.addEventListener(event, callback, options);
             })
         },
-        onGlobal: (event: keyof DocumentEventMap, callback: Function, options?: object) => {
+        onGlobal: (event: keyof DocumentEventMap, callback: Function, options?: AddEventListenerOptions) => {
             document.addEventListener(event, (e: Event) => {
                 if ((e.target as HTMLInputElement)?.matches(selector)) callback(e);
             }, options)

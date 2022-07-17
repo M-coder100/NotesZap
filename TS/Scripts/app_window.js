@@ -64,7 +64,7 @@ export default class appWindow {
                     }, { passive: true });
                 })();
                 $(".app-control.CLOSE").each((element) => { $(element).on("click", () => element.parentElement?.parentElement?.parentElement?.remove()); });
-                if (device == "desktop") {
+                if (device() == "desktop") {
                     $(".app-control.MINIMIZE").each((element) => {
                         $(element).on("click", () => {
                             element.parentElement?.parentElement?.parentElement?.classList.remove("full");
@@ -107,7 +107,7 @@ const CalculatorApp = new appWindow([600, 400, "Calculator", "calculator"], `
         <div>.</div>
         <div class="math-sign" id="submit">=</div>
     </div>
-`, $("#trigger_calculator.app"));
+`, $("#trigger_calculator"));
 CalculatorApp.script = function () {
     // calculator Logic
     let numPlaceholder = $ `#number-placeholder`;

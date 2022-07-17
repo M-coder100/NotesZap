@@ -18,11 +18,12 @@
     <link rel="manifest" href="manifest.json">
     
     <meta name="theme-color" content="#6410D0">
-    <meta name="description" content="Notes Taking, Redesingned">
+    <meta name="description" content="Notes Taking, Redesigned">
 
     <script defer type="module" src="TS/Scripts/app.js"></script>
     <script defer type="module" src="TS/Scripts/db.js"></script>
     <script defer type="module" src="TS/Scripts/notes.js"></script>
+    <script defer type="module" src="TS/Scripts/noteEditor.js"></script>
     <script defer type="module" src="/TS/Scripts/app_window.js"></script>
     <script defer type="module" src="/update.js"></script>
     <!-- <script defer type="module" src="TS/Scripts/cmdPallete.js"></script> -->
@@ -51,94 +52,133 @@
   </head>
   <body>
     <div class="appWindow_container"></div>
-    <div class="loader-container">
-      <div class="loader">
-        <img src="src/Logo.image.png" alt="Loading" type="button" onclick="caches.delete('offline_cache');">
-      </div>
-    </div>
-    <nav class="topBar">
+    <div class="loader-container"><div class="loader"><img src="src/Logo.image.png" alt="Loading" type="button" onclick="caches.delete('offline_cache');"></div></div>
+    
+    <aside class="sideBar">
+      <ion-icon name="albums-outline" class="openCollectionsBtn hidden"></ion-icon>
       <div class="logoContainer" type="button" onclick="location.href = '/'" title="NotesZap">
         <img class="logo" src="src/Logo.round.png" alt="Logo">
         <img class="title" src="src/Logo_text.png" alt="NotesZap"/>
       </div>
-      <div class="searchBox" data-intro="Type here to search the notes" data-title="Search">
-        <ion-icon name="search-outline" class="searchIcon"></ion-icon>
-        <input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
+      <div class="collectionGrp">
+        <div class="collection active">
+          <div>
+            <h2 class="title">Home</h2>
+            <p class="itemCount"><i style="font-family: 'Times New Roman', Times, serif; font-size: larger;">x</i> items</p>
+          </div>
+          <ion-icon name="home-outline"></ion-icon>
+        </div>
+        <div class="collection">
+          <div>
+            <h2 class="title">Recent</h2>
+            <p class="itemCount">0 items</p>
+          </div>
+          <ion-icon name="time-outline"></ion-icon>
+        </div>
+        <div class="collection">
+          <div>
+            <h2 class="title">Work</h2>
+            <p class="itemCount">0 items</p>
+          </div>
+          <ion-icon name="briefcase-outline"></ion-icon>
+        </div>
+        <div class="collection">
+          <div>
+            <h2 class="title">Shopping</h2>
+            <p class="itemCount">0 items</p>
+          </div>
+          <ion-icon name="cart-outline"></ion-icon>
+        </div>
+        <button class="outline"><ion-icon name="add-circle-outline"></ion-icon>New collection</button>
       </div>
-      <div class="inputContainer" data-intro="Select filter notes by different sorts" data-title="Filter">
-        <ion-icon name="funnel-outline" class="icon" data-id="SORT_BY"></ion-icon>
-        <select id="SORT_BY">
-          <optgroup label="Sort By">
-            <option value="nw">Newest</option>
-            <option value="ol">Oldest</option>
-            <option value="az">A - Z</option>
-            <option value="ck">Checked</option>
-            <option value="pn">Pinned</option>
-          </optgroup>
-        </select>
-        <ion-icon name="settings-outline" id="SETTINGS_BUTTON" tabindex="0"></ion-icon>
-      </div>
-    </nav>
-    <div id="NOTES_CONTAINER">
-      <div id="PINNED"></div>
-      <noscript>
-        <note><h1>Please allow JavaScript to run this app</h1></note>
-      </noscript>
-      <!-- <note>
-			<ins class="adsbygoogle"
-			style="display:block"
-			data-ad-client="ca-pub-1068941086415066"
-			data-ad-slot="6705523890"
-			data-ad-format="auto"
-			data-full-width-responsive="true"></ins>
-    </note> -->
-    </div>
-    <nav class="bottomNav">
-      <div 
-      id="ADD_NEW_NOTE_BUTTON"
-      tabindex="0"
-      data-intro="Click here to take a new note"
-      data-title="Create"
-      
-      data-hint="Click to create your first note"
-      data-hint-position="bottom-middle"
-      >
-        <ion-icon name="add-outline"></ion-icon>
-      </div>
-      <span style="color: #505050; padding-right: 10px; white-space: pre;" class="dummy-type">Note type</span>
-      <div class="inputContainer" data-intro="You can change this dropdown to which note you prefer among the Markdown, lists and many other notes" data-title="Note Types">
-        <ion-icon name="list-outline" class="icon" data-id="NOTE_TYPE"></ion-icon>
-        <select id="NOTE_TYPE">
-          <optgroup label="Note Type">
-            <option value="ls">With lists</option>
-            <option value="kb">Kanban board</option>
-            <option value="mk" selected>Markdown</option>
-            <option value="sp">Snippet</option>
-            <option value="dy">Dairy</option>
-          </optgroup>
-        </select>
-      </div>
+      <script>
+      </script>
+      <ion-icon name="ellipsis-horizontal-circle-outline" class="hidden"></ion-icon>
+      <div style="display: grid; place-items: center;" class="newNoteBtnWrper">
+        <div 
+        id="ADD_NEW_NOTE_BUTTON"
+        tabindex="0"
+        data-intro="Click here to take a new note"
+        data-title="Create"
+        data-hint="Click to create a new note"
+        data-hint-position="middle-middle"
 
-      <span class="divider"></span>
-      <div class="inputContainer">
-
-        <!-- <ion-icon name="grid-outline" class="icon"></ion-icon> -->
-        <ion-icon name="resize-outline" class="icon" data-id="VIEW_TYPE"></ion-icon>
-        <select id="VIEW_TYPE">
-          <optgroup label="View type">
-            <option value="fx" selected="">Flex view</option>
-            <option value="gv">Grid view</option>
-            <option value="sf">scaffold view</option>
-          </optgroup>
-        </select>
+        ><ion-icon name="add-outline"></ion-icon></div>
       </div>
-      <ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0" data-intro="Click to refresh the notes without reloading the whole page" data-title="refresh"></ion-icon>
-    </nav>
-    <nav class="appBar bottomNav">
-      <span style="color: #505050;">Quick apps:</span>
-      <div class="app inputContainer" id="trigger_calculator"><ion-icon name="calculator" class="icon"></ion-icon> Calculator</div>
-    </nav>
-    <div class="popupContainer"></div>
+      <div class="noteTypeWrper">
+        <div style="display: flex; gap: 50px; flex-direction: column;">
+          <ion-icon class="noteType" name="logo-markdown" tabindex="0" data-type="mk" autofocus></ion-icon>
+          <ion-icon class="noteType" name="list-sharp" tabindex="0" data-type="ls"></ion-icon>
+          <ion-icon class="noteType" name="clipboard-sharp" tabindex="0" data-type="sp"></ion-icon>
+        </div>
+      </div>
+    </aside>
+    <main>
+      <nav class="topBar">
+        <div class="searchBox" data-intro="Type here to search the notes" data-title="Search">
+          <ion-icon name="search-outline" class="searchIcon"></ion-icon>
+          <input type="text" autocomplete="off" id="SEARCH" placeholder="Search my notes">
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 8px;">
+          <div class="inputContainer" data-intro="Select filter notes by different sorts" data-title="Filter">
+            <ion-icon name="filter-outline" class="icon" data-id="SORT_BY"></ion-icon>
+            <select id="SORT_BY">
+              <optgroup label="Sort By">
+                <option value="nw">Newest</option>
+                <option value="ol">Oldest</option>
+                <option value="az">A - Z</option>
+                <option value="ck">Checked</option>
+                <option value="pn">Pinned</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="inputContainer">
+            <ion-icon name="resize-outline" class="icon" data-id="VIEW_TYPE"></ion-icon>
+            <select id="VIEW_TYPE">
+              <optgroup label="View type">
+                <option value="fx" selected>Flex view</option>
+                <option value="gv">Grid</option>
+                <option value="sf">Scaffold</option>
+              </optgroup>
+            </select>
+          </div>
+          <ion-icon name="refresh-outline" class="refreshNotesBtn" tabindex="0" data-intro="Click to refresh the notes without reloading the whole page" data-title="refresh"></ion-icon>
+          <span class="divider"></span>
+          <button class="newNoteBtn"><ion-icon name="add-circle-outline"></ion-icon><span>New Note</span></button>
+        </div>
+      </nav>
+
+
+      <div id="NOTES_CONTAINER">
+        <div id="PINNED"></div>
+        <noscript>
+          <note><h1>Please allow JavaScript to run this app</h1></note>
+        </noscript>
+        
+        <!-- <note>
+        <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-1068941086415066"
+        data-ad-slot="6705523890"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+        </note> -->
+      </div>
+      <nav class="bottomNav">
+        <div class="inputContainer iconOnly">
+          <ion-icon name="list-sharp" class="icon"></ion-icon>
+          <select id="NOTE_TYPES">
+            <optgroup label="Note types">
+              <option value="mk">Markdown</option>
+              <option value="ls">List</option>
+              <option value="sp">Snippet</option>
+            </optgroup>
+          </select>
+        </div>
+        <ion-icon name="calculator-outline" id="trigger_calculator"></ion-icon>
+      </nav>
+      <div class="popupContainer"></div>
+    </main>
 
     <!-- <nav class="settingsNav">
 		<div class="topBar">
@@ -160,17 +200,13 @@
 			</details>
 		</div>
 	</nav> -->
-  <!-- <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script> -->
-  
-  <!-- note.ad -->
-  
-  <!-- <ins class="adsbygoogle"
+    <!-- <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1068941086415066" crossorigin="anonymous"></script> -->
+    <!-- <ins class="adsbygoogle"
 		style="display:block"
 		data-ad-client="ca-pub-1068941086415066"
 		data-ad-slot="6705523890"
 		data-ad-format="auto"
 		data-full-width-responsive="true"></ins> -->
-
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -189,6 +225,6 @@
       } else {
         console.log('Service workers are not supported.');
       };
-      </script>
+    </script>
   </body>
 </html>

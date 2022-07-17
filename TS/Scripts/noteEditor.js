@@ -1,8 +1,8 @@
 import { getfullDate, device } from "./app.js";
-import makeNewNoteToDatabase from "./db.js";
+import { makeNewNoteToDatabase } from "./db.js";
 import { refreshNotes } from "./notes.js";
 import $ from "./tquery.js";
-import { intro, mk } from "./utils.js";
+import { intro, mk, sort } from "./utils.js";
 export default class NoteEditor {
     constructor(type, subType, index) {
         const div = $ `div`.create(true);
@@ -10,6 +10,7 @@ export default class NoteEditor {
         let noteValue;
         const fullDate = getfullDate();
         let elements;
+        let sortValue = $ `#SORT_BY`.value;
         const colorBar = `
         <div class="colorBar">
             <input class="color" id="#7fff00" style="background-color: #7fff00;" type="radio" name="option"/>
@@ -74,7 +75,7 @@ export default class NoteEditor {
                         </div>
                         `);
                         $ `.noteEditor`.each((item) => item.classList.remove("active"));
-                        $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
+                        $(div).addClass("noteEditor", device() == "mobile" ? "full" : "compact", "active");
                         elements = {
                             navBar: {
                                 this: div.children[2],
@@ -137,7 +138,7 @@ export default class NoteEditor {
                                 noteValue = $(activeNoteEditor.children[1].children[2]).text;
                                 if (headerValue.trim() || noteValue.trim()) {
                                     activeNoteEditor.style.transition = "left 1s ease";
-                                    device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
+                                    device() == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
                                     elements.previewPanel.this.remove();
                                     makeNewNoteToDatabase({
                                         TITLE: headerValue,
@@ -149,7 +150,8 @@ export default class NoteEditor {
                                         TYPE: subType
                                     });
                                     refreshNotes();
-                                    $ `note`.all()[index || 0].classList.add("edited");
+                                    $ `note`.all()[0].classList.add("edited");
+                                    sortValue == "ol" ? window.scrollTo(0, $("#NOTES_CONTAINER").element.scrollHeight) : null;
                                     setTimeout(() => activeNoteEditor.remove(), 1000);
                                 }
                             }
@@ -173,7 +175,7 @@ export default class NoteEditor {
 
                         `);
                         $ `.noteEditor`.each((item) => item.classList.remove("active"));
-                        $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
+                        $(div).addClass("noteEditor", device() == "mobile" ? "full" : "compact", "active");
                         elements = {
                             navBar: {
                                 this: div.children[2],
@@ -235,7 +237,7 @@ export default class NoteEditor {
                                     });
                                     // 
                                     div.style.transition = "left 1s ease";
-                                    device == "desktop" ? div.style.left = `${window.outerWidth}px` : div.remove();
+                                    device() == "desktop" ? div.style.left = `${window.outerWidth}px` : div.remove();
                                     makeNewNoteToDatabase({
                                         TITLE: elements.textField.noteHeader().value,
                                         NOTE: values.join("\n"),
@@ -257,7 +259,7 @@ export default class NoteEditor {
             case "Edit":
                 if (!index && index != 0)
                     return;
-                const notes = JSON.parse(localStorage.getItem("Notes") || "{}");
+                const notes = sort(sortValue, JSON.parse(localStorage.getItem("Notes") || "{}"));
                 const currentNote = notes[index];
                 switch (subType) {
                     case "mk":
@@ -305,7 +307,7 @@ export default class NoteEditor {
                             },
                         };
                         $ `.noteEditor`.each((item) => item.classList.remove("active"));
-                        $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
+                        $(div).addClass("noteEditor", device() == "mobile" ? "full" : "compact", "active");
                         $(elements.textField.noteHeader()).element.focus();
                         var colors = [...elements.navBar.colorBar.colors];
                         var color = currentNote.COLOR;
@@ -350,7 +352,7 @@ export default class NoteEditor {
                                 noteValue = $(activeNoteEditor.children[1].children[2]).text;
                                 if (headerValue.trim() || noteValue.trim()) {
                                     activeNoteEditor.style.transition = "left 1s ease";
-                                    device == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
+                                    device() == "desktop" ? activeNoteEditor.style.left = `${window.outerWidth}px` : activeNoteEditor.remove();
                                     elements.previewPanel.this.remove();
                                     notes[index || 0] = {
                                         TITLE: headerValue,
@@ -390,7 +392,7 @@ export default class NoteEditor {
                             div.children[1].children[2].innerHTML += `<li class="note_item ${isChecked ? "done" : ""}" id="checklist"><input class="checkBox" type="checkbox" ${isChecked && "checked"}/><label class="text" contenteditable>${str.split("✔️")[1] || str}</label></li>`;
                         });
                         $ `.noteEditor`.each((item) => item.classList.remove("active"));
-                        $(div).addClass("noteEditor", device == "mobile" ? "full" : "compact", "active");
+                        $(div).addClass("noteEditor", device() == "mobile" ? "full" : "compact", "active");
                         elements = {
                             navBar: {
                                 this: div.children[2],
@@ -462,7 +464,7 @@ export default class NoteEditor {
                                         ;
                                     });
                                     div.style.transition = "left 1s ease";
-                                    device == "desktop" ? div.style.left = `${window.outerWidth}px` : div.remove();
+                                    device() == "desktop" ? div.style.left = `${window.outerWidth}px` : div.remove();
                                     notes[index || 0] = {
                                         TITLE: elements.textField.noteHeader().value,
                                         NOTE: values.join("\n"),
@@ -497,7 +499,9 @@ export default class NoteEditor {
                     isDown = true;
                     const offset = [
                         div.offsetLeft - e.clientX,
+                        div.offsetTop - e.clientY
                     ];
+                    div.classList.contains("active") || div.classList.add("active");
                     div.setAttribute('data-offset', JSON.stringify(offset));
                     currentDiv = div;
                 });
@@ -505,6 +509,7 @@ export default class NoteEditor {
                     isDown = true;
                     const offset = [
                         div.offsetLeft - event.touches[0].clientX,
+                        div.offsetTop - event.touches[0].clientY,
                     ];
                     div.setAttribute('data-offset', JSON.stringify(offset));
                     currentDiv = div;
@@ -516,25 +521,30 @@ export default class NoteEditor {
                     if (isDown && currentDiv) {
                         const mousePosition = {
                             x: event.clientX,
+                            y: event.clientY,
                         };
                         const offset = JSON.parse(currentDiv.getAttribute('data-offset'));
-                        currentDiv.style.left = (mousePosition.x + offset[0]) + 'px';
+                        currentDiv.style.left = ((mousePosition.x + offset[0]) + 'px');
+                        currentDiv.style.top = ((mousePosition.y + offset[1]) + 'px');
                     }
                 }, true);
                 document.addEventListener('touchmove', (event) => {
                     if (isDown && currentDiv) {
                         const mousePosition = {
                             x: event.touches[0].clientX,
+                            y: event.touches[0].clientY,
                         };
                         const offset = JSON.parse(currentDiv.getAttribute('data-offset'));
                         currentDiv.style.left = (mousePosition.x + offset[0]) + 'px';
+                        currentDiv.style.top = (mousePosition.y + offset[1]) + 'px';
                     }
                 }, { passive: true });
             })();
             $("#NOTEEDITOR_CLOSE").each((element) => { $(element).on("click", () => element.parentElement?.parentElement?.parentElement?.remove()); });
-            if (device == "desktop") {
+            if (device() == "desktop") {
                 $("#NOTEEDITOR_MINIMIZE").each((element) => {
                     $(element).on("click", () => {
+                        div.style.top = "0px";
                         element.parentElement?.parentElement?.parentElement?.classList.add("compact");
                         element.parentElement?.parentElement?.parentElement?.classList.remove("full");
                     });

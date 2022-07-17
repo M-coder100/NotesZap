@@ -6,14 +6,15 @@
 
 import $ from "./tquery.js";
 import NoteEditor from "./noteEditor.js";
-import { renderNotes, refreshNotes } from "./notes.js";
+import { renderNotes, refreshNotes, clearNotes } from "./notes.js";
 import popup from "./popup.js";
-import { arraySearch } from "./utils.js";
+import { arraySearch, sort } from "./utils.js";
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 if (!localStorage.getItem("Notes")) {
     new popup(`
-    <nav class="topBar">
+    <nav class="PtopBar">
         <ion-icon name="close-outline" id="CLOSE" tabindex="0"></ion-icon>
-        <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.10 )</span>
+        <span style="color: white;">Notes<span style="font-weight: 800;">Zap</span> ( BETA 0.25 Major update )</span>
     </nav>
     <div class="main">
         <img src="src/Logo.image.png" class="logo"/>
@@ -25,13 +26,8 @@ if (!localStorage.getItem("Notes")) {
     </div>
     `);
 } else $`.popupContainer`.remove();
-const sorts = {
-    sortType: $`#SORT_BY`.element,
-    noteType: $`#NOTE_TYPE`.element,
-    viewType: $`#VIEW_TYPE`.element 
-}
 const getfullDate = () => `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
-const device = (() => window.innerWidth <= 550 ? "mobile" : "desktop")();
+const device = () => window.innerWidth <= 550 ? "mobile" : "desktop";
 const d = new Date();
 $`#SEARCH`.on("input", () => {
     if ($`#SEARCH`.value && localStorage.getItem("Notes")) {
@@ -41,23 +37,73 @@ $`#SEARCH`.on("input", () => {
     } else refreshNotes();
 })
 
-$(document).on("keydown", (e: KeyboardEvent) => {
-    if (isFinite(Number(e.key)) && e.ctrlKey) {
+$(window).On(["scroll", "resize"],() => {
+    if (window.innerWidth <= 1330) {
+        if (window.scrollY > 45) {
+            $("nav.topBar").css.position = "fixed";
+            $("nav.topBar").css.top = "0";
+        } else $("nav.topBar").css.top = "60px";
+    } else $("nav.topBar").css.top = "0";
+})
+$("#SORT_BY").on("input", () => {
+    clearNotes();
+    renderNotes(sort($`#SORT_BY`.value, JSON.parse(localStorage.getItem("Notes") || "{}")));
+    console.log("SORT:", $`#SORT_BY`.value);
+})
+$(document).on("keyup", (e: KeyboardEvent) => {
+    // Keyboard controller
+    if (isFinite(Number(e.key)) && (!$`:focus`.element || $`note:focus`.element)) {
         e.preventDefault();
         document.getElementById(`${Number(e.key)-1}`)?.focus();
-        Number(e.key) == 0 && document.getElementById("9")?.focus();
+        Number(e.key) == 0 && (document.querySelector("note#9") as HTMLInputElement)?.focus();
     }    
-    if (((e.key == "+") || (e.key == "=")) && ($`.noteEditor`.all().length == 0) && !document.querySelector(":focus")) {
-        new NoteEditor("Create", sorts.noteType.value);
-        $`.noteEditor`.addClass("active");
-    }
-    else if (e.key == "Escape" && $`.noteEditor`.all().length > 0) {$`.noteEditor.active`.remove(); $`.noteEditor`.addClass("active");}
+    if (((e.key == "+") || (e.key == "=")) && ($`.noteEditor`.all().length == 0) && !document.querySelector(":focus")) {$("#ADD_NEW_NOTE_BUTTON").element.click() }
+    else if (e.key == "Escape" && $`.noteEditor`.all().length > 0) {$`.noteEditor.active`.remove(); $`.noteEditor`?.addClass("active");}
 })
-$("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], () => {    
-    if (($`.noteEditor`.all().length <= 2)) {
-        new NoteEditor("Create", sorts.noteType.value);
+let clicked = false;
+$("ion-icon.openCollectionsBtn").on("click", () => {
+    $(".collectionGrp").addClass("enter");
+    wait(100).then(() => $(document).on("click", (e: MouseEvent) => {
+        if (e.target != $(".collectionGrp").element) {
+            $(".collectionGrp").removeClass("enter");
+            $(".collectionGrp").addClass("fade-out");
+            wait(500).then(() => $(".collectionGrp").removeClass("fade-out"));
+        }
+    }, {once: true}));
+})
+$(".newNoteBtn").on("click", () => { new NoteEditor("Create", "mk") });
+$("#ADD_NEW_NOTE_BUTTON").On(["click", "keyup"], () => {
+    function rmvAnimation () {
+        $(".collectionGrp").removeClass("fade-out")
+        $("#ADD_NEW_NOTE_BUTTON").removeClass("rotate");
+        $(".noteTypeWrper").removeClass("active");
+    }
+    if (window.innerWidth >= 1330) {
+        if(!clicked) {
+            $(".collectionGrp").addClass("fade-out")
+            $("#ADD_NEW_NOTE_BUTTON").addClass("rotate");
+            $(".collectionGrp").on("animationend", () => {
+                $(".noteTypeWrper").addClass("active");
+            })
+            clicked = true;
+        } else {
+            rmvAnimation();
+            clicked = false;
+        }
+    
+        if (($`.noteEditor`.all().length <= 2)) {
+            $(".noteTypeWrper > div").On(["click", "keyup"], (e: Event) => {
+                let tTe = e.target as HTMLElement;
+                new NoteEditor("Create", tTe.getAttribute("data-type")||"mk");
+                rmvAnimation();
+                clicked = false;
+            }, {once: true} )
+        } else {
+            alert("Maximum create note editors reached.")
+        }
     } else {
-        alert("Maximum create note editors reached.")
+        rmvAnimation();
+        new NoteEditor("Create", $("#NOTE_TYPES").value);
     }
 })
 

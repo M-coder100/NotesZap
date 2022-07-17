@@ -1,13 +1,16 @@
 import NoteEditor from "./noteEditor.js";
+// import popup from "./popup.js";
 import $ from "./tquery.js";
 import * as utils from "./utils.js";
 export function renderNotes(notes) {
     if (!notes || !notes[0]) {
-        const msg = document.createElement("msg");
-        $(msg).HTML(`<h1 id="NOTE_HEADER">No Notes Found</h1>Create your first note by clicking the add button or pressing the "+" key from your keyboard or you can import data
-        <a style="font-size: 1.2em;" id="ImportDataBtn">
-        <ion-icon name="download-outline"></ion-icon>
-         Import Data</a>`);
+        const msg = document.createElement("note");
+        msg.classList.add("msg");
+        $(msg).HTML(`
+            <h1><ion-icon name="ban-outline"></ion-icon> No Notes Found</h1>
+            Create your first note by clicking the add button or pressing the "+" key from your keyboard or you can import data<br>
+            <a id="ImportDataBtn"><ion-icon name="download-outline"></ion-icon> Import Data</a>
+        `);
         $ `#NOTES_CONTAINER`.append(msg);
         // $`#ImportDataBtn`.on("click", () => {
         //     new popup(`
@@ -129,7 +132,7 @@ export function renderNotes(notes) {
                 $(note).on("keyup", ({ key }) => {
                     switch (key) {
                         case "e" || " ":
-                            editNote(Number(note.id));
+                            editNote();
                             break;
                         case "d":
                             deleteNote(Number(note.id));
@@ -170,7 +173,7 @@ export function renderNotes(notes) {
                 let touchtime = 0;
                 $(note).on("click", (e) => {
                     if (e.ctrlKey) {
-                        editNote(Number(note.id));
+                        editNote();
                         touchtime = 0;
                         return;
                     }
@@ -180,7 +183,7 @@ export function renderNotes(notes) {
                         // compare first click to this click and see if they occurred within double click threshold
                         if (((new Date().getTime()) - touchtime) < 800) {
                             // double click occurred
-                            editNote(Number(note.id));
+                            editNote();
                         }
                         else
                             touchtime = new Date().getTime();
@@ -201,7 +204,8 @@ export function renderNotes(notes) {
                     notes[index].Checked ? notes[index].Checked = false : notes[index].Checked = true;
                     localStorage.setItem("Notes", JSON.stringify(notes));
                 }
-                function editNote(index) {
+                function editNote() {
+                    const index = Number(note.id);
                     let noteEditors = $ `.noteEditor`.all();
                     if (noteEditors.length < 2) {
                         if (!noteEditors[0]) {
@@ -222,10 +226,14 @@ export function renderNotes(notes) {
         console.log(`%c⚠️ ERR (notes.ts): ${error}`, "background: red; padding: 10px 5px;");
     }
 }
-renderNotes(JSON.parse(localStorage.getItem("Notes") || "{}"));
+renderNotes(utils.sort($ `#SORT_BY`.value, JSON.parse(localStorage.getItem("Notes") || "{}")));
 export function refreshNotes() {
     if ($ `#NOTES_CONTAINER msg`.element)
         $(`#NOTES_CONTAINER msg`).remove();
     $ `note`?.each((element) => element.remove());
-    renderNotes(JSON.parse(localStorage.getItem("Notes") || "{}"));
+    renderNotes(utils.sort($ `#SORT_BY`.value, JSON.parse(localStorage.getItem("Notes") || "{}")));
+    console.log("Notes refreshed.", $ `#SORT_BY`.value);
+}
+export function clearNotes() {
+    $ `#NOTES_CONTAINER note`.each((element) => element.remove());
 }

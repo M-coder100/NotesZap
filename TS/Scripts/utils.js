@@ -1,14 +1,15 @@
 const mk = (value) => new Remarkable("full", {
     breaks: true,
+    html: false,
     highlight: function (str, lang) {
-        if (lang && hljs.getLanguage(lang)) {
+        if (lang && hljs?.getLanguage(lang)) {
             try {
-                return hljs.highlight(lang, str).value;
+                return hljs?.highlight(lang, str).value;
             }
             catch (err) { }
         }
         try {
-            return hljs.highlightAuto(str).value;
+            return hljs?.highlightAuto(str).value;
         }
         catch (err) { }
         return ''; // use external default escaping
@@ -48,4 +49,16 @@ function arraySearch(text, array) {
             TYPE: "msg"
         }] : searchedItems;
 }
-export { mk, replaceURLs, arraySearch, intro };
+function sort(mode, arr) {
+    // if (mode == "az") {
+    //     arr = arr.sort((a, b) => (a.TITLE > b.TITLE) ? 0 : ((b.TITLE < a.TITLE) ? -1 : 0));
+    //     console.log(arr);
+    // }
+    if (mode == "nw")
+        arr = arr;
+    if (mode == "ol") {
+        arr = arr.reverse();
+    }
+    return arr;
+}
+export { mk, replaceURLs, arraySearch, intro, sort };
